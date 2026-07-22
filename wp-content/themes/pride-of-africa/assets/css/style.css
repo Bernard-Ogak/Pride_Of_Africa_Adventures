@@ -400,7 +400,7 @@ section[id] {
 }
 
 .section-header .section-title {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 2.5rem;
     font-weight: 600;
     color: var(--color-obsidian);
@@ -1791,10 +1791,17 @@ section[id] {
 .footer-social-icon[aria-label*="LinkedIn"] { color: var(--color-linkedin); }
 .footer-social-icon[aria-label*="X"] { color: var(--color-x); }
 .footer-social-icon[aria-label*="WhatsApp"] { color: var(--color-whatsapp); }
-.footer-social-icon:hover { 
-    opacity: 1; 
-    transform: scale(1.2); 
+.footer-social-icon:hover {
+    opacity: 1;
+    transform: scale(1.2);
     filter: brightness(1.2);
+}
+
+/* Custom PNG icon uploaded via Customizer — same as the header's .social-icon-img */
+.footer-social-icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
 }
 
 .footer-bottom {

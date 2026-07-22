@@ -29,39 +29,55 @@
                                 <?php esc_html_e('Your premier safari tour operator in East Africa, serving adventurers from 40+ countries since 2010.', 'pride-of-africa'); ?>
                             </p>
 
-                            <!-- Social Icons with Brand Colours -->
+                            <!-- Social Icons — same PNG-or-SVG icons as the header (pride_get_social_icon()) -->
                             <div class="footer-contact-icons d-flex gap-3">
-                                <?php if (pride_get_social_link('facebook')) : ?>
+                                <?php if (pride_get_social_link('facebook')) : $icon = pride_get_social_icon('facebook'); ?>
                                     <a href="<?php echo pride_get_social_link('facebook'); ?>" target="_blank" rel="noopener noreferrer" class="footer-social-icon" aria-label="Facebook">
+                                        <?php if ($icon) : ?>
+                                            <img src="<?php echo esc_url($icon); ?>" width="20" height="20" alt="" class="footer-social-icon-img">
+                                        <?php else : ?>
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                                         </svg>
+                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
 
-                                <?php if (pride_get_social_link('instagram')) : ?>
+                                <?php if (pride_get_social_link('instagram')) : $icon = pride_get_social_icon('instagram'); ?>
                                     <a href="<?php echo pride_get_social_link('instagram'); ?>" target="_blank" rel="noopener noreferrer" class="footer-social-icon" aria-label="Instagram">
+                                        <?php if ($icon) : ?>
+                                            <img src="<?php echo esc_url($icon); ?>" width="20" height="20" alt="" class="footer-social-icon-img">
+                                        <?php else : ?>
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                             <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
                                             <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-7" fill="none" stroke="currentColor" stroke-width="1.5"/>
                                             <circle cx="18" cy="6" r="1" fill="currentColor"/>
                                         </svg>
+                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
 
-                                <?php if (pride_get_social_link('youtube')) : ?>
+                                <?php if (pride_get_social_link('youtube')) : $icon = pride_get_social_icon('youtube'); ?>
                                     <a href="<?php echo pride_get_social_link('youtube'); ?>" target="_blank" rel="noopener noreferrer" class="footer-social-icon" aria-label="YouTube">
+                                        <?php if ($icon) : ?>
+                                            <img src="<?php echo esc_url($icon); ?>" width="20" height="20" alt="" class="footer-social-icon-img">
+                                        <?php else : ?>
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                                         </svg>
+                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
 
-                                <?php if (pride_get_social_link('tiktok')) : ?>
+                                <?php if (pride_get_social_link('tiktok')) : $icon = pride_get_social_icon('tiktok'); ?>
                                     <a href="<?php echo pride_get_social_link('tiktok'); ?>" target="_blank" rel="noopener noreferrer" class="footer-social-icon" aria-label="TikTok">
+                                        <?php if ($icon) : ?>
+                                            <img src="<?php echo esc_url($icon); ?>" width="20" height="20" alt="" class="footer-social-icon-img">
+                                        <?php else : ?>
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.68v13.67a2.47 2.47 0 1 1-2.88-2.47v3.74c4.57 0 8.33-3.72 8.33-8.3V8.16c1.95 1.48 4.38 2.35 6.56 2.39v-3.72a4.85 4.85 0 0 1-3.56-1.54z"/>
                                         </svg>
+                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
 
@@ -148,21 +164,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer Bottom bar (will be replaced by micro footer in next update) -->
-        <div class="footer-bottom text-white-50 py-3">
-            <div class="container-site">
-                <div class="row align-items-center">
-                    <div class="col-12 text-center small">
-                        <p class="mb-0 text-white-50">
-                            &copy; <?php echo esc_html(date_i18n('Y')); ?> 
-                            <strong><?php echo esc_html(get_bloginfo('name')); ?></strong>. 
-                            <?php esc_html_e('All rights reserved.', 'pride-of-africa'); ?>
-                        </p>
                     </div>
                 </div>
             </div>

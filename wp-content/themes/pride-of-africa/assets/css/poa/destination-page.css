@@ -1,0 +1,79 @@
+/**
+ * destination-page.css — Individual Destination detail page
+ * (single-pride_destination.php): hero, why-visit, attractions,
+ * best-time, cost-guide, route map, FAQs, closing CTA.
+ * @package PrideOfAfrica
+ */
+
+/* ── Hero ─────────────────────────────────────── */
+.c-dest-hero {
+    position: relative;
+    min-height: 26rem;
+    display: flex;
+    align-items: flex-end;
+    background-color: var(--color-primary-dark);
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    padding-top: 6rem;
+}
+.c-dest-hero__scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.25) 100%); }
+.c-dest-hero__inner { position: relative; z-index: 1; padding-block: var(--space-6); max-width: 50rem; }
+.c-dest-hero__tagline { font-size: .875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent); margin-bottom: var(--space-2); }
+.c-dest-hero__title { font-family: var(--poa-font-heading); font-size: clamp(2.5rem,6vw,4rem); font-weight: 700; margin-bottom: var(--space-3); }
+.c-dest-hero__intro { font-size: 1.0625rem; line-height: 1.7; color: rgba(255,255,255,.9); }
+
+/* ── Shared section chrome ────────────────────── */
+.c-dest-section__title { font-family: var(--poa-font-heading); font-size: clamp(1.5rem,3vw,2rem); font-weight: 700; margin-bottom: var(--space-5); }
+.c-dest-section__note { margin-top: var(--space-4); font-size: .9375rem; color: #707070; }
+
+/* ── Why Visit ────────────────────────────────── */
+.c-dest-why-visit { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+@media (min-width: 48em) { .c-dest-why-visit { grid-template-columns: repeat(2,1fr); } }
+.c-dest-why-visit li { display: flex; align-items: flex-start; gap: .625rem; font-size: 1rem; line-height: 1.5; }
+.c-dest-why-visit .bi { color: var(--color-primary); margin-top: .1875rem; flex-shrink: 0; }
+
+/* ── Top Attractions ──────────────────────────── */
+.c-dest-attractions { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+@media (min-width: 48em) { .c-dest-attractions { grid-template-columns: repeat(2,1fr); } }
+.c-dest-attraction { background: var(--color-surface); border: 1px solid var(--poa-color-border); border-radius: var(--radius-lg); padding: var(--space-4); }
+.c-dest-attraction h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: .5rem; }
+.c-dest-attraction p { font-size: .9375rem; color: #707070; line-height: 1.6; margin: 0; }
+
+/* ── Best Time / Cost Guide (3-tier cards) ────── */
+.c-dest-seasons,
+.c-dest-costs { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+@media (min-width: 48em) { .c-dest-seasons, .c-dest-costs { grid-template-columns: repeat(3,1fr); } }
+.c-dest-season,
+.c-dest-cost { background: var(--color-surface); border: 1px solid var(--poa-color-border); border-radius: var(--radius-lg); padding: var(--space-4); text-align: center; }
+.c-dest-season h3,
+.c-dest-cost h3 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--color-primary); margin-bottom: .5rem; }
+.c-dest-season__range { font-size: 1.125rem; font-weight: 700; margin-bottom: .375rem; }
+.c-dest-season__desc { font-size: .875rem; color: #707070; margin: 0; }
+.c-dest-cost p { font-size: 1.25rem; font-weight: 700; margin: 0; }
+
+/* ── Safari Route Map ─────────────────────────── */
+.c-dest-route__intro { font-size: 1rem; font-weight: 600; color: var(--color-primary); margin-bottom: .5rem; }
+.c-dest-route__hint { font-size: .875rem; color: #707070; margin-bottom: var(--space-4); }
+.c-dest-route { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+@media (min-width: 36em) { .c-dest-route { grid-template-columns: repeat(2,1fr); } }
+@media (min-width: 62em) { .c-dest-route { grid-template-columns: repeat(3,1fr); } }
+.c-dest-route__stop { position: relative; background: var(--color-surface); border: 1px solid var(--poa-color-border); border-radius: var(--radius-lg); padding: var(--space-4); padding-top: 2.5rem; }
+.c-dest-route__num { position: absolute; top: -.75rem; left: var(--space-4); width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--color-primary); color: #fff; font-size: .8125rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.c-dest-route__stop h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .25rem; }
+.c-dest-route__stop p { font-size: .875rem; color: #707070; margin: 0; }
+
+/* ── FAQs ──────────────────────────────────────── */
+.c-dest-faqs { display: flex; flex-direction: column; gap: var(--space-3); max-width: 50rem; }
+.c-dest-faq { background: var(--color-surface); border: 1px solid var(--poa-color-border); border-radius: var(--radius-lg); padding: var(--space-4); }
+.c-dest-faq summary { font-weight: 700; cursor: pointer; list-style: none; }
+.c-dest-faq summary::-webkit-details-marker { display: none; }
+.c-dest-faq summary::after { content: '+'; float: right; font-size: 1.25rem; color: var(--color-primary); }
+.c-dest-faq[open] summary::after { content: '−'; }
+.c-dest-faq p { margin: .75rem 0 0; font-size: .9375rem; color: #707070; line-height: 1.6; }
+
+/* ── Closing CTA ───────────────────────────────── */
+.c-dest-cta { background-color: #06402b; text-align: center; }
+.c-dest-cta__inner { max-width: 40rem; margin-inline: auto; color: #ffffff; }
+.c-dest-cta__inner h2 { font-family: var(--poa-font-heading); font-size: clamp(1.75rem,3.5vw,2.5rem); font-weight: 700; margin-bottom: var(--space-3); }
+.c-dest-cta__inner p { font-size: 1.0625rem; color: rgba(255,255,255,.85); margin-bottom: var(--space-5); }

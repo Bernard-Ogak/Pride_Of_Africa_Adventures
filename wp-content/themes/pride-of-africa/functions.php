@@ -53,6 +53,9 @@ require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/why-choose-us-customizer.php
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/trusted-partners-customizer.php'; // Trusted Partners customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/destinations-customizer.php'; // Top Destinations customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/poa-new-sections-customizer.php'; // New homepage sections (poa-homepage-templates) settings
+require_once PRIDE_OF_AFRICA_DIR . '/inc/testimonial-meta-box.php'; // Testimonial admin fields (rating, location, tour, platform)
+require_once PRIDE_OF_AFRICA_DIR . '/inc/tour-meta-box.php'; // Featured Itinerary admin fields (badge, route, highlights, quote, CTA label)
+require_once PRIDE_OF_AFRICA_DIR . '/inc/destination-meta-box.php'; // Individual destination page content fields
 
 // =============================================================================
 // THEME SETUP
@@ -369,7 +372,11 @@ add_action('wp_enqueue_scripts', 'pride_of_africa_enqueue_global_styles', 10);
  * @return void
  */
 function pride_of_africa_enqueue_poa_home_styles() {
-    if (!is_front_page()) {
+    // Also loaded on the individual destination page — it reuses the same
+    // shared tokens (--poa-*) and component classes (.u-container,
+    // .l-section, .c-button, etc.) as the homepage sections.
+    $is_destination_page = is_singular('pride_destination') || is_post_type_archive('pride_destination');
+    if (!is_front_page() && !$is_destination_page) {
         return;
     }
 
@@ -389,6 +396,9 @@ function pride_of_africa_enqueue_poa_home_styles() {
     );
 
     $components = ['hero', 'trip-planner', 'sections', 'cards', 'forms'];
+    if ($is_destination_page) {
+        $components[] = 'destination-page';
+    }
     foreach ($components as $component) {
         $path = $poa_dir . "/{$component}.css";
         wp_enqueue_style(
