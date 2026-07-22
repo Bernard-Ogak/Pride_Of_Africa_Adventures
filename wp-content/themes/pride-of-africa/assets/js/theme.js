@@ -112,9 +112,10 @@
 
     var dropdownToggles = document.querySelectorAll('.dropdown-toggle');
     var dropdownHoverTimer = null;
+    var dropdownCloseTimer = null;
 
     function initDropdowns() {
-        // Desktop hover behaviour with 300ms delay
+        // Desktop hover behaviour with 300ms open delay
         if (window.innerWidth >= 992) {
             dropdownToggles.forEach(function (toggle) {
                 var dropdown = toggle.closest('.dropdown');
@@ -126,6 +127,7 @@
                 // Mouse enter on dropdown - open after 300ms delay
                 dropdown.addEventListener('mouseenter', function () {
                     clearTimeout(dropdownHoverTimer);
+                    clearTimeout(dropdownCloseTimer);
                     dropdownHoverTimer = setTimeout(function () {
                         // Close all other open dropdowns first
                         document.querySelectorAll('.dropdown-menu.show').forEach(function (openMenu) {
@@ -137,15 +139,21 @@
                     }, 300);
                 });
 
-                // Mouse leave on dropdown - close immediately
+                // Mouse leave on dropdown - close after a short grace period
+                // so brief cursor jitter crossing into the menu doesn't
+                // close it before the user can reach an item.
                 dropdown.addEventListener('mouseleave', function () {
                     clearTimeout(dropdownHoverTimer);
-                    menu.classList.remove('show');
+                    clearTimeout(dropdownCloseTimer);
+                    dropdownCloseTimer = setTimeout(function () {
+                        menu.classList.remove('show');
+                    }, 250);
                 });
 
                 // Focus management
                 dropdown.addEventListener('focusin', function () {
                     clearTimeout(dropdownHoverTimer);
+                    clearTimeout(dropdownCloseTimer);
                     menu.classList.add('show');
                 });
 

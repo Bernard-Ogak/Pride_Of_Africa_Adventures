@@ -762,14 +762,19 @@ section[id] {
     right: 0;
 }
 
-/* Hover area bridge - creates invisible bridge between menu item and dropdown */
-.dropdown > a::after {
+/* Hover area bridge — fills the gap created by .dropdown-menu's margin-top
+   so the cursor never leaves a hoverable box while moving from the nav
+   link down into the menu. Attached to .dropdown-menu (not the toggle
+   link) so it spans the menu's full width, not just the link's — a
+   narrower bridge dropped hover when the cursor moved diagonally toward
+   a menu item wider than the toggle text, closing the menu prematurely. */
+.dropdown-menu::before {
     content: '';
     position: absolute;
-    bottom: -10px;
+    top: -0.5rem;
     left: 0;
     width: 100%;
-    height: 10px;
+    height: 0.5rem;
     background: transparent;
 }
 

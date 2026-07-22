@@ -657,7 +657,12 @@ class PRIDE_Of_Africa_Menu_Walker extends Walker_Nav_Menu {
         $output .= '<a class="' . esc_attr($link_class) . '" href="' . esc_url($item->url) . '" id="' . $item_id . '"';
 
         if ($has_children) {
-            $output .= ' role="button" data-bs-toggle="dropdown" aria-expanded="false"';
+            // Intentionally not data-bs-toggle="dropdown" — Bootstrap's own
+            // dropdown JS (click-based, repositions via Popper) would run
+            // alongside the custom hover/click logic in theme.js and fight
+            // over the .show class and menu position. theme.js + the CSS
+            // :hover rules are the single source of truth for this menu.
+            $output .= ' role="button" aria-haspopup="true" aria-expanded="false"';
         }
 
         $output .= '>';
