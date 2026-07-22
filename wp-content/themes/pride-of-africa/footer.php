@@ -16,21 +16,6 @@
                     <!-- Column 1: Brand -->
                     <div class="col-md-6 col-lg-3">
                         <div class="footer-widget">
-                            <!-- Logo -->
-                            <div class="footer-logo mb-3">
-                                <?php
-                                $custom_logo_id = get_theme_mod('custom_logo');
-                                if ($custom_logo_id) {
-                                    echo wp_get_attachment_image($custom_logo_id, 'medium', false, [
-                                        'class' => 'footer-logo-img',
-                                        'alt'   => get_bloginfo('name'),
-                                    ]);
-                                } else {
-                                    echo '<span class="footer-logo-text">' . esc_html(get_bloginfo('name')) . '</span>';
-                                }
-                                ?>
-                            </div>
-
                             <!-- Company Name -->
                             <h5 class="text-gold mb-2">
                                 <?php esc_html_e('PRIDE OF AFRICA', 'pride-of-africa'); ?>
