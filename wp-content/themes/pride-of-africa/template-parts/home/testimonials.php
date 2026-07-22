@@ -75,10 +75,8 @@ $platform_filters = [
 
         <div class="c-testimonials__grid" data-testimonials-grid>
             <?php foreach ( $items as $item ) :
-                setup_postdata( $item );
-                get_template_part( 'template-parts/cards/testimonial-card' );
-            endforeach;
-            wp_reset_postdata(); ?>
+                get_template_part( 'template-parts/cards/testimonial-card', null, [ 'post' => $item ] );
+            endforeach; ?>
         </div>
 
     </div>

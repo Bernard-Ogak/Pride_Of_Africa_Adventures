@@ -8,7 +8,11 @@
  * @package PrideOfAfrica
  */
 
-$post_id  = get_the_ID();
+// Accept the post explicitly (via $args) rather than relying on the
+// global $post / setup_postdata() — in this loop context setup_postdata()
+// was not reliably updating get_the_ID()/get_the_title() between cards.
+$card_post = isset( $args['post'] ) ? $args['post'] : get_post();
+$post_id   = $card_post->ID;
 $rating   = (int) get_post_meta( $post_id, '_testimonial_rating',  true ) ?: 5;
 $location = get_post_meta( $post_id, '_testimonial_location', true );
 $tour     = get_post_meta( $post_id, '_testimonial_tour',     true );
@@ -21,7 +25,7 @@ $platforms = [
 ];
 $platform_data = $platforms[ $platform ] ?? $platforms['tripadvisor'];
 
-$name    = get_the_title();
+$name    = get_the_title( $card_post );
 $initials = '';
 foreach ( preg_split( '/\s+/', trim( $name ) ) as $word ) {
     if ( $word !== '' ) {
@@ -39,7 +43,7 @@ $initials = mb_substr( $initials, 0, 2 );
     <i class="bi bi-quote c-testimonial-card__quote-icon" aria-hidden="true"></i>
 
     <blockquote class="c-testimonial-card__quote">
-        <p><?php echo esc_html( wp_trim_words( get_the_content(), 40, '…' ) ); ?></p>
+        <p><?php echo esc_html( wp_trim_words( $card_post->post_content, 40, '…' ) ); ?></p>
     </blockquote>
 
     <div class="c-testimonial-card__rating" aria-label="<?php echo esc_attr( sprintf( __( '%d out of 5 stars', 'pride-of-africa' ), $rating ) ); ?>">
