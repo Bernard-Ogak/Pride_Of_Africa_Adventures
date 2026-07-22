@@ -1,0 +1,659 @@
+/**
+ * hero.css
+ *
+ * File:    assets/css/hero.css
+ * Section: Hero Slider — full-viewport, image crossfade, overlay, content, controls, scroll indicator.
+ *
+ * Spec references:
+ *   01-Master-Design-Specification.md  §2 Colors | §3 Typography | §5 Spacing | §7 Elevation | §11 Hero | §22 Motion
+ *   02-Master-UI-Specification-v2.md   §11 Hero | §23 Motion | §24 Z-Index | §29 Design Tokens
+ *   03-Master-UI-Specification-v3.md   §4 Hero | §2 Vertical Rhythm
+ *   04-Component-Library.md            §7 Hero Slider | §2 Button
+ *   06-Frontend-Development-Guide.md   §4 CSS Methodology | §5 Design Tokens | §11 Typography
+ *
+ * Architecture rules:
+ *   - All values via CSS custom properties — zero hard-coded values.
+ *   - Typography in rem (never px) — Frontend Dev Guide §11.
+ *   - Mobile-first (base → 576 → 768 → 992 → 1200 → 1400).
+ *   - BEM naming: .c-hero__element, .c-hero--modifier.
+ *   - No !important, no inline styles, no overqualified selectors.
+ *   - prefers-reduced-motion honoured for all transitions / animations.
+ *
+ * @package PrideOfAfrica
+ */
+
+
+/* =============================================================
+   0. DESIGN TOKENS — referenced from tokens.css
+      Listed here for documentation only; do not redefine.
+
+   --color-primary:        #009900   (Brand Green)
+   --color-primary-dark:   #1E3A24   (Dark Forest)
+   --color-accent:         #D4A017   (Safari Gold)
+   --color-surface:        #FFFFFF
+   --color-text:           #222222
+   --poa-color-border:         #E5E5E5
+
+   --poa-font-heading:   "Poppins", sans-serif
+   --font-display:   "Playfair Display", serif
+   --poa-font-body:      "Poppins", sans-serif
+
+   --space-1:  4px   --space-2: 8px    --space-3: 16px
+   --space-4:  24px  --space-5: 32px   --space-6: 48px
+   --space-7:  64px  --space-8: 96px   --space-9: 120px  --space-10: 160px
+
+   --radius-sm: 6px   --radius-md: 10px  --radius-lg: 16px
+   --radius-xl: 20px  --radius-pill: 999px
+
+   --poa-shadow-sm: 0 2px 8px rgba(0,0,0,.08)
+   --poa-shadow-md: 0 8px 24px rgba(0,0,0,.12)
+   --poa-shadow-lg: 0 15px 45px rgba(0,0,0,.18)
+
+   --poa-container-max: 1320px
+   --content-max:   1240px
+
+   --duration-fast:   150ms
+   --duration-normal: 250ms
+   --duration-slow:   350ms
+   --easing-standard: cubic-bezier(.4,0,.2,1)
+
+   --z-header:   1000
+   --z-dropdown: 1050
+   --z-modal:    1200
+   ============================================================= */
+
+
+/* =============================================================
+   1. HERO — LOCAL TOKENS
+      Centralises hero-specific values so they can be updated
+      from a single location without hunting through rules.
+   ============================================================= */
+.c-hero {
+    /* Layout */
+    --hero-height:          100vh;
+    --hero-min-height:      51.25rem;   /* 820px ÷ 16 */
+    --hero-content-max:     47.5rem;    /* 760px — UI Spec v3 §4 */
+    --hero-headline-max:    42.5rem;    /* 680px — UI Spec v3 §4 */
+    --hero-paragraph-max:   38.75rem;  /* 620px — UI Spec v3 §4 */
+
+    /* Overlay — Design Spec §2 / UI Spec v2 §11 */
+    --hero-overlay:         rgba(0, 0, 0, .45);
+
+    /* Buttons — UI Spec v3 §4 */
+    --hero-btn-height:      3.5rem;     /* 56px */
+    --hero-btn-gap:         1.25rem;    /* 20px — CTA group gap */
+
+    /* Crossfade transition — Component Catalog §7 / UI Spec v2 §23 */
+    --hero-fade-duration:   500ms;
+
+    /* Controls */
+    --hero-arrow-size:      3rem;       /* 48px — Icon Button spec §8 */
+    --hero-dot-size:        0.625rem;   /* 10px base */
+    --hero-dot-active:      1.75rem;    /* 28px expanded */
+
+    /* Scroll indicator */
+    --hero-scroll-size:     2.75rem;    /* 44px — min touch target */
+
+    /* Z-layers (hero-local; header sits at --z-header: 1000) */
+    --hero-z-slide:         1;
+    --hero-z-overlay:       2;
+    --hero-z-content:       3;
+    --hero-z-controls:      4;
+    --hero-z-scroll:        4;
+}
+
+
+/* =============================================================
+   2. SECTION WRAPPER
+   ============================================================= */
+.c-hero {
+    position:         relative;
+    width:            100%;
+    height:           var(--hero-height);
+    min-height:       var(--hero-min-height);
+    overflow:         hidden;
+    background-color: var(--color-primary-dark); /* fallback while image loads */
+}
+
+
+/* =============================================================
+   3. SLIDE TRACK
+   ============================================================= */
+.c-hero__track {
+    position: relative;
+    width:    100%;
+    height:   100%;
+}
+
+
+/* =============================================================
+   4. INDIVIDUAL SLIDE
+   ============================================================= */
+.c-hero__slide {
+    position:   absolute;
+    inset:      0;
+    width:      100%;
+    height:     100%;
+    opacity:    0;
+    z-index:    var(--hero-z-slide);
+    transition: opacity var(--hero-fade-duration) var(--easing-standard);
+    /* pointer-events off on hidden slides for keyboard hygiene */
+    pointer-events: none;
+}
+
+.c-hero__slide--active {
+    opacity:        1;
+    z-index:        calc(var(--hero-z-slide) + 1);
+    pointer-events: auto;
+}
+
+/* Reduced motion: snap without fade */
+@media (prefers-reduced-motion: reduce) {
+    .c-hero__slide {
+        transition: none;
+    }
+}
+
+
+/* =============================================================
+   5. BACKGROUND IMAGE
+   ============================================================= */
+.c-hero__bg {
+    position: absolute;
+    inset:    0;
+    width:    100%;
+    height:   100%;
+    overflow: hidden;
+}
+
+.c-hero__bg-img {
+    display:    block;
+    width:      100%;
+    height:     100%;
+    object-fit: cover;
+    object-position: center center; /* Design Spec §11 / UI Spec v3 §4 */
+    /* Hero images are NOT lazy loaded — Frontend Dev Guide §24 */
+    transform:  scale(1);
+    transition: transform 6s var(--easing-standard);
+}
+
+/* Subtle Ken Burns on active slide */
+.c-hero__slide--active .c-hero__bg-img {
+    transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-hero__bg-img,
+    .c-hero__slide--active .c-hero__bg-img {
+        transform:  none;
+        transition: none;
+    }
+}
+
+
+/* =============================================================
+   6. OVERLAY
+      rgba(0,0,0,.45) — Design Spec §2 Background Layers
+   ============================================================= */
+.c-hero__overlay {
+    position:         absolute;
+    inset:            0;
+    background-color: var(--hero-overlay);
+    z-index:          var(--hero-z-overlay);
+}
+
+
+/* =============================================================
+   7. HERO CONTENT WRAPPER
+      Centred vertically, bottom padding for Trip Planner bar.
+      Content max: 760px — UI Spec v3 §4
+   ============================================================= */
+.c-hero__content {
+    position:        absolute;
+    inset:           0;
+    z-index:         var(--hero-z-content);
+    display:         flex;
+    align-items:     center;
+    /* Push content slightly above centre to leave room for planner */
+    padding-block:   var(--space-9) var(--space-10); /* 120px top | 160px bottom */
+}
+
+/* Container utility — 1320px max, centred, safe margins */
+.c-hero__content .u-container {
+    width:     100%;
+    max-width: var(--poa-container-max);
+    margin-inline: auto;
+    padding-inline: var(--space-5); /* 32px safe margin */
+    max-width: var(--hero-content-max);
+    /* Align text left — editorial style */
+    text-align: left;
+}
+
+
+/* =============================================================
+   8. HEADLINE
+      Display: 72px / 700 / 80px line-height — Design Spec §3
+      Max width: 680px — UI Spec v3 §4
+      Font: Poppins (heading) — Design Spec §3
+   ============================================================= */
+.c-hero__headline {
+    font-family:   var(--poa-font-heading);
+    font-size:     clamp(2.25rem, 5vw, 4.5rem); /* 36px → 72px fluid */
+    font-weight:   700;
+    line-height:   1.11;  /* 80 / 72 — Design Spec §3 Display */
+    color:         var(--color-surface);
+    max-width:     var(--hero-headline-max);
+    margin-block:  0 var(--space-4); /* 0 top | 24px bottom */
+    letter-spacing: -0.02em;
+    text-shadow:   0 2px 12px rgba(0, 0, 0, .35); /* legibility on imagery */
+}
+
+
+/* =============================================================
+   9. SUBHEADING / SUPPORTING COPY
+      Body Large: 18px / 30px line-height — UI Spec v2 §6
+      Max width: 620px — UI Spec v3 §4
+   ============================================================= */
+.c-hero__subheading {
+    font-family:  var(--poa-font-body);
+    font-size:    clamp(1rem, 2vw, 1.125rem); /* 16px → 18px fluid */
+    font-weight:  400;
+    line-height:  1.67;  /* 30 / 18 */
+    color:        rgba(255, 255, 255, .9);
+    max-width:    var(--hero-paragraph-max);
+    margin-block: 0 var(--space-5); /* 0 top | 32px bottom */
+}
+
+
+/* =============================================================
+   10. CTA GROUP
+       Gap: 20px — UI Spec v3 §4
+       Button height: 56px — Design Spec §8 / UI Spec v3 §4
+   ============================================================= */
+.c-hero__cta-group {
+    display:     flex;
+    flex-wrap:   wrap;
+    gap:         var(--hero-btn-gap);
+    align-items: center;
+}
+
+
+/* =============================================================
+   11. HERO BUTTONS
+       Height: 56px — Design Spec §8 "Hero CTA: Large 56px"
+       Radius: 8px — Design Spec §6
+       Motion: translateY(-2px) / 250ms — Component Catalog §2
+   ============================================================= */
+.c-button--hero {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    height:          var(--hero-btn-height);
+    padding-inline:  var(--space-6);  /* 48px */
+    font-family:     var(--poa-font-body);
+    font-size:       1rem;            /* 16px — Design Spec §3 Button */
+    font-weight:     600;
+    line-height:     1;
+    letter-spacing:  0.02em;
+    border-radius:   var(--radius-sm); /* 8px — Design Spec §6 */
+    border:          2px solid transparent;
+    cursor:          pointer;
+    text-decoration: none;
+    white-space:     nowrap;
+    transition:
+        background-color var(--duration-normal) var(--easing-standard),
+        border-color     var(--duration-normal) var(--easing-standard),
+        color            var(--duration-normal) var(--easing-standard),
+        box-shadow       var(--duration-normal) var(--easing-standard),
+        transform        var(--duration-normal) var(--easing-standard);
+}
+
+/* Primary — green background, white text — Design Spec §8 */
+.c-button--primary.c-button--hero {
+    background-color: var(--color-primary);
+    color:            var(--color-surface);
+    border-color:     var(--color-primary);
+}
+
+.c-button--primary.c-button--hero:hover,
+.c-button--primary.c-button--hero:focus-visible {
+    background-color: #007a00; /* primary darkened — stays on-brand */
+    border-color:     #007a00;
+    box-shadow:       var(--poa-shadow-lg);
+    transform:        translateY(-2px); /* Hover lift — Component Catalog §2 */
+    outline:          none;
+}
+
+.c-button--primary.c-button--hero:active {
+    transform:  translateY(0);
+    box-shadow: var(--poa-shadow-md);
+}
+
+/* Secondary — white background, green border — Design Spec §8 */
+.c-button--secondary.c-button--hero {
+    background-color: transparent;
+    color:            var(--color-surface);
+    border-color:     var(--color-surface);
+}
+
+.c-button--secondary.c-button--hero:hover,
+.c-button--secondary.c-button--hero:focus-visible {
+    background-color: var(--color-surface);
+    color:            var(--color-primary);
+    border-color:     var(--color-surface);
+    box-shadow:       var(--poa-shadow-lg);
+    transform:        translateY(-2px);
+    outline:          none;
+}
+
+.c-button--secondary.c-button--hero:active {
+    transform:  translateY(0);
+    box-shadow: var(--poa-shadow-md);
+}
+
+/* Focus ring — WCAG 2.2 AA */
+.c-button--hero:focus-visible {
+    outline:        3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .c-button--hero {
+        transition: background-color var(--duration-fast), color var(--duration-fast), border-color var(--duration-fast);
+    }
+
+    .c-button--primary.c-button--hero:hover,
+    .c-button--secondary.c-button--hero:hover {
+        transform: none;
+    }
+}
+
+
+/* =============================================================
+   12. SLIDER CONTROLS WRAPPER
+   ============================================================= */
+.c-hero__controls {
+    position:        absolute;
+    bottom:          var(--space-6);  /* 48px from bottom */
+    left:            50%;
+    transform:       translateX(-50%);
+    z-index:         var(--hero-z-controls);
+    display:         flex;
+    align-items:     center;
+    gap:             var(--space-4);  /* 24px */
+}
+
+
+/* =============================================================
+   13. ARROW BUTTONS
+       Size: 48px — Icon Button spec Design Spec §8 / Component Catalog §2
+       Circular — Design Spec §8
+   ============================================================= */
+.c-hero__arrow {
+    display:          inline-flex;
+    align-items:      center;
+    justify-content:  center;
+    width:            var(--hero-arrow-size);
+    height:           var(--hero-arrow-size);
+    border-radius:    var(--radius-pill); /* circular */
+    border:           1.5px solid rgba(255, 255, 255, .5);
+    background-color: rgba(255, 255, 255, .12);
+    color:            var(--color-surface);
+    font-size:        1.125rem;
+    cursor:           pointer;
+    backdrop-filter:  blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition:
+        background-color var(--duration-normal) var(--easing-standard),
+        border-color     var(--duration-normal) var(--easing-standard),
+        transform        var(--duration-normal) var(--easing-standard);
+}
+
+.c-hero__arrow:hover,
+.c-hero__arrow:focus-visible {
+    background-color: rgba(255, 255, 255, .25);
+    border-color:     rgba(255, 255, 255, .8);
+    transform:        scale(1.1);
+    outline:          none;
+}
+
+.c-hero__arrow:focus-visible {
+    outline:        3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+.c-hero__arrow:active {
+    transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-hero__arrow {
+        transition: background-color var(--duration-fast);
+    }
+    .c-hero__arrow:hover { transform: none; }
+}
+
+
+/* =============================================================
+   14. PAGINATION DOTS
+   ============================================================= */
+.c-hero__pagination {
+    display:     flex;
+    align-items: center;
+    gap:         var(--space-2); /* 8px */
+}
+
+.c-hero__dot {
+    display:          block;
+    width:            var(--hero-dot-size);
+    height:           var(--hero-dot-size);
+    border-radius:    var(--radius-pill);
+    background-color: rgba(255, 255, 255, .45);
+    border:           none;
+    padding:          0;
+    cursor:           pointer;
+    transition:
+        width            var(--duration-normal) var(--easing-standard),
+        background-color var(--duration-normal) var(--easing-standard);
+}
+
+.c-hero__dot--active {
+    width:            var(--hero-dot-active);
+    background-color: var(--color-surface);
+}
+
+.c-hero__dot:hover {
+    background-color: rgba(255, 255, 255, .75);
+}
+
+.c-hero__dot:focus-visible {
+    outline:        3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-hero__dot {
+        transition: background-color var(--duration-fast);
+    }
+}
+
+
+/* =============================================================
+   15. SCROLL INDICATOR
+       Min touch target: 44×44px — Accessibility spec / WCAG 2.1
+       Animation: gentle bounce to invite scrolling
+   ============================================================= */
+.c-hero__scroll-indicator {
+    position:        absolute;
+    bottom:          var(--space-5);   /* 32px */
+    right:           var(--space-5);   /* 32px */
+    z-index:         var(--hero-z-scroll);
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
+    gap:             var(--space-1);   /* 4px */
+    color:           rgba(255, 255, 255, .7);
+    font-family:     var(--poa-font-body);
+    font-size:       0.6875rem;        /* 11px */
+    font-weight:     500;
+    letter-spacing:  0.1em;
+    text-transform:  uppercase;
+    pointer-events:  none;
+    animation:       hero-bounce 1.8s var(--easing-standard) infinite;
+}
+
+.c-hero__scroll-icon {
+    display:     flex;
+    align-items: center;
+    font-size:   1.25rem;
+}
+
+@keyframes hero-bounce {
+    0%, 100% { transform: translateY(0);    opacity: .7; }
+    50%       { transform: translateY(6px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-hero__scroll-indicator {
+        animation: none;
+    }
+}
+
+
+/* =============================================================
+   16. RESPONSIVE — MOBILE FIRST
+       Breakpoints: 576 | 768 | 992 | 1200 | 1400
+       Frontend Dev Guide §7
+   ============================================================= */
+
+/* ── 576px — Small mobile landscape ─── */
+@media (min-width: 36em) {
+
+    .c-hero__content .u-container {
+        padding-inline: var(--space-5); /* 32px */
+    }
+
+    .c-hero__cta-group {
+        flex-wrap: nowrap;
+    }
+}
+
+/* ── 768px — Small tablet ──────────── */
+@media (min-width: 48em) {
+
+    .c-hero__headline {
+        font-size:   clamp(2.5rem, 5vw, 4.5rem);
+        margin-block: 0 var(--space-5); /* 32px */
+    }
+
+    .c-hero__subheading {
+        font-size: 1.125rem;
+    }
+
+    .c-hero__scroll-indicator {
+        right: var(--space-6); /* 48px */
+    }
+}
+
+/* ── 992px — Tablet landscape ──────── */
+@media (min-width: 62em) {
+
+    .c-hero__content {
+        padding-block: var(--space-9) var(--space-10); /* 120px | 160px */
+    }
+
+    .c-hero__content .u-container {
+        max-width: var(--hero-content-max); /* 760px */
+        padding-inline: var(--space-6);     /* 48px */
+    }
+
+    .c-hero__headline {
+        font-size: clamp(3rem, 5vw, 4.5rem);
+    }
+}
+
+/* ── 1200px — Laptop ───────────────── */
+@media (min-width: 75em) {
+
+    .c-hero__content .u-container {
+        /* Allow full content width within 1320px max container */
+        max-width: var(--content-max); /* 1240px */
+    }
+
+    /* On larger screens, cap headline/paragraph to spec widths */
+    .c-hero__headline {
+        font-size:  4.5rem; /* 72px — Design Spec §3 H1 Hero */
+        max-width:  var(--hero-headline-max);
+    }
+
+    .c-hero__subheading {
+        font-size:  1.125rem;
+        max-width:  var(--hero-paragraph-max);
+    }
+
+    .c-hero__controls {
+        bottom: var(--space-7); /* 64px */
+    }
+}
+
+/* ── 1400px — Large desktop ─────────── */
+@media (min-width: 87.5em) {
+
+    .c-hero__content .u-container {
+        padding-inline: 2.5rem; /* 40px safe margin — UI Spec v3 §1 */
+    }
+}
+
+
+/* =============================================================
+   17. SLIDE ENTER ANIMATION
+       Applied to content inside the active slide.
+       300–400ms — Design Spec §22 Motion
+   ============================================================= */
+.c-hero__slide--active .c-hero__headline,
+.c-hero__slide--active .c-hero__subheading,
+.c-hero__slide--active .c-hero__cta-group {
+    animation: hero-slide-up var(--duration-slow) var(--easing-standard) both;
+}
+
+.c-hero__slide--active .c-hero__subheading {
+    animation-delay: 80ms;
+}
+
+.c-hero__slide--active .c-hero__cta-group {
+    animation-delay: 160ms;
+}
+
+@keyframes hero-slide-up {
+    from {
+        opacity:   0;
+        transform: translateY(1.5rem);
+    }
+    to {
+        opacity:   1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-hero__slide--active .c-hero__headline,
+    .c-hero__slide--active .c-hero__subheading,
+    .c-hero__slide--active .c-hero__cta-group {
+        animation: none;
+    }
+}
+
+
+/* =============================================================
+   18. SINGLE-SLIDE FALLBACK
+       When only one slide is published, hide controls.
+   ============================================================= */
+.c-hero:not(:has(.c-hero__slide ~ .c-hero__slide)) .c-hero__controls {
+    display: none;
+}
+
+
+/* =============================================================
+   END hero.css
+   ============================================================= */

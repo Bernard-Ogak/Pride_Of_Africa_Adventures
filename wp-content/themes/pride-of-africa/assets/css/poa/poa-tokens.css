@@ -1,0 +1,72 @@
+/**
+ * poa-tokens.css
+ *
+ * Design tokens for the new homepage section package (poa-homepage-templates).
+ *
+ * The component CSS in this folder (hero.css, sections.css, cards.css,
+ * forms.css, trip-planner.css) was authored against a token system that
+ * was referenced in comments but not included in the delivered package.
+ * This file supplies those tokens.
+ *
+ * Naming: tokens that would otherwise collide with names already declared
+ * in assets/css/style.css (the theme's global stylesheet) are prefixed
+ * with `poa-` so this package cannot alter the visual appearance of any
+ * existing page or component. Non-colliding tokens keep their original
+ * names as authored in the component files.
+ *
+ * @package Pride_Of_Africa
+ */
+
+:root {
+    /* Brand colors — kept unprefixed, these did not exist before */
+    --color-primary:        #009900; /* matches existing --color-gold */
+    --color-primary-dark:   #1E3A24;
+    --color-accent:         #D4A017; /* Safari Gold accent */
+    --color-surface:        #FFFFFF;
+    --color-text:           #222222;
+
+    /* Renamed to avoid overriding the theme's existing global tokens */
+    --poa-color-border:     #E5E5E5;
+    --poa-font-heading:     'Poppins', sans-serif;
+    --poa-font-body:        'Poppins', sans-serif;
+    --font-display:         'Playfair Display', serif;
+
+    /* Spacing scale — did not exist before, safe as-is */
+    --space-1:  0.25rem;  /* 4px */
+    --space-2:  0.5rem;   /* 8px */
+    --space-3:  1rem;     /* 16px */
+    --space-4:  1.5rem;   /* 24px */
+    --space-5:  2rem;     /* 32px */
+    --space-6:  3rem;     /* 48px */
+    --space-7:  4rem;     /* 64px */
+    --space-8:  6rem;     /* 96px */
+    --space-9:  7.5rem;   /* 120px */
+    --space-10: 10rem;    /* 160px */
+
+    /* Radius scale — did not exist before, safe as-is */
+    --radius-sm:   0.375rem; /* 6px */
+    --radius-md:   0.625rem; /* 10px */
+    --radius-lg:   1rem;     /* 16px */
+    --radius-xl:   1.25rem;  /* 20px */
+    --radius-pill: 999px;
+
+    /* Elevation — renamed, values differ from the theme's existing shadow scale */
+    --poa-shadow-sm: 0 2px 8px rgba(0, 0, 0, .08);
+    --poa-shadow-md: 0 8px 24px rgba(0, 0, 0, .12);
+    --poa-shadow-lg: 0 15px 45px rgba(0, 0, 0, .18);
+
+    /* Layout widths — renamed / new, values differ from the theme's existing container width */
+    --poa-container-max: 1320px;
+    --content-max:       1240px;
+
+    /* Motion */
+    --duration-fast:   150ms;
+    --duration-normal: 250ms;
+    --duration-slow:   350ms;
+    --easing-standard: cubic-bezier(.4, 0, .2, 1);
+
+    /* Z-index scale — did not exist before, safe as-is */
+    --z-header:   1000;
+    --z-dropdown: 1050;
+    --z-modal:    1200;
+}

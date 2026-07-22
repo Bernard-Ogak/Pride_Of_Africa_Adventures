@@ -1,0 +1,31 @@
+/**
+ * forms.css — Shared Form Styles
+ * Used by: dream-trip form, contact page, any inquiry form
+ * Spec: Design Spec §9 Forms | UI Spec v2 §12
+ *       Input Height: 56px | Radius: 10px | Large rounded
+ *       White bg | Subtle border | Icons inside | Large submit
+ * @package PrideOfAfrica
+ */
+
+.c-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.c-form__row { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+@media (min-width: 48em) { .c-form__row { grid-template-columns: 1fr 1fr; } }
+.c-form__group { display: flex; flex-direction: column; gap: .5rem; }
+.c-form__label { font-size: .875rem; font-weight: 600; color: var(--color-text); }
+.c-form__label span { color: #DC2626; margin-left: .125rem; }
+.c-form__input,
+.c-form__select,
+.c-form__textarea { width: 100%; font-family: var(--poa-font-body); font-size: .9375rem; color: var(--color-text); background: var(--color-surface); border: 1.5px solid var(--poa-color-border); border-radius: var(--radius-md); padding-inline: 1rem; outline: none; transition: border-color var(--duration-fast), box-shadow var(--duration-fast); }
+.c-form__input, .c-form__select { height: 3.5rem; }
+.c-form__textarea { padding-block: .875rem; resize: vertical; min-height: 7.5rem; }
+.c-form__input::placeholder, .c-form__textarea::placeholder { color: #aaa; }
+.c-form__input:focus, .c-form__select:focus, .c-form__textarea:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0,153,0,.15); }
+.c-form__input[aria-invalid="true"], .c-form__textarea[aria-invalid="true"] { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,.12); }
+.c-form__error { font-size: .8125rem; color: #DC2626; display: flex; align-items: center; gap: .25rem; }
+.c-form__submit { height: 3.5rem; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-family: var(--poa-font-body); font-size: 1rem; font-weight: 600; background: var(--color-primary); color: var(--color-surface); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: background var(--duration-normal), transform var(--duration-normal), box-shadow var(--duration-normal); }
+.c-form__submit:hover { background: #007a00; transform: translateY(-2px); box-shadow: var(--poa-shadow-md); }
+.c-form__submit:active { transform: translateY(0); }
+.c-form__submit:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }
+.c-form__privacy { font-size: .8125rem; color: #707070; text-align: center; }
+.c-form__privacy a { color: var(--color-primary); text-decoration: underline; }
+@media (prefers-reduced-motion: reduce) { .c-form__submit { transition: background var(--duration-fast); } .c-form__submit:hover { transform: none; } }

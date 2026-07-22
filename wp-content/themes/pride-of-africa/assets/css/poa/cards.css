@@ -1,0 +1,80 @@
+/**
+ * cards.css — Reusable Card Components
+ * Destination, Tour, Testimonial, Blog
+ * Spec: UI Spec v3 §8,9,13,15 | Design Spec §13-15
+ * @package PrideOfAfrica
+ */
+
+/* ── Destination Card (§8) ─────────────────────
+   Height: 480px | Image: 320px | Padding: 24px
+   Badge Radius: 999px | Hover Lift: -8px        */
+.c-destination-card { position: relative; border-radius: var(--radius-xl); overflow: hidden; background: var(--color-surface); box-shadow: var(--poa-shadow-sm); transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); display: flex; flex-direction: column; }
+.c-destination-card:hover { box-shadow: var(--poa-shadow-lg); transform: translateY(-.5rem); }
+.c-destination-card__link { position: absolute; inset: 0; z-index: 0; }
+.c-destination-card__image-wrap { position: relative; height: 20rem; overflow: hidden; flex-shrink: 0; }
+.c-destination-card__image { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--easing-standard); }
+.c-destination-card:hover .c-destination-card__image { transform: scale(1.05); }
+.c-destination-card__image-wrap .c-badge { top: 1rem; left: 1rem; }
+.c-destination-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .75rem; flex: 1; }
+.c-destination-card__title { font-size: 1.25rem; font-weight: 700; }
+.c-destination-card__title a { color: inherit; text-decoration: none; position: relative; z-index: 1; }
+.c-destination-card__highlight { font-size: .9375rem; color: #707070; line-height: 1.5; }
+.c-destination-card__cta { display: inline-flex; align-items: center; gap: .375rem; font-size: .875rem; font-weight: 600; color: var(--color-primary); text-decoration: none; margin-top: auto; position: relative; z-index: 1; transition: gap var(--duration-fast); }
+.c-destination-card__cta:hover { gap: .625rem; }
+@media (prefers-reduced-motion: reduce) { .c-destination-card, .c-destination-card__image, .c-destination-card__cta { transition: none; } }
+
+/* ── Tour Card (§9) ─────────────────────────────
+   Card: 392px | Image: 340px
+   Price Badge: Top Right | Duration: Top Left     */
+.c-tour-card { border-radius: var(--radius-xl); overflow: hidden; background: var(--color-surface); box-shadow: var(--poa-shadow-sm); display: flex; flex-direction: column; transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); }
+.c-tour-card:hover { box-shadow: var(--poa-shadow-lg); transform: translateY(-.5rem); }
+.c-tour-card__image-wrap { position: relative; height: 21.25rem; overflow: hidden; flex-shrink: 0; }
+.c-tour-card__image { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--easing-standard); }
+.c-tour-card:hover .c-tour-card__image { transform: scale(1.05); }
+.c-tour-card__duration { top: 1rem; left: 1rem; }
+.c-tour-card__price { position: absolute; top: 1rem; right: 1rem; background: var(--color-accent); color: #1a1a1a; font-size: .8125rem; font-weight: 700; border-radius: var(--radius-pill); padding: .375rem .875rem; z-index: 2; }
+.c-tour-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .75rem; flex: 1; }
+.c-tour-card__title { font-size: 1.1875rem; font-weight: 700; }
+.c-tour-card__title a { color: inherit; text-decoration: none; }
+.c-tour-card__title a:hover { color: var(--color-primary); }
+.c-tour-card__excerpt { font-size: .9375rem; color: #707070; line-height: 1.55; }
+.c-tour-card__rating { display: flex; align-items: center; gap: .25rem; font-size: .875rem; color: var(--color-accent); }
+.c-tour-card__review-count { color: #707070; font-size: .8125rem; }
+.c-tour-card__cta { margin-top: auto; height: 3rem; display: inline-flex; align-items: center; justify-content: center; gap: .375rem; font-size: .9375rem; font-weight: 600; border-radius: var(--radius-sm); background: var(--color-primary); color: var(--color-surface); text-decoration: none; padding-inline: 1.5rem; transition: background var(--duration-normal), transform var(--duration-normal), box-shadow var(--duration-normal); }
+.c-tour-card__cta:hover { background: #007a00; transform: translateY(-2px); box-shadow: var(--poa-shadow-md); }
+@media (prefers-reduced-motion: reduce) { .c-tour-card, .c-tour-card__image, .c-tour-card__cta { transition: none; } }
+
+/* ── Testimonial Card (§13) ─────────────────────
+   Width: 420px | Height: 360px | Padding: 36px
+   Avatar: 70px | Quote Margin: 24px             */
+.c-testimonial-card { flex: 0 0 100%; background: rgba(255,255,255,.08); border-radius: var(--radius-xl); padding: 2.25rem; display: none; flex-direction: column; gap: 1rem; border: 1px solid rgba(255,255,255,.12); transition: opacity var(--duration-normal) var(--easing-standard); }
+.c-testimonial-card--active { display: flex; }
+.c-testimonial-card__rating { display: flex; gap: .25rem; color: var(--color-accent); font-size: 1rem; }
+.c-testimonial-card__quote { margin: 0; font-size: 1.0625rem; line-height: 1.7; color: rgba(255,255,255,.9); font-style: italic; }
+.c-testimonial-card__footer { display: flex; align-items: center; gap: 1rem; margin-top: auto; }
+.c-testimonial-card__avatar { width: 4.375rem; height: 4.375rem; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,.2); flex-shrink: 0; }
+.c-testimonial-card__avatar--placeholder { display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.1); font-size: 1.75rem; color: rgba(255,255,255,.5); }
+.c-testimonial-card__meta { display: flex; flex-direction: column; gap: .25rem; }
+.c-testimonial-card__name { font-style: normal; font-weight: 700; color: var(--color-surface); font-size: 1rem; }
+.c-testimonial-card__location, .c-testimonial-card__tour { font-size: .8125rem; color: rgba(255,255,255,.65); display: flex; align-items: center; gap: .25rem; }
+
+/* ── Blog Card (§15) ────────────────────────────
+   Card Height: 480px | Image: 280px             */
+.c-blog-card { border-radius: var(--radius-xl); overflow: hidden; background: var(--color-surface); box-shadow: var(--poa-shadow-sm); display: flex; flex-direction: column; transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); }
+.c-blog-card:hover { box-shadow: var(--poa-shadow-lg); transform: translateY(-.5rem); }
+.c-blog-card__image-link { display: block; overflow: hidden; }
+.c-blog-card__image-wrap { height: 17.5rem; overflow: hidden; }
+.c-blog-card__image { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--easing-standard); }
+.c-blog-card:hover .c-blog-card__image { transform: scale(1.05); }
+.c-blog-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .75rem; flex: 1; }
+.c-blog-card__meta { display: flex; align-items: center; flex-wrap: wrap; gap: .625rem; }
+.c-blog-card__cat { font-size: .6875rem; }
+.c-blog-card__date, .c-blog-card__read-time { font-size: .8125rem; color: #707070; }
+.c-blog-card__date::after { content: '·'; margin-left: .5rem; }
+.c-blog-card__title { font-size: 1.1875rem; font-weight: 700; line-height: 1.35; }
+.c-blog-card__title a { color: inherit; text-decoration: none; }
+.c-blog-card__title a:hover { color: var(--color-primary); }
+.c-blog-card__excerpt { font-size: .9375rem; color: #707070; line-height: 1.6; }
+.c-blog-card__more { display: inline-flex; align-items: center; gap: .375rem; font-size: .9375rem; font-weight: 600; color: var(--color-primary); text-decoration: none; margin-top: auto; transition: gap var(--duration-fast); }
+.c-blog-card__more:hover { gap: .625rem; }
+@media (prefers-reduced-motion: reduce) { .c-blog-card, .c-blog-card__image, .c-blog-card__more { transition: none; } }

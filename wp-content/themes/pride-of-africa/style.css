@@ -1,0 +1,271 @@
+/*
+Theme Name:  Pride of Africa Adventures & Safaris
+Theme URI:   https://prideofafricaadventures.com
+Author:      Bernard Ogak
+Author URI:  https://github.com/Bernard-Ogak
+Description: Premium WordPress theme for Pride of Africa Adventures & Safaris — a fully-featured, multilingual safari travel website serving international travelers.
+Version:     1.0.0
+Requires at least: 6.3
+Tested up to: 6.7
+Requires PHP: 7.4
+License:     GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: pride-of-africa
+Tags:        safari, travel, custom-logo, custom-menu, featured-images, threaded-comments, responsive-layout, full-width-template
+*/
+
+/* ==========================================================================
+   DESIGN TOKENS — Brand Color Palette
+   ========================================================================== */
+:root {
+    /* Brand Colors */
+    --color-gold:             #009900;
+    --color-jungle:           #2A322E;
+    --color-bone:             #FCFBF8;
+    --color-obsidian:         #1B1B18;
+    --color-card:             #F9F8F6;
+    --color-muted:            #EBEFEE;
+    --color-muted-fg:         #676B66;
+    --color-border:           #E5E2DC;
+
+    /* Social / Platform Brand Colors */
+    --color-whatsapp:         #25D366;
+    --color-facebook:         #1877F2;
+    --color-instagram:        #E4405F;
+    --color-youtube:          #FF0000;
+    --color-tiktok:           #010101;
+    --color-tripadvisor:      #34E0A1;
+    --color-trustpilot:       #00B67A;
+
+    /* Typography */
+    --font-primary:           'Poppins', sans-serif;
+    --font-display:           'Playfair Display', serif;
+
+    /* Spacing & Sizing */
+    --topbar-height:          40px;
+    --header-height:          72px;
+    --container-max:          1400px;
+
+    /* Transitions */
+    --transition-fast:        150ms ease;
+    --transition-base:        300ms ease;
+    --transition-slow:        500ms ease;
+
+    /* Shadows */
+    --shadow-sm:              0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md:              0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+    --shadow-lg:              0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
+    --shadow-xl:              0 20px 25px -5px rgba(0,0,0,.1), 0 10px 10px -5px rgba(0,0,0,.04);
+    --shadow-2xl:             0 25px 50px -12px rgba(0,0,0,.25);
+}
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-obsidian);
+    background-color: var(--color-bone);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-muted);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--color-gold);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #007700;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+
+/* ==========================================================================
+   UTILITY CLASSES
+   ========================================================================== */
+.container-site {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+@media (min-width: 768px) {
+    .container-site {
+        padding-inline: 2rem;
+    }
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
+/* Push page content below fixed header (topbar + main header) */
+body.has-topbar {
+    padding-top: calc(var(--topbar-height) + var(--header-height));
+}
+
+/* On pages with a hero that goes under the header (transparent mode) */
+body.hero-page {
+    padding-top: 0;
+}
+
+/* ==========================================================================
+   GOLD SEPARATOR ACCENT
+   ========================================================================== */
+.gold-separator {
+    display: block;
+    width: 48px;
+    height: 1px;
+    background-color: var(--color-gold);
+    margin: 0 auto 1rem;
+}
+
+/* ==========================================================================
+   SECTION EYEBROW LABEL
+   ========================================================================== */
+.eyebrow {
+    color: var(--color-gold);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    border-radius: 0.375rem;
+    transition: all var(--transition-base);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: var(--color-gold);
+    color: #ffffff;
+    border: 2px solid var(--color-gold);
+}
+.btn-primary:hover {
+    background-color: #007700;
+    border-color: #007700;
+    color: #ffffff;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid rgba(255,255,255,0.6);
+}
+.btn-outline:hover {
+    background-color: rgba(255,255,255,0.1);
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.btn-whatsapp {
+    background-color: var(--color-whatsapp);
+    color: #ffffff;
+    border: 2px solid var(--color-whatsapp);
+}
+.btn-whatsapp:hover {
+    background-color: #1db954;
+    border-color: #1db954;
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   WORDPRESS DEFAULTS
+   ========================================================================== */
+.wp-caption {
+    max-width: 100%;
+}
+.wp-caption-text {
+    font-size: 0.8rem;
+    color: var(--color-muted-fg);
+    margin-top: 0.25rem;
+}
+.alignleft  { float: left; margin: 0 1.5rem 1rem 0; }
+.alignright { float: right; margin: 0 0 1rem 1.5rem; }
+.aligncenter { display: block; margin: 0 auto 1rem; }
+.alignnone  { display: block; }
+
+.sticky {}
+.bypostauthor {}
+
+/* ==========================================================================
+   SKIP TO CONTENT
+   ========================================================================== */
+.skip-to-content {
+    position: absolute;
+    top: -9999px;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-gold);
+    color: #fff;
+    font-weight: 600;
+    z-index: 9999;
+    border-radius: 0 0 0.25rem 0.25rem;
+    transition: top var(--transition-fast);
+}
+.skip-to-content:focus {
+    top: 0;
+}

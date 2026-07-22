@@ -1,0 +1,423 @@
+/**
+ * trip-planner.css
+ *
+ * File:    assets/css/trip-planner.css
+ * Section: Trip Planner Bar — overlaps hero bottom, white card,
+ *          5-column grid, icon-prefixed inputs, green search button.
+ *
+ * Spec references:
+ *   01-Master-Design-Specification.md  §9 Forms | §5 Spacing | §6 Border Radius | §8 Buttons
+ *   02-Master-UI-Specification-v2.md   §11 Planner Card | §12 Trip Planner | §29 Tokens
+ *   03-Master-UI-Specification-v3.md   §5 Trip Planner
+ *   04-Component-Library.md            §8 Trip Planner
+ *   06-Frontend-Development-Guide.md   §4 CSS Methodology | §5 Tokens | §11 Typography rem
+ *
+ * Key measurements:
+ *   Card width:         1240px  (--content-max)
+ *   Card height:        140px   (desktop)
+ *   Card padding:       32px    (--space-5)
+ *   Card radius:        20px    (--radius-xl)
+ *   Card shadow:        Large   (--poa-shadow-lg)
+ *   Columns (desktop):  5
+ *   Gap:                20px
+ *   Input height:       56px
+ *   Icon size:          22px
+ *   Label margin:       8px
+ *   Dropdown radius:    10px    (--radius-md)
+ *   Search btn width:   180px
+ *
+ * @package PrideOfAfrica
+ */
+
+
+/* =============================================================
+   1. LOCAL TOKENS
+   ============================================================= */
+.c-trip-planner {
+    --planner-card-radius:  var(--radius-xl);       /* 20px */
+    --planner-card-shadow:  var(--poa-shadow-lg);        /* 0 15px 45px rgba(0,0,0,.18) */
+    --planner-padding:      var(--space-5);          /* 32px */
+    --planner-gap:          1.25rem;                 /* 20px */
+    --planner-input-h:      3.5rem;                  /* 56px */
+    --planner-icon-size:    1.375rem;                /* 22px */
+    --planner-label-mb:     0.5rem;                  /* 8px */
+    --planner-input-radius: var(--radius-md);        /* 10px — dropdown radius */
+    --planner-btn-w:        11.25rem;                /* 180px */
+    --planner-overlap:      -4.375rem;               /* -70px — pulls card up over hero */
+    --planner-bg:           var(--color-surface);    /* #FFFFFF */
+    --planner-border:       var(--poa-color-border);     /* #E5E5E5 */
+    --planner-label-color:  var(--color-text);       /* #222222 */
+    --planner-icon-color:   #707070;                 /* Warm Gray — Design Spec §2 Secondary */
+    --planner-focus-ring:   var(--color-primary);    /* #009900 */
+}
+
+
+/* =============================================================
+   2. OUTER WRAPPER
+      Sits below hero in DOM; negative margin-top creates the
+      visual overlap so the card appears to float over the hero.
+      z-index sits above hero content (--z-header − 1).
+   ============================================================= */
+.c-trip-planner {
+    position:       relative;
+    z-index:        calc(var(--z-header) - 1); /* 999 — below header, above hero */
+    margin-top:     var(--planner-overlap);
+    padding-inline: var(--space-3);             /* 16px gutter on small screens */
+    padding-bottom: var(--space-6);             /* 48px breathing room below card */
+}
+
+
+/* =============================================================
+   3. CONTAINER — centres card at 1240px
+   ============================================================= */
+.c-trip-planner__container {
+    width:          100%;
+    max-width:      var(--content-max);    /* 1240px */
+    margin-inline:  auto;
+}
+
+
+/* =============================================================
+   4. FORM CARD
+      White | radius 20px | shadow large | padding 32px
+      Height 140px is achieved naturally by content on desktop.
+   ============================================================= */
+.c-trip-planner__form {
+    display:          flex;
+    flex-direction:   column;             /* stacked on mobile */
+    gap:              var(--planner-gap);
+    background-color: var(--planner-bg);
+    border-radius:    var(--planner-card-radius);
+    box-shadow:       var(--planner-card-shadow);
+    padding:          var(--planner-padding);
+}
+
+
+/* =============================================================
+   5. FIELD WRAPPER
+      On desktop each field is a column in a 5-col flex row.
+   ============================================================= */
+.c-trip-planner__field {
+    display:        flex;
+    flex-direction: column;
+    flex:           1 1 0;               /* equal-width columns */
+    min-width:      0;                    /* prevent overflow */
+}
+
+/* Submit column — fixed width on desktop */
+.c-trip-planner__field--submit {
+    flex:           0 0 var(--planner-btn-w);
+    justify-content: flex-end;
+    align-self:     flex-end;            /* align button to input bottom */
+}
+
+
+/* =============================================================
+   6. LABEL
+      Icon + text | margin-bottom: 8px — UI Spec v3 §5
+   ============================================================= */
+.c-trip-planner__label {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            0.375rem;            /* 6px */
+    font-family:    var(--poa-font-body);
+    font-size:      0.75rem;             /* 12px */
+    font-weight:    600;
+    line-height:    1;
+    color:          var(--planner-label-color);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom:  var(--planner-label-mb);
+    cursor:         default;
+    user-select:    none;
+}
+
+.c-trip-planner__label .bi {
+    font-size:  0.875rem;               /* 14px label icon */
+    color:      var(--color-primary);
+    flex-shrink: 0;
+}
+
+
+/* =============================================================
+   7. INPUT WRAP — positions the leading icon
+   ============================================================= */
+.c-trip-planner__input-wrap {
+    position: relative;
+    width:    100%;
+}
+
+/* Leading icon — 22px — UI Spec v2 §12 */
+.c-trip-planner__icon {
+    position:      absolute;
+    left:          1rem;                 /* 16px inset */
+    top:           50%;
+    transform:     translateY(-50%);
+    font-size:     var(--planner-icon-size);
+    color:         var(--planner-icon-color);
+    pointer-events: none;
+    z-index:       1;
+    line-height:   1;
+}
+
+
+/* =============================================================
+   8. SELECT + DATE INPUT
+      Height: 56px | Radius: 10px | White bg | Subtle border
+      Icon inside (padding-left accounts for icon + gap)
+      Design Spec §9: "Large rounded fields, White background,
+      Subtle border, Icons inside"
+   ============================================================= */
+.c-trip-planner__select,
+.c-trip-planner__input {
+    display:          block;
+    width:            100%;
+    height:           var(--planner-input-h);
+    padding-block:    0;
+    padding-left:     2.75rem;           /* 16px + 22px icon + 6px gap */
+    padding-right:    var(--space-3);    /* 16px */
+    font-family:      var(--poa-font-body);
+    font-size:        0.9375rem;         /* 15px */
+    font-weight:      400;
+    color:            var(--planner-label-color);
+    background-color: var(--planner-bg);
+    border:           1.5px solid var(--planner-border);
+    border-radius:    var(--planner-input-radius);
+    cursor:           pointer;
+    appearance:       none;
+    -webkit-appearance: none;
+    outline:          none;
+    transition:
+        border-color var(--duration-fast) var(--easing-standard),
+        box-shadow   var(--duration-fast) var(--easing-standard);
+}
+
+/* Custom dropdown arrow for <select> */
+.c-trip-planner__select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23707070' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat:   no-repeat;
+    background-position: right 1rem center;
+    padding-right:       2.5rem;         /* room for arrow */
+}
+
+/* Date input — hide native calendar icon on WebKit */
+.c-trip-planner__input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Placeholder colour */
+.c-trip-planner__select option[value=""],
+.c-trip-planner__input::placeholder {
+    color: var(--planner-icon-color);
+}
+
+/* Focus — green ring — Design Spec §2 Primary Green / WCAG AA */
+.c-trip-planner__select:focus,
+.c-trip-planner__input:focus {
+    border-color: var(--planner-focus-ring);
+    box-shadow:   0 0 0 3px rgba(0, 153, 0, .15);
+}
+
+/* Error state — Design Spec §9 Validation */
+.c-trip-planner__field[data-error] .c-trip-planner__select,
+.c-trip-planner__field[data-error] .c-trip-planner__input {
+    border-color: #DC2626;             /* --color-danger from UI Spec v2 §7 */
+    box-shadow:   0 0 0 3px rgba(220, 38, 38, .12);
+}
+
+
+/* =============================================================
+   9. SUBMIT BUTTON
+      Width: 180px | Height: 56px | Green bg | Radius 8px
+      Matches c-button--primary sizing from hero.css,
+      but explicit here to keep trip-planner self-contained.
+   ============================================================= */
+.c-trip-planner__submit {
+    display:          inline-flex;
+    align-items:      center;
+    justify-content:  center;
+    gap:              0.5rem;            /* 8px icon–text */
+    width:            var(--planner-btn-w);
+    height:           var(--planner-input-h); /* 56px — matches inputs */
+    padding-inline:   var(--space-4);    /* 24px */
+    font-family:      var(--poa-font-body);
+    font-size:        1rem;              /* 16px — Design Spec §3 Button */
+    font-weight:      600;
+    letter-spacing:   0.02em;
+    color:            var(--color-surface);
+    background-color: var(--color-primary);
+    border:           none;
+    border-radius:    var(--radius-sm);  /* 8px — Design Spec §6 */
+    cursor:           pointer;
+    white-space:      nowrap;
+    transition:
+        background-color var(--duration-normal) var(--easing-standard),
+        box-shadow       var(--duration-normal) var(--easing-standard),
+        transform        var(--duration-normal) var(--easing-standard);
+}
+
+.c-trip-planner__submit:hover,
+.c-trip-planner__submit:focus-visible {
+    background-color: #007a00;
+    box-shadow:       var(--poa-shadow-lg);
+    transform:        translateY(-2px);
+    outline:          none;
+}
+
+.c-trip-planner__submit:active {
+    transform:  translateY(0);
+    box-shadow: var(--poa-shadow-md);
+}
+
+.c-trip-planner__submit:focus-visible {
+    outline:        3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+/* Loading state */
+.c-trip-planner__submit[data-loading] {
+    pointer-events:   none;
+    background-color: #007a00;
+    opacity:          .85;
+}
+
+.c-trip-planner__spinner {
+    display:    inline-flex;
+    animation:  planner-spin 0.7s linear infinite;
+}
+
+@keyframes planner-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-trip-planner__submit {
+        transition: background-color var(--duration-fast);
+    }
+    .c-trip-planner__submit:hover { transform: none; }
+    .c-trip-planner__spinner       { animation: none; }
+}
+
+
+/* =============================================================
+   10. RESPONSIVE — MOBILE FIRST
+       576 | 768 | 992 | 1200 | 1400
+   ============================================================= */
+
+/* ── Base (mobile) ─────────────────────────
+   Single column stack. Full-width button.     */
+.c-trip-planner__field--submit {
+    flex-basis: 100%;
+}
+
+.c-trip-planner__submit {
+    width: 100%;
+}
+
+/* ── 576px ────────────────────────────────── */
+@media (min-width: 36em) {
+    .c-trip-planner {
+        padding-inline: var(--space-4); /* 24px */
+    }
+}
+
+/* ── 768px — 2-column grid ────────────────── */
+@media (min-width: 48em) {
+    .c-trip-planner__form {
+        flex-direction: row;
+        flex-wrap:      wrap;
+    }
+
+    .c-trip-planner__field {
+        flex: 1 1 calc(50% - var(--planner-gap));
+    }
+
+    .c-trip-planner__field--submit {
+        flex: 1 1 100%;
+        align-self: stretch;
+    }
+
+    .c-trip-planner__submit {
+        width: 100%;
+    }
+}
+
+/* ── 992px — 3-column ─────────────────────── */
+@media (min-width: 62em) {
+    .c-trip-planner__field {
+        flex: 1 1 calc(33.333% - var(--planner-gap));
+    }
+
+    .c-trip-planner__field--submit {
+        flex: 1 1 calc(33.333% - var(--planner-gap));
+        align-self: flex-end;
+    }
+
+    .c-trip-planner__submit {
+        width: 100%;
+    }
+}
+
+/* ── 1200px — 5-column desktop ───────────────
+   The intended layout per UI Spec v3 §5.
+   4 equal fields + 1 fixed-width search button. */
+@media (min-width: 75em) {
+    .c-trip-planner {
+        padding-inline: 0;
+    }
+
+    .c-trip-planner__form {
+        flex-wrap:  nowrap;
+        align-items: flex-end;           /* bottom-align all columns */
+        height:     8.75rem;             /* 140px — UI Spec v3 §5 */
+        padding:    var(--planner-padding);
+    }
+
+    .c-trip-planner__field {
+        flex: 1 1 0;
+    }
+
+    .c-trip-planner__field--submit {
+        flex:        0 0 var(--planner-btn-w); /* 180px fixed */
+        align-self:  flex-end;
+    }
+
+    .c-trip-planner__submit {
+        width: var(--planner-btn-w);
+    }
+
+    /* Dividers between fields */
+    .c-trip-planner__field + .c-trip-planner__field:not(.c-trip-planner__field--submit)::before {
+        content:          '';
+        display:          block;
+        width:            1px;
+        height:           2.5rem;        /* 40px */
+        background-color: var(--planner-border);
+        position:         absolute;
+        left:             calc(var(--planner-gap) * -0.5);
+        top:              50%;
+        transform:        translateY(-50%);
+        pointer-events:   none;
+    }
+
+    .c-trip-planner__field + .c-trip-planner__field:not(.c-trip-planner__field--submit) {
+        position: relative;
+    }
+}
+
+/* ── 1400px ───────────────────────────────── */
+@media (min-width: 87.5em) {
+    .c-trip-planner__form {
+        padding-inline: 2.5rem;          /* 40px safe margin */
+    }
+}
+
+
+/* =============================================================
+   END trip-planner.css
+   ============================================================= */

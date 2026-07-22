@@ -1,0 +1,202 @@
+/**
+ * sections.css — Homepage Section Styles
+ * Covers: trust, partners, destinations, popular-tours,
+ *         featured-itineraries, dream-trip, cost-estimator,
+ *         international, review, blog, office-hours, final-cta
+ * Spec: UI Spec v3 §6-17 | Design Spec §2-§5
+ * @package PrideOfAfrica
+ */
+
+/* ── Section base utilities ─────────────────────── */
+.l-section { padding-block: var(--space-9); }                    /* 120px */
+.l-section--compact { padding-block: var(--space-8); }          /* 96px  */
+.l-section--alt { background-color: #FAFAFA; }
+.l-section--dark { background-color: #243228; color: var(--color-surface); }
+
+.c-section-header { text-align: center; margin-bottom: var(--space-7); max-width: 54rem; margin-inline: auto; }
+.c-section-header--light .c-section-header__title,
+.c-section-header--light .c-section-header__desc { color: var(--color-surface); }
+.c-section-header__title { font-family: var(--poa-font-heading); font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: var(--color-text); margin-block: var(--space-2) var(--space-3); }
+.c-section-header__desc  { font-size: 1.125rem; color: var(--planner-icon-color,#707070); max-width: 45rem; margin-inline: auto; }
+
+/* Badges */
+.c-badge { display: inline-flex; align-items: center; gap: .375rem; font-family: var(--poa-font-body); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; line-height: 1; border-radius: var(--radius-pill); padding: .375rem 1rem; }
+.c-badge--accent  { background-color: rgba(212,160,23,.15); color: var(--color-accent); }
+.c-badge--light   { background-color: rgba(255,255,255,.15); color: var(--color-surface); }
+.c-badge--overlay { position: absolute; z-index: 2; }
+.c-badge--pill    { border-radius: var(--radius-pill); }
+.c-badge--dark    { background-color: rgba(0,0,0,.55); color: var(--color-surface); backdrop-filter: blur(4px); }
+.c-badge--country { background-color: rgba(0,153,0,.12); color: var(--color-primary); }
+.c-badge--duration{ top: 1rem; left: 1rem; }
+
+/* ── c-trust (Why Choose Us §6) ─────────────────── */
+.c-trust__header { text-align: center; margin-bottom: var(--space-7); }
+.c-trust__heading { font-family: var(--poa-font-heading); font-size: clamp(2rem,4vw,3rem); font-weight: 700; max-width: 33.75rem; margin-inline: auto; margin-block: var(--space-2) var(--space-3); }
+.c-trust__subheading { color: #707070; font-size: 1.125rem; max-width: 45rem; margin-inline: auto; }
+.c-trust__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
+.c-trust__card { padding: var(--space-5); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--poa-shadow-sm); border: 1px solid var(--poa-color-border); transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); }
+.c-trust__card:hover { box-shadow: var(--poa-shadow-md); transform: translateY(-4px); }
+.c-trust__icon-wrap { width: 3.5rem; height: 3.5rem; border-radius: var(--radius-md); background-color: rgba(0,153,0,.1); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-3); font-size: 1.5rem; color: var(--color-primary); }
+.c-trust__card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: var(--space-2); }
+.c-trust__card-desc  { font-size: .9375rem; color: #707070; line-height: 1.6; }
+@media (min-width: 48em) { .c-trust__grid { grid-template-columns: repeat(2,1fr); } }
+@media (min-width: 75em) { .c-trust__grid { grid-template-columns: repeat(4,1fr); gap: var(--space-5); } }
+
+/* ── c-partners (§7) ──────────────────────────── */
+.c-partners { border-block: 1px solid var(--poa-color-border); }
+.c-partners__label { text-align: center; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: #707070; margin-bottom: var(--space-4); }
+.c-partners__track { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3.75rem; min-height: 8.75rem; }
+.c-partners__logo { height: 3rem; width: auto; object-fit: contain; filter: grayscale(1); opacity: .6; transition: filter var(--duration-normal), opacity var(--duration-normal), transform var(--duration-normal); }
+.c-partners__link:hover .c-partners__logo { filter: grayscale(0); opacity: 1; transform: scale(1.05); }
+
+/* ── c-destinations (§8) ──────────────────────── */
+.c-destinations__grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+.c-destinations__footer { text-align: center; margin-top: var(--space-6); }
+@media (min-width: 48em) { .c-destinations__grid { grid-template-columns: repeat(2,1fr); } }
+@media (min-width: 75em) { .c-destinations__grid { grid-template-columns: repeat(3,1fr); gap: 2rem; } }
+
+/* ── c-popular-tours (§9) ─────────────────────── */
+.c-popular-tours__grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+.c-popular-tours__footer { text-align: center; margin-top: var(--space-6); }
+@media (min-width: 48em) { .c-popular-tours__grid { grid-template-columns: repeat(2,1fr); } }
+@media (min-width: 75em) { .c-popular-tours__grid { grid-template-columns: repeat(3,1fr); } }
+
+/* ── c-itineraries (§10) ──────────────────────── */
+.c-itineraries__grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+.c-itinerary-card { display: grid; grid-template-columns: 1fr; border-radius: var(--radius-xl); overflow: hidden; background: var(--color-surface); box-shadow: var(--poa-shadow-md); transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); }
+.c-itinerary-card:hover { box-shadow: var(--poa-shadow-lg); transform: translateY(-4px); }
+.c-itinerary-card__image-wrap { position: relative; overflow: hidden; height: 16rem; }
+.c-itinerary-card__image { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--easing-standard); }
+.c-itinerary-card:hover .c-itinerary-card__image { transform: scale(1.04); }
+.c-itinerary-card__body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
+.c-itinerary-card__title { font-size: 1.375rem; font-weight: 700; }
+.c-itinerary-card__title a { color: inherit; text-decoration: none; }
+.c-itinerary-card__excerpt { color: #707070; font-size: .9375rem; line-height: 1.6; }
+.c-itinerary-card__footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); margin-top: auto; }
+.c-itinerary-card__price { font-size: .875rem; color: #707070; }
+.c-itinerary-card__price strong { font-size: 1.25rem; font-weight: 700; color: var(--color-primary); }
+@media (prefers-reduced-motion: reduce) { .c-itinerary-card, .c-itinerary-card__image { transition: none; } }
+@media (min-width: 75em) {
+    .c-itineraries__grid { grid-template-columns: repeat(2,1fr); }
+    .c-itinerary-card { grid-template-columns: 1fr 1fr; height: 27.5rem; }
+    .c-itinerary-card--reverse { direction: rtl; }
+    .c-itinerary-card--reverse > * { direction: ltr; }
+    .c-itinerary-card__image-wrap { height: 100%; }
+}
+
+/* ── c-dream-trip (§11) ───────────────────────── */
+.c-dream-trip { position: relative; background-color: #1E3A24; color: var(--color-surface); }
+.c-dream-trip__inner { display: grid; grid-template-columns: 1fr; gap: var(--space-7); align-items: center; }
+.c-dream-trip__heading { font-size: clamp(1.75rem,3.5vw,2.5rem); font-weight: 700; margin-block: var(--space-2) var(--space-3); }
+.c-dream-trip__desc { color: rgba(255,255,255,.8); font-size: 1.0625rem; line-height: 1.7; }
+.c-dream-trip__features { list-style: none; padding: 0; margin: var(--space-4) 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.c-dream-trip__features li { display: flex; align-items: center; gap: .75rem; font-size: .9375rem; color: rgba(255,255,255,.9); }
+.c-dream-trip__features .bi { color: var(--color-primary); font-size: 1.125rem; flex-shrink: 0; }
+.c-dream-trip__contacts { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
+.c-dream-trip__form-card { background: var(--color-surface); border-radius: var(--radius-xl); padding: var(--space-6); box-shadow: var(--poa-shadow-lg); }
+.c-dream-trip__form-title { font-size: 1.375rem; font-weight: 700; color: var(--color-text); margin-bottom: var(--space-4); }
+@media (min-width: 75em) { .c-dream-trip__inner { grid-template-columns: 1fr 1fr; } }
+
+/* ── c-estimator (§12) ────────────────────────── */
+.c-estimator__card { display: grid; grid-template-columns: 1fr; gap: 2rem; background: var(--color-surface); border-radius: var(--radius-xl); box-shadow: var(--poa-shadow-lg); padding: 2.5rem; max-width: 53.75rem; margin-inline: auto; }
+.c-estimator__controls { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--space-4); }
+.c-estimator__label { display: flex; align-items: center; gap: .375rem; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text); margin-bottom: .5rem; }
+.c-estimator__label .bi { color: var(--color-primary); }
+.c-estimator__select { width: 100%; height: 3.5rem; border: 1.5px solid var(--poa-color-border); border-radius: var(--radius-md); padding-inline: 1rem; font-size: .9375rem; background: #FAFAFA; appearance: none; cursor: pointer; }
+.c-estimator__select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0,153,0,.15); }
+.c-estimator__stepper { display: flex; align-items: center; border: 1.5px solid var(--poa-color-border); border-radius: var(--radius-md); overflow: hidden; height: 3.5rem; }
+.c-estimator__step { display: flex; align-items: center; justify-content: center; width: 3rem; height: 100%; background: #FAFAFA; border: none; cursor: pointer; font-size: 1.25rem; color: var(--color-primary); flex-shrink: 0; transition: background var(--duration-fast); }
+.c-estimator__step:hover { background: rgba(0,153,0,.1); }
+.c-estimator__number { flex: 1; height: 100%; border: none; text-align: center; font-size: 1rem; font-weight: 600; background: transparent; }
+.c-estimator__summary { background: linear-gradient(135deg, var(--color-primary) 0%, #1E3A24 100%); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; align-items: center; justify-content: center; }
+.c-estimator__summary-inner { text-align: center; color: var(--color-surface); }
+.c-estimator__summary-label { font-size: .875rem; text-transform: uppercase; letter-spacing: .08em; opacity: .8; margin-bottom: .5rem; }
+.c-estimator__price { display: flex; align-items: baseline; justify-content: center; gap: .5rem; }
+.c-estimator__currency { font-size: 1rem; font-weight: 600; opacity: .8; }
+.c-estimator__amount { font-size: 3rem; font-weight: 700; line-height: 1; }
+.c-estimator__per-person { font-size: .875rem; opacity: .8; margin-top: .375rem; }
+.c-estimator__disclaimer { font-size: .75rem; opacity: .6; margin-top: var(--space-3); }
+.c-estimator__cta { margin-top: var(--space-4); background: rgba(255,255,255,.2); color: var(--color-surface); border: 1.5px solid rgba(255,255,255,.4); }
+.c-estimator__cta:hover { background: var(--color-surface); color: var(--color-primary); }
+@media (min-width: 48em) { .c-estimator__controls { grid-template-columns: repeat(3,1fr); } }
+@media (min-width: 75em) { .c-estimator__card { grid-template-columns: 1fr 21.25rem; } .c-estimator__controls { grid-template-columns: repeat(2,1fr); } }
+
+/* ── c-international (§8 variant) ────────────── */
+.c-international__grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
+.c-international__card { position: relative; border-radius: var(--radius-lg); overflow: hidden; min-height: 12rem; display: flex; align-items: flex-end; text-decoration: none; color: var(--color-surface); }
+.c-international__card:hover .c-international__img { transform: scale(1.06); }
+.c-international__img-wrap { position: absolute; inset: 0; }
+.c-international__img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--easing-standard); }
+.c-international__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.7) 0%, rgba(0,0,0,.1) 60%); }
+.c-international__body { position: relative; z-index: 2; padding: 1.25rem; width: 100%; }
+.c-international__name { font-size: 1.125rem; font-weight: 700; line-height: 1.2; }
+.c-international__count { font-size: .8125rem; opacity: .8; margin-top: .25rem; }
+.c-international__arrow { position: absolute; bottom: 1.25rem; right: 1.25rem; font-size: 1.25rem; opacity: 0; transform: translateX(-4px); transition: opacity var(--duration-normal), transform var(--duration-normal); }
+.c-international__card:hover .c-international__arrow,
+.c-international__card:focus-visible .c-international__arrow { opacity: 1; transform: translateX(0); }
+.c-international__card:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .c-international__img, .c-international__arrow { transition: none; } }
+@media (min-width: 48em) { .c-international__grid { grid-template-columns: repeat(3,1fr); } }
+@media (min-width: 75em) { .c-international__grid { grid-template-columns: repeat(4,1fr); } }
+
+/* ── c-testimonials (§13) ────────────────────── */
+.c-testimonials { overflow: hidden; }
+.c-testimonials__slider { position: relative; overflow: hidden; }
+.c-testimonials__track { display: flex; position: relative; }
+.c-testimonials__controls { display: flex; align-items: center; justify-content: center; gap: var(--space-4); margin-top: var(--space-6); }
+.c-testimonials__arrow { display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: var(--radius-pill); border: 1.5px solid rgba(255,255,255,.3); background: rgba(255,255,255,.1); color: var(--color-surface); font-size: 1.125rem; cursor: pointer; transition: background var(--duration-normal), border-color var(--duration-normal); }
+.c-testimonials__arrow:hover { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.6); }
+.c-testimonials__dot { display: block; width: .625rem; height: .625rem; border-radius: var(--radius-pill); background: rgba(255,255,255,.3); border: none; cursor: pointer; transition: width var(--duration-normal), background var(--duration-normal); padding: 0; }
+.c-testimonials__dot--active { width: 1.75rem; background: var(--color-surface); }
+.c-testimonials__pagination { display: flex; align-items: center; gap: .5rem; }
+
+/* ── c-review (§14) ──────────────────────────── */
+.c-review { position: relative; background: linear-gradient(135deg, var(--color-primary) 0%, #1E3A24 100%); color: var(--color-surface); text-align: center; }
+.c-review__inner { display: flex; flex-direction: column; align-items: center; gap: var(--space-5); }
+.c-review__heading { font-size: clamp(1.5rem,3vw,2.25rem); font-weight: 700; max-width: 45rem; }
+.c-review__desc { font-size: 1.0625rem; opacity: .85; max-width: 40rem; }
+.c-review__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+.c-review__btn { min-width: 12.5rem; height: 3.5rem; }
+.c-button--surface { background: var(--color-surface); color: var(--color-primary); border-color: var(--color-surface); }
+.c-button--surface:hover { background: rgba(255,255,255,.9); }
+@media (min-width: 75em) { .c-review__inner { flex-direction: row; justify-content: space-between; text-align: left; } .c-review__heading, .c-review__desc { text-align: left; } }
+
+/* ── c-blog (§15) ────────────────────────────── */
+.c-blog__grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+.c-blog__footer { text-align: center; margin-top: var(--space-6); }
+@media (min-width: 48em) { .c-blog__grid { grid-template-columns: repeat(2,1fr); } }
+@media (min-width: 75em) { .c-blog__grid { grid-template-columns: repeat(3,1fr); } }
+
+/* ── c-office (§16) ──────────────────────────── */
+.c-office__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-6); }
+.c-office__sub-title { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; font-weight: 700; margin-bottom: var(--space-4); }
+.c-office__sub-title .bi { color: var(--color-primary); font-size: 1.25rem; }
+.c-office__hours-list { display: flex; flex-direction: column; gap: var(--space-2); }
+.c-office__hours-row { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: var(--space-2); border-bottom: 1px solid var(--poa-color-border); }
+.c-office__day { font-weight: 600; }
+.c-office__time { color: #707070; }
+.c-office__timezone { margin-top: var(--space-3); font-size: .875rem; color: #707070; display: flex; align-items: center; gap: .375rem; }
+.c-office__contact-card { background: var(--color-surface); border-radius: var(--radius-xl); padding: var(--space-5); box-shadow: var(--poa-shadow-md); border: 1px solid var(--poa-color-border); }
+.c-office__contact-list { list-style: none; padding: 0; margin: 0 0 var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
+.c-office__contact-item { display: flex; align-items: flex-start; gap: .75rem; font-size: .9375rem; }
+.c-office__contact-item .bi { color: var(--color-primary); font-size: 1.125rem; margin-top: 2px; flex-shrink: 0; }
+.c-office__contact-item a { color: var(--color-text); text-decoration: none; } 
+.c-office__contact-item a:hover { color: var(--color-primary); text-decoration: underline; }
+.c-office__contact-item--address address { font-style: normal; line-height: 1.5; }
+@media (min-width: 75em) { .c-office__grid { grid-template-columns: 26.25rem 23.75rem; gap: 4rem; } }
+
+/* ── c-final-cta (§17) ───────────────────────── */
+.c-final-cta { position: relative; text-align: center; padding-block: var(--space-8); background-color: var(--color-primary-dark); background-image: var(--final-cta-bg, none); background-size: cover; background-position: center; }
+.c-final-cta__overlay { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+.c-final-cta__inner { position: relative; z-index: 1; color: var(--color-surface); max-width: 47.5rem; margin-inline: auto; }
+.c-final-cta__heading { font-size: clamp(2rem,4vw,3rem); font-weight: 700; margin-block: var(--space-3) var(--space-4); max-width: 47.5rem; }
+.c-final-cta__desc { font-size: 1.125rem; opacity: .9; margin-bottom: var(--space-5); }
+.c-final-cta__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+.c-button--xl { height: 3.75rem; padding-inline: var(--space-7); font-size: 1.0625rem; min-width: 13.75rem; }
+.c-button--outline { background: transparent; color: var(--color-primary); border: 2px solid var(--color-primary); }
+.c-button--outline:hover { background: var(--color-primary); color: var(--color-surface); transform: translateY(-2px); box-shadow: var(--poa-shadow-md); }
+.c-button--light.c-button--outline { color: var(--color-surface); border-color: rgba(255,255,255,.6); }
+.c-button--light.c-button--outline:hover { background: rgba(255,255,255,.15); border-color: var(--color-surface); }
+.c-button--whatsapp { background: #25D366; color: var(--color-surface); border-color: #25D366; }
+.c-button--whatsapp:hover { background: #1EBE5D; border-color: #1EBE5D; transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .c-trust__card, .c-itinerary-card, .c-button--outline, .c-button--xl { transition: none !important; } }
