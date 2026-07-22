@@ -57,9 +57,6 @@ get_header();
 <!-- Latest Blog Posts -->
 <?php get_template_part('template-parts/home/blog'); ?>
 
-<!-- Gallery Preview (not in the named order — kept here, right after Blog) -->
-<?php get_template_part('template-parts/home/gallery-preview'); ?>
-
 <!-- Office Hours & Contact -->
 <?php get_template_part('template-parts/home/office-hours'); ?>
 

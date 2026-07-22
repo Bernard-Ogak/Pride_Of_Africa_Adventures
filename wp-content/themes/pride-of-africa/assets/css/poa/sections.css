@@ -94,7 +94,17 @@
 /* Each slot is a fixed width (not just a fixed height) so narrow logos
    fill the same footprint as wide ones instead of looking smaller —
    object-fit: contain keeps them undistorted. */
-.c-partners__item { flex-shrink: 0; width: 9rem; display: flex; justify-content: center; }
+.c-partners__item {
+    flex-shrink: 0;
+    width: 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    box-sizing: border-box;
+}
 
 /* Exactly 8 logos visible at once across the full (edge-to-edge)
    viewport width (7 gaps of 20px between them). */

@@ -51,6 +51,7 @@ require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/hero-customizer.php'; // Her
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/trip-architect-customizer.php'; // Trip Architect customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/why-choose-us-customizer.php'; // Why Choose Us customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/trusted-partners-customizer.php'; // Trusted Partners customizer settings
+require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/testimonials-customizer.php'; // Testimonials customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/destinations-customizer.php'; // Top Destinations customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/poa-new-sections-customizer.php'; // New homepage sections (poa-homepage-templates) settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/testimonial-meta-box.php'; // Testimonial admin fields (rating, location, tour, platform)

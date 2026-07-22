@@ -42,14 +42,20 @@ $placeholder_images = [
         <?php if (!empty($gallery_items)) : ?>
             <div class="row g-4">
                 <?php foreach ($gallery_items as $index => $item) : ?>
-                    <?php $image_url = wp_get_attachment_image_url($item->ID, 'large'); ?>
+                    <?php
+                    $image_url   = wp_get_attachment_image_url($item->ID, 'large');
+                    $description = trim($item->post_excerpt ?: $item->post_content);
+                    ?>
                     <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
-                            <img src="<?php echo esc_url($image_url ?: $placeholder_images[$index % count($placeholder_images)]); ?>" class="card-img-top" alt="<?php echo esc_attr($item->post_title ?: 'Gallery image'); ?>" style="height: 240px; object-fit: cover;">
-                            <div class="card-body">
-                                <h3 class="h6 fw-bold mb-2"><?php echo esc_html($item->post_title ?: 'Gallery Image'); ?></h3>
-                                <p class="text-muted small mb-0">Captured during a Pride of Africa travel experience.</p>
+                        <div class="card h-100 border-0 shadow-sm gallery-photo-card">
+                            <div class="gallery-photo">
+                                <img src="<?php echo esc_url($image_url ?: $placeholder_images[$index % count($placeholder_images)]); ?>" alt="<?php echo esc_attr($description ?: __('Pride of Africa gallery photo', 'pride-of-africa')); ?>" loading="lazy">
                             </div>
+                            <?php if ($description) : ?>
+                                <div class="card-body">
+                                    <p class="text-muted small mb-0"><?php echo esc_html($description); ?></p>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -59,5 +65,21 @@ $placeholder_images = [
         <?php endif; ?>
     </section>
 </main>
+
+<style>
+.gallery-photo-card { overflow: hidden; }
+.gallery-photo { overflow: hidden; height: 240px; }
+.gallery-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+.gallery-photo-card:hover .gallery-photo img { transform: scale(1.08); }
+@media (prefers-reduced-motion: reduce) {
+    .gallery-photo img { transition: none; }
+    .gallery-photo-card:hover .gallery-photo img { transform: none; }
+}
+</style>
 
 <?php get_footer(); ?>

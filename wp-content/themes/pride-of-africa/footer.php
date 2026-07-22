@@ -89,6 +89,28 @@
                                     </a>
                                 <?php endif; ?>
                             </div>
+
+                            <!-- Newsletter Subscription -->
+                            <form class="footer-newsletter" id="footer-newsletter-form" novalidate>
+                                <label for="footer-newsletter-email" class="footer-newsletter__label">
+                                    <?php esc_html_e('Subscribe to our newsletter', 'pride-of-africa'); ?>
+                                </label>
+                                <div class="footer-newsletter__row">
+                                    <input
+                                        type="email"
+                                        id="footer-newsletter-email"
+                                        name="email"
+                                        class="footer-newsletter__input"
+                                        placeholder="<?php esc_attr_e('Your email address', 'pride-of-africa'); ?>"
+                                        aria-label="<?php esc_attr_e('Email address', 'pride-of-africa'); ?>"
+                                        required
+                                    >
+                                    <button type="submit" class="footer-newsletter__submit">
+                                        <?php esc_html_e('Subscribe', 'pride-of-africa'); ?>
+                                    </button>
+                                </div>
+                                <p class="footer-newsletter__message" id="footer-newsletter-message" role="status" aria-live="polite"></p>
+                            </form>
                         </div>
                     </div>
 
@@ -184,6 +206,50 @@
             </div>
         </div>
     </footer>
+
+    <script>
+    ( function () {
+        'use strict';
+        var form = document.getElementById( 'footer-newsletter-form' );
+        if ( ! form ) return;
+
+        var input   = document.getElementById( 'footer-newsletter-email' );
+        var message = document.getElementById( 'footer-newsletter-message' );
+        var button  = form.querySelector( '.footer-newsletter__submit' );
+
+        form.addEventListener( 'submit', function ( e ) {
+            e.preventDefault();
+
+            message.textContent = '';
+            message.classList.remove( 'is-error', 'is-success' );
+            button.disabled = true;
+
+            var data = new FormData();
+            data.append( 'action', 'pride_subscribe_newsletter' );
+            data.append( 'nonce', window.prideOfAfricaData ? window.prideOfAfricaData.nonce : '' );
+            data.append( 'email', input.value );
+
+            fetch( window.prideOfAfricaData ? window.prideOfAfricaData.ajaxUrl : '/wp-admin/admin-ajax.php', {
+                method: 'POST',
+                body: data,
+                credentials: 'same-origin',
+            } )
+                .then( function ( res ) { return res.json(); } )
+                .then( function ( json ) {
+                    message.textContent = json.data && json.data.message ? json.data.message : '';
+                    message.classList.add( json.success ? 'is-success' : 'is-error' );
+                    if ( json.success ) form.reset();
+                } )
+                .catch( function () {
+                    message.textContent = '<?php echo esc_js( __( 'Something went wrong. Please try again.', 'pride-of-africa' ) ); ?>';
+                    message.classList.add( 'is-error' );
+                } )
+                .finally( function () {
+                    button.disabled = false;
+                } );
+        } );
+    } )();
+    </script>
 
     <?php wp_footer(); ?>
 

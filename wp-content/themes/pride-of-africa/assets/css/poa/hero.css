@@ -242,7 +242,7 @@
    ============================================================= */
 .c-hero__headline {
     font-family:   var(--poa-font-heading);
-    font-size:     clamp(2.25rem, 5vw, 4.5rem); /* 36px → 72px fluid */
+    font-size:     clamp(1.6875rem, 3.75vw, 3.375rem); /* 27px → 54px fluid (headline -25%) */
     font-weight:   700;
     line-height:   1.11;  /* 80 / 72 — Design Spec §3 Display */
     color:         var(--color-surface);
@@ -545,7 +545,7 @@
 @media (min-width: 48em) {
 
     .c-hero__headline {
-        font-size:   clamp(2.5rem, 5vw, 4.5rem);
+        font-size:   clamp(1.875rem, 3.75vw, 3.375rem);
         margin-block: 0 var(--space-5); /* 32px */
     }
 
@@ -567,7 +567,7 @@
     }
 
     .c-hero__headline {
-        font-size: clamp(3rem, 5vw, 4.5rem);
+        font-size: clamp(2.25rem, 3.75vw, 3.375rem);
     }
 }
 
@@ -581,7 +581,7 @@
 
     /* On larger screens, cap headline/paragraph to spec widths */
     .c-hero__headline {
-        font-size:  4.5rem; /* 72px — Design Spec §3 H1 Hero */
+        font-size:  3.375rem; /* 54px — 72px base -25% */
         max-width:  var(--hero-headline-max);
     }
 

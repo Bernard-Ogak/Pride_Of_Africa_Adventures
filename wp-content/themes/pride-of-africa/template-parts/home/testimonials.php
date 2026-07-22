@@ -8,22 +8,39 @@
  * TripAdvisor / SafariBookings / Trustpilot) with prev/next controls,
  * and a 3-cards-per-page grid that pages through the filtered set.
  *
+ * Content source: managed manually via Customizer → Testimonials
+ * (up to 12 entries: message, star rating, reviewer name, avatar,
+ * and platform) rather than the pride_testimonial CPT.
+ *
  * @package PrideOfAfrica
  */
 
-$testimonials = new WP_Query( [
-    'post_type'      => 'pride_testimonial',
-    'posts_per_page' => -1,
-    'post_status'    => 'publish',
-    'orderby'        => 'menu_order',
-    'order'          => 'ASC',
-] );
-
-if ( ! $testimonials->have_posts() ) {
+if ( ! get_theme_mod( 'pride_testimonials_enabled', true ) ) {
     return;
 }
 
-$items = $testimonials->posts;
+$items = [];
+for ( $i = 1; $i <= 12; $i++ ) {
+    $message = trim( get_theme_mod( "pride_testimonials_{$i}_message", '' ) );
+    if ( '' === $message ) {
+        continue;
+    }
+
+    $avatar_id = absint( get_theme_mod( "pride_testimonials_{$i}_avatar", 0 ) );
+
+    $items[] = [
+        'message'    => $message,
+        'rating'     => (int) get_theme_mod( "pride_testimonials_{$i}_rating", 5 ),
+        'name'       => get_theme_mod( "pride_testimonials_{$i}_name", '' ),
+        'avatar_url' => $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'testimonial-avatar' ) : '',
+        'platform'   => get_theme_mod( "pride_testimonials_{$i}_platform", 'tripadvisor' ),
+    ];
+}
+
+if ( empty( $items ) ) {
+    return;
+}
+
 $count = count( $items );
 
 $platform_filters = [
@@ -75,7 +92,7 @@ $platform_filters = [
 
         <div class="c-testimonials__grid" data-testimonials-grid>
             <?php foreach ( $items as $item ) :
-                get_template_part( 'template-parts/cards/testimonial-card', null, [ 'post' => $item ] );
+                get_template_part( 'template-parts/cards/testimonial-card', null, $item );
             endforeach; ?>
         </div>
 
