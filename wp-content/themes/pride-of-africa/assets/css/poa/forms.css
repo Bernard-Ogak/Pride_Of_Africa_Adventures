@@ -7,7 +7,7 @@
  * @package PrideOfAfrica
  */
 
-.c-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.c-form { display: flex; flex-direction: column; gap: var(--space-2); } /* was space-4 — tighter to shorten the dream-trip form card */
 .c-form__row { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
 @media (min-width: 48em) { .c-form__row { grid-template-columns: 1fr 1fr; } }
 .c-form__group { display: flex; flex-direction: column; gap: .5rem; }
@@ -17,7 +17,7 @@
 .c-form__select,
 .c-form__textarea { width: 100%; font-family: var(--poa-font-body); font-size: .9375rem; color: var(--color-text); background: var(--color-surface); border: 1.5px solid var(--poa-color-border); border-radius: var(--radius-md); padding-inline: 1rem; outline: none; transition: border-color var(--duration-fast), box-shadow var(--duration-fast); }
 .c-form__input, .c-form__select { height: 3.5rem; }
-.c-form__textarea { padding-block: .875rem; resize: vertical; min-height: 7.5rem; }
+.c-form__textarea { padding-block: .875rem; resize: vertical; min-height: 4rem; } /* was 7.5rem — shortened for the dream-trip form */
 .c-form__input::placeholder, .c-form__textarea::placeholder { color: #aaa; }
 .c-form__input:focus, .c-form__select:focus, .c-form__textarea:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0,153,0,.15); }
 .c-form__input[aria-invalid="true"], .c-form__textarea[aria-invalid="true"] { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,.12); }

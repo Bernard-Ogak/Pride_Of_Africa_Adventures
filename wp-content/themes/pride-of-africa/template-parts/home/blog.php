@@ -25,7 +25,7 @@ if ( ! $posts->have_posts() ) {
     <div class="u-container">
 
         <div class="c-section-header">
-            <span class="c-badge c-badge--accent"><?php esc_html_e( 'Safari Journal', 'pride-of-africa' ); ?></span>
+            <span class="c-badge c-badge--accent"><?php esc_html_e( 'Blog', 'pride-of-africa' ); ?></span>
             <h2 class="c-section-header__title" id="blog-heading"><?php esc_html_e( 'Latest From The Bush', 'pride-of-africa' ); ?></h2>
             <p class="c-section-header__desc"><?php esc_html_e( 'Tips, wildlife guides, destination spotlights and stories from the African wilderness.', 'pride-of-africa' ); ?></p>
         </div>

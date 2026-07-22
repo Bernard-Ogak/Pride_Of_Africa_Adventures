@@ -478,6 +478,7 @@
                 payload.append('destination', fieldValue('contact-destination', 'dream-destination'));
                 payload.append('travel_type', fieldValue('contact-travel_type'));
                 payload.append('travelers', fieldValue('dream-travelers'));
+                payload.append('travel_dates', fieldValue('dream-travel-dates'));
 
                 fetch(window.prideOfAfricaData && window.prideOfAfricaData.ajaxUrl ? window.prideOfAfricaData.ajaxUrl : '/wp-admin/admin-ajax.php', {
                     method: 'POST',

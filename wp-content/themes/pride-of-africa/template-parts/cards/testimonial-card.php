@@ -2,64 +2,68 @@
 /**
  * Card: Testimonial
  * File:   template-parts/cards/testimonial-card.php
- * Spec:   03-Master-UI-Specification-v3.md §13
- *         Card Width: 420px | Card Height: 360px
- *         Padding: 36px | Avatar: 70px | Quote Margin: 24px
+ * Rebuilt to match the Testimonials reference screenshot: quote icon,
+ * quote text, star rating, initials avatar, name + trip/location, and
+ * a platform badge (TripAdvisor / SafariBookings / Trustpilot).
  * @package PrideOfAfrica
  */
 
-$post_id    = get_the_ID();
-$index      = isset( $args['index'] ) ? (int) $args['index'] : 0;
-$total      = isset( $args['total'] ) ? (int) $args['total'] : 1;
-$rating     = (int) get_post_meta( $post_id, '_testimonial_rating',  true ) ?: 5;
-$location   = get_post_meta( $post_id, '_testimonial_location', true );
-$tour       = get_post_meta( $post_id, '_testimonial_tour',     true );
-$avatar_id  = get_post_thumbnail_id();
-$avatar_url = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' ) : '';
-$is_active  = $index === 0;
+$post_id  = get_the_ID();
+$rating   = (int) get_post_meta( $post_id, '_testimonial_rating',  true ) ?: 5;
+$location = get_post_meta( $post_id, '_testimonial_location', true );
+$tour     = get_post_meta( $post_id, '_testimonial_tour',     true );
+$platform = get_post_meta( $post_id, '_testimonial_platform', true ) ?: 'tripadvisor';
+
+$platforms = [
+    'tripadvisor'   => [ 'label' => __( 'TripAdvisor',   'pride-of-africa' ), 'color' => '#34E0A1' ],
+    'safaribookings'=> [ 'label' => __( 'SafariBookings', 'pride-of-africa' ), 'color' => '#F0932B' ],
+    'trustpilot'    => [ 'label' => __( 'Trustpilot',     'pride-of-africa' ), 'color' => '#00B67A' ],
+];
+$platform_data = $platforms[ $platform ] ?? $platforms['tripadvisor'];
+
+$name    = get_the_title();
+$initials = '';
+foreach ( preg_split( '/\s+/', trim( $name ) ) as $word ) {
+    if ( $word !== '' ) {
+        $initials .= mb_strtoupper( mb_substr( $word, 0, 1 ) );
+    }
+}
+$initials = mb_substr( $initials, 0, 2 );
 ?>
 
 <article
-    class="c-testimonial-card<?php echo $is_active ? ' c-testimonial-card--active' : ''; ?>"
-    aria-hidden="<?php echo $is_active ? 'false' : 'true'; ?>"
-    aria-label="<?php echo esc_attr( sprintf( __( 'Testimonial %1$d of %2$d from %3$s', 'pride-of-africa' ), $index + 1, $total, get_the_title() ) ); ?>"
+    class="c-testimonial-card"
+    data-platform="<?php echo esc_attr( $platform ); ?>"
+    aria-label="<?php echo esc_attr( sprintf( __( 'Testimonial from %s', 'pride-of-africa' ), $name ) ); ?>"
 >
+    <i class="bi bi-quote c-testimonial-card__quote-icon" aria-hidden="true"></i>
+
+    <blockquote class="c-testimonial-card__quote">
+        <p><?php echo esc_html( wp_trim_words( get_the_content(), 40, '…' ) ); ?></p>
+    </blockquote>
+
     <div class="c-testimonial-card__rating" aria-label="<?php echo esc_attr( sprintf( __( '%d out of 5 stars', 'pride-of-africa' ), $rating ) ); ?>">
         <?php for ( $s = 1; $s <= 5; $s++ ) : ?>
         <i class="bi <?php echo $s <= $rating ? 'bi-star-fill' : 'bi-star'; ?>" aria-hidden="true"></i>
         <?php endfor; ?>
     </div>
 
-    <blockquote class="c-testimonial-card__quote">
-        <p><?php echo esc_html( wp_trim_words( get_the_content(), 40, '…' ) ); ?></p>
-    </blockquote>
-
     <footer class="c-testimonial-card__footer">
-        <?php if ( $avatar_url ) : ?>
-        <img class="c-testimonial-card__avatar"
-             src="<?php echo esc_url( $avatar_url ); ?>"
-             alt="<?php echo esc_attr( get_the_title() ); ?>"
-             width="70" height="70" loading="lazy" decoding="async">
-        <?php else : ?>
-        <div class="c-testimonial-card__avatar c-testimonial-card__avatar--placeholder" aria-hidden="true">
-            <i class="bi bi-person-fill"></i>
-        </div>
-        <?php endif; ?>
+        <div class="c-testimonial-card__avatar" aria-hidden="true"><?php echo esc_html( $initials ); ?></div>
 
         <div class="c-testimonial-card__meta">
-            <cite class="c-testimonial-card__name"><?php the_title(); ?></cite>
-            <?php if ( $location ) : ?>
-            <span class="c-testimonial-card__location">
-                <i class="bi bi-geo-alt" aria-hidden="true"></i>
-                <?php echo esc_html( $location ); ?>
-            </span>
-            <?php endif; ?>
-            <?php if ( $tour ) : ?>
-            <span class="c-testimonial-card__tour">
-                <i class="bi bi-compass" aria-hidden="true"></i>
-                <?php echo esc_html( $tour ); ?>
+            <cite class="c-testimonial-card__name"><?php echo esc_html( $name ); ?></cite>
+            <?php if ( $tour || $location ) : ?>
+            <span class="c-testimonial-card__trip">
+                <?php echo esc_html( trim( $tour . ( $tour && $location ? ' · ' : '' ) . $location ) ); ?>
             </span>
             <?php endif; ?>
         </div>
     </footer>
+
+    <span class="c-testimonial-card__platform" style="--platform-color: <?php echo esc_attr( $platform_data['color'] ); ?>">
+        <span class="c-testimonial-card__platform-dot" aria-hidden="true"></span>
+        <?php echo esc_html( $platform_data['label'] ); ?>
+        <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+    </span>
 </article>

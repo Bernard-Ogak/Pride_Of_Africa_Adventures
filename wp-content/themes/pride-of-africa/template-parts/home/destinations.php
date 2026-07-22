@@ -29,12 +29,12 @@ if ( ! $destinations->have_posts() ) {
     <div class="u-container">
 
         <div class="c-section-header">
-            <span class="c-badge c-badge--accent"><?php esc_html_e( 'Where To Go', 'pride-of-africa' ); ?></span>
+            <span class="c-badge c-badge--accent"><?php esc_html_e( 'Destinations', 'pride-of-africa' ); ?></span>
             <h2 class="c-section-header__title" id="destinations-heading">
-                <?php esc_html_e( 'Top Safari Destinations', 'pride-of-africa' ); ?>
+                <?php esc_html_e( 'Top Destinations', 'pride-of-africa' ); ?>
             </h2>
             <p class="c-section-header__desc">
-                <?php esc_html_e( 'Discover Africa\'s most breathtaking wildlife corridors and iconic safari landscapes.', 'pride-of-africa' ); ?>
+                <?php esc_html_e( 'Explore East Africa\'s most extraordinary destinations', 'pride-of-africa' ); ?>
             </p>
         </div>
 

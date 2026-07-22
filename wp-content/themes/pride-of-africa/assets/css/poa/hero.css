@@ -198,6 +198,11 @@
     position:         absolute;
     inset:            0;
     background-color: var(--hero-overlay);
+    /* Extra smooth darkening toward the left edge — keeps the headline,
+       subheading and CTAs in .c-hero__content .u-container readable
+       against bright imagery. Right side is untouched (just the flat
+       overlay above). */
+    background-image: linear-gradient(to right, rgba(0, 0, 0, .4) 0%, transparent 100%);
     z-index:          var(--hero-z-overlay);
 }
 

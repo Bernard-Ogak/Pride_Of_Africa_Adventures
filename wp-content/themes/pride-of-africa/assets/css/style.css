@@ -56,7 +56,7 @@ Tags:        safari, travel, custom-logo, custom-menu, featured-images, responsi
     /* Brand Colors */
     --color-gold:             #009900;
     --color-jungle:           #2A322E;
-    --color-bone:             #FCFBF8;
+    --color-bone:             #DBDBDB;
     --color-obsidian:         #1B1B18;
     --color-card:             #F9F8F6;
     --color-muted:            #EBEFEE;
@@ -136,6 +136,7 @@ Tags:        safari, travel, custom-logo, custom-menu, featured-images, responsi
 }
 
 html {
+    overflow-x: hidden;
     scroll-behavior: smooth;
 }
 
@@ -147,6 +148,8 @@ body {
     background-color: var(--color-bone);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    max-width: 1920px;   /* page never exceeds 1920px on ultra-wide desktops */
+    margin-inline: auto;
 }
 
 /* Custom Scrollbar */
@@ -239,11 +242,11 @@ section[id] {
 .container-site {
     max-width: var(--container-max);
     margin-inline: auto;
-    padding-inline: 1rem;
+    padding-inline: 0.5rem; /* was 1rem — 50% reduction */
 }
 
 @media (min-width: 768px) {
-    .container-site { padding-inline: 2rem; }
+    .container-site { padding-inline: 1rem; } /* was 2rem — 50% reduction */
 }
 
 /* Semantic container alias */
@@ -517,8 +520,10 @@ section[id] {
     /* Keep the theme topbar fixed, but respect the WP admin toolbar height */
     position: fixed;
     top: var(--wpadminbar-height);
-    left: 0;
+    left: 50%;
     width: 100%;
+    max-width: 1920px; /* matches the body's 1920px cap on ultra-wide desktops */
+    transform: translateX(-50%);
     z-index: 1090;
     height: var(--topbar-height);
     background-color: var(--color-header-bg);
@@ -604,20 +609,15 @@ section[id] {
     /* Fixed header that sits below the WP admin toolbar and theme topbar */
     position: fixed;
     top: calc(var(--wpadminbar-height) + var(--topbar-height));
-    left: 0;
+    left: 50%;
     width: 100%;
+    max-width: 1920px; /* matches the body's 1920px cap on ultra-wide desktops */
+    transform: translateX(-50%);
     z-index: 1080;
-    background-color: var(--color-gray-section);
+    background-color: #ffffff;
     backdrop-filter: none;
     transition: none;
     border-bottom: none;
-}
-
-/* On the homepage, let the hero image show through the header until the
-   user scrolls — reuses the hero's own overlay tone so nav text stays
-   readable against any hero photo. */
-body.home .header-main:not(.scrolled) {
-    background-color: var(--hero-overlay, rgba(0, 0, 0, .45));
 }
 
 @media (max-width: 991px) {
@@ -650,12 +650,12 @@ body.home .header-main:not(.scrolled) {
 }
 
 .header-main.scrolled {
-    background-color: var(--color-gray-section);
+    background-color: #ffffff;
     backdrop-filter: none;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.header-main.scrolled .nav-link       { color: #ffffff !important; }
+.header-main.scrolled .nav-link       { color: var(--color-obsidian) !important; }
 .header-main.scrolled .nav-link:hover { color: var(--color-gold) !important; }
 
 .navbar {
@@ -683,10 +683,9 @@ body.home .header-main:not(.scrolled) {
 .logo-text {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--color-obsidian);
     transition: color var(--transition-base);
 }
-.header-main.scrolled .logo-text { color: #ffffff; }
 
 
 /* ==========================================================================
@@ -698,7 +697,7 @@ body.home .header-main:not(.scrolled) {
 .nav-link {
     position: relative;
     padding: 0.5rem 1rem !important;
-    color: #ffffff !important;
+    color: var(--color-obsidian) !important;
     font-weight: 500;
     font-size: 0.95rem;
     transition: all var(--transition-base);
@@ -753,6 +752,14 @@ body.home .header-main:not(.scrolled) {
     transform: translateY(-5px);
     transition: opacity var(--transition-nav), visibility var(--transition-nav), transform var(--transition-nav);
     pointer-events: none;
+}
+
+/* Right-aligned variant — for dropdowns near the right edge of the
+   viewport (e.g. the language selector) so the menu opens leftward
+   instead of overflowing off-screen. */
+.dropdown-menu-end {
+    left: auto;
+    right: 0;
 }
 
 /* Hover area bridge - creates invisible bridge between menu item and dropdown */
@@ -828,23 +835,19 @@ body.home .header-main:not(.scrolled) {
     padding: 0;
     border: none;
     font-size: 1.5rem;
-    color: #ffffff;
+    color: var(--color-obsidian);
     transition: all var(--transition-base);
 }
-.header-main.scrolled .navbar-toggler { color: #ffffff; }
 .navbar-toggler:focus { box-shadow: none; outline: 2px solid var(--color-gold); outline-offset: 2px; }
 
 .navbar-toggler-icon {
     display: inline-block;
     width: 24px;
     height: 20px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 24'%3E%3Cpath stroke='%23ffffff' stroke-linecap='round' stroke-width='3' d='M7 8h16M7 16h16'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 24'%3E%3Cpath stroke='%231B1B18' stroke-linecap='round' stroke-width='3' d='M7 8h16M7 16h16'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
-}
-.header-main.scrolled .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 24'%3E%3Cpath stroke='%231B1B18' stroke-linecap='round' stroke-width='3' d='M7 8h16M7 16h16'/%3E%3C/svg%3E");
 }
 
 /* Mobile Collapse */
@@ -1708,11 +1711,11 @@ body.home .header-main:not(.scrolled) {
    ========================================================================== */
 
 .site-footer {
-    background-color: var(--color-gray-section);
+    background-color: #2E2E2E;
 }
 
 .footer-main {
-    background-color: var(--color-gray-section);
+    background-color: #2E2E2E;
     color: #ffffff;
     padding: 5rem 0;
 }
@@ -1910,13 +1913,13 @@ body.home .header-main:not(.scrolled) {
     .nav-link {
         padding: 0.75rem 1rem !important;
         border-left: 3px solid transparent;
-        color: #ffffff !important;
+        color: var(--color-obsidian) !important;
     }
     .nav-link:hover  { border-left-color: var(--color-gold); padding-left: calc(1rem + 2px) !important; }
     .nav-link::after { display: none; }
     .dropdown-menu   { background-color: transparent; border: none; box-shadow: none; padding: 0; visibility: visible; opacity: 1; transform: none; pointer-events: auto; }
-    .dropdown-item   { padding-left: 2rem !important; font-size: 0.9rem; border-left: none; color: #ffffff !important; }
-    .dropdown-item:hover { background-color: rgba(255,255,255,0.1); padding-left: 2rem !important; border-left: none; }
+    .dropdown-item   { padding-left: 2rem !important; font-size: 0.9rem; border-left: none; color: var(--color-obsidian) !important; }
+    .dropdown-item:hover { background-color: rgba(0,0,0,0.05); padding-left: 2rem !important; border-left: none; }
 
     /* Hero */
     .hero-slider    { min-height: 500px; }

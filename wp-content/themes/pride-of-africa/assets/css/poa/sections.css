@@ -10,7 +10,7 @@
 /* ── Section base utilities ─────────────────────── */
 .l-section { padding-block: var(--space-9); }                    /* 120px */
 .l-section--compact { padding-block: var(--space-8); }          /* 96px  */
-.l-section--alt { background-color: #FAFAFA; }
+.l-section--alt { background-color: #DBDBDB; }
 .l-section--dark { background-color: #243228; color: var(--color-surface); }
 
 .c-section-header { text-align: center; margin-bottom: var(--space-7); max-width: 54rem; margin-inline: auto; }
@@ -19,9 +19,38 @@
 .c-section-header__title { font-family: var(--poa-font-heading); font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: var(--color-text); margin-block: var(--space-2) var(--space-3); }
 .c-section-header__desc  { font-size: 1.125rem; color: var(--planner-icon-color,#707070); max-width: 45rem; margin-inline: auto; }
 
+/* Shared button base — several templates use bare "c-button c-button--primary"
+   / "c-button c-button--outline" with no component-specific class, but only
+   .c-button--hero (hero.css) and modifier colors existed, so those buttons
+   rendered with zero padding/radius/height. This restores the base + the
+   generic primary/secondary color variants everywhere else. */
+.c-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    height: 3rem;
+    padding-inline: 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 2px solid transparent;
+    font-family: var(--poa-font-body);
+    font-size: .9375rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background var(--duration-normal) var(--easing-standard), color var(--duration-normal) var(--easing-standard), border-color var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard), box-shadow var(--duration-normal) var(--easing-standard);
+}
+.c-button--primary { background: var(--color-primary); color: var(--color-surface); border-color: var(--color-primary); }
+.c-button--primary:hover { background: #007a00; border-color: #007a00; transform: translateY(-2px); box-shadow: var(--poa-shadow-md); }
+.c-button--secondary { background: transparent; color: var(--color-surface); border-color: var(--color-surface); }
+.c-button--secondary:hover { background: var(--color-surface); color: var(--color-primary); }
+@media (prefers-reduced-motion: reduce) { .c-button { transition: none; } }
+
 /* Badges */
 .c-badge { display: inline-flex; align-items: center; gap: .375rem; font-family: var(--poa-font-body); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; line-height: 1; border-radius: var(--radius-pill); padding: .375rem 1rem; }
-.c-badge--accent  { background-color: rgba(212,160,23,.15); color: var(--color-accent); }
+.c-badge--accent  { background-color: transparent; color: var(--color-accent); padding-inline: 0; }
 .c-badge--light   { background-color: rgba(255,255,255,.15); color: var(--color-surface); }
 .c-badge--overlay { position: absolute; z-index: 2; }
 .c-badge--pill    { border-radius: var(--radius-pill); }
@@ -30,26 +59,56 @@
 .c-badge--duration{ top: 1rem; left: 1rem; }
 
 /* ── c-trust (Why Choose Us §6) ─────────────────── */
+/* Background matches the footer's gray (#2E2E2E) per request. */
+.c-trust { background-color: #2E2E2E; }
 .c-trust__header { text-align: center; margin-bottom: var(--space-7); }
-.c-trust__heading { font-family: var(--poa-font-heading); font-size: clamp(2rem,4vw,3rem); font-weight: 700; max-width: 33.75rem; margin-inline: auto; margin-block: var(--space-2) var(--space-3); }
-.c-trust__subheading { color: #707070; font-size: 1.125rem; max-width: 45rem; margin-inline: auto; }
+.c-trust__heading { font-family: var(--poa-font-heading); font-size: clamp(2rem,4vw,3rem); font-weight: 700; max-width: 33.75rem; margin-inline: auto; margin-block: var(--space-2) var(--space-3); color: #ffffff; }
+.c-trust__subheading { color: rgba(255,255,255,.75); font-size: 1.125rem; max-width: 45rem; margin-inline: auto; }
 .c-trust__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
-.c-trust__card { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--poa-shadow-sm); border: 1px solid var(--poa-color-border); transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); } /* padding was space-5 (32px), 25% shorter */
+.c-trust__card { padding: var(--space-4); border-radius: var(--radius-lg); background: #2E2E2E; box-shadow: var(--poa-shadow-sm); border: 1px solid rgba(255,255,255,.15); transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); } /* padding was space-5 (32px), 25% shorter; background matches footer */
 .c-trust__card:hover { box-shadow: var(--poa-shadow-md); transform: translateY(-4px); }
-.c-trust__icon-wrap { width: 2.625rem; height: 2.625rem; border-radius: var(--radius-md); background-color: rgba(0,153,0,.1); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-2); font-size: 1.125rem; color: var(--color-primary); } /* was 3.5rem/space-3/1.5rem, 25% shorter */
-.c-trust__card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: var(--space-1); } /* margin was space-2 */
-.c-trust__card-desc  { font-size: .9375rem; color: #707070; line-height: 1.45; } /* was 1.6 */
+.c-trust__icon-wrap { width: 2.625rem; height: 2.625rem; border-radius: var(--radius-md); background-color: rgba(0,153,0,.18); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-2); font-size: 1.125rem; color: var(--color-primary); } /* was 3.5rem/space-3/1.5rem, 25% shorter */
+.c-trust__card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: var(--space-1); color: #ffffff; } /* margin was space-2 */
+.c-trust__card-desc  { font-size: .9375rem; color: rgba(255,255,255,.75); line-height: 1.45; } /* was 1.6 */
 @media (min-width: 48em) { .c-trust__grid { grid-template-columns: repeat(2,1fr); } }
 @media (min-width: 75em) { .c-trust__grid { grid-template-columns: repeat(4,1fr); gap: var(--space-5); } }
 
 /* ── c-partners (§7) ──────────────────────────── */
 .c-partners { border-block: 1px solid var(--poa-color-border); }
 .c-partners__label { text-align: center; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: #707070; margin-bottom: var(--space-4); }
-.c-partners__track { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3.75rem; min-height: 8.75rem; }
-.c-partners__logo { height: 3rem; width: auto; object-fit: contain; filter: grayscale(1); opacity: .6; transition: filter var(--duration-normal), opacity var(--duration-normal), transform var(--duration-normal); }
-.c-partners__link:hover .c-partners__logo { filter: grayscale(0); opacity: 1; transform: scale(1.05); }
+.c-partners__track { overflow: hidden; min-height: 8.75rem; display: flex; align-items: center; }
+.c-partners__track-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem; /* was 2rem — tighter still */
+    width: max-content;
+    animation: scroll-left 40s linear infinite;
+    will-change: transform;
+}
+.c-partners__track:hover .c-partners__track-inner,
+.c-partners__track:focus-within .c-partners__track-inner { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+    .c-partners__track-inner { animation: none; }
+}
+
+/* Each slot is a fixed width (not just a fixed height) so narrow logos
+   fill the same footprint as wide ones instead of looking smaller —
+   object-fit: contain keeps them undistorted. */
+.c-partners__item { flex-shrink: 0; width: 9rem; display: flex; justify-content: center; }
+
+/* Exactly 8 logos visible at once across the full (edge-to-edge)
+   viewport width (7 gaps of 20px between them). */
+@media (min-width: 75em) {
+    .c-partners__item { flex-basis: calc((100vw - (7 * 1.25rem)) / 8); }
+}
+.c-partners__link { width: 100%; }
+.c-partners__logo { height: 4.5rem; width: 100%; object-fit: contain; filter: grayscale(0); opacity: 1; transition: filter var(--duration-normal), opacity var(--duration-normal), transform var(--duration-normal); }
+.c-partners__link:hover .c-partners__logo { filter: grayscale(1); opacity: .7; transform: scale(1.05); }
 
 /* ── c-destinations (§8) ──────────────────────── */
+.c-destinations { background-color: #2E2E2E; }
+.c-destinations .c-section-header__title { color: #ffffff; }
+.c-destinations .c-section-header__desc  { color: rgba(255,255,255,.75); }
 .c-destinations__grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
 .c-destinations__footer { text-align: center; margin-top: var(--space-6); }
 @media (min-width: 48em) { .c-destinations__grid { grid-template-columns: repeat(2,1fr); } }
@@ -63,6 +122,9 @@
 
 /* ── c-itineraries (§10) ──────────────────────── */
 .c-itineraries__grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+.c-itineraries { background-color: #2E2E2E; }
+.c-itineraries .c-section-header__title { color: #ffffff; }
+.c-itineraries .c-section-header__desc  { color: rgba(255,255,255,.75); }
 .c-itinerary-card { display: grid; grid-template-columns: 1fr; border-radius: var(--radius-xl); overflow: hidden; background: var(--color-surface); box-shadow: var(--poa-shadow-md); transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); }
 .c-itinerary-card:hover { box-shadow: var(--poa-shadow-lg); transform: translateY(-4px); }
 .c-itinerary-card__image-wrap { position: relative; overflow: hidden; height: 16rem; }
@@ -84,23 +146,29 @@
     .c-itinerary-card__image-wrap { height: 100%; }
 }
 
-/* ── c-dream-trip (§11) ───────────────────────── */
+/* ── c-dream-trip (§11) ───────────────────────────────────────
+   Rebuilt: single centered card (not two columns) — eyebrow +
+   heading + subheading, then one form card with the adventure
+   textarea and a Travel Dates / Travelers / Destination row. */
 .c-dream-trip { position: relative; background-color: #1E3A24; color: var(--color-surface); }
-.c-dream-trip__inner { display: grid; grid-template-columns: 1fr; gap: var(--space-7); align-items: center; }
-.c-dream-trip__heading { font-size: clamp(1.75rem,3.5vw,2.5rem); font-weight: 700; margin-block: var(--space-2) var(--space-3); }
-.c-dream-trip__desc { color: rgba(255,255,255,.8); font-size: 1.0625rem; line-height: 1.7; }
-.c-dream-trip__features { list-style: none; padding: 0; margin: var(--space-4) 0; display: flex; flex-direction: column; gap: var(--space-2); }
-.c-dream-trip__features li { display: flex; align-items: center; gap: .75rem; font-size: .9375rem; color: rgba(255,255,255,.9); }
-.c-dream-trip__features .bi { color: var(--color-primary); font-size: 1.125rem; flex-shrink: 0; }
-.c-dream-trip__contacts { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
-.c-dream-trip__form-card { background: var(--color-surface); border-radius: var(--radius-xl); padding: var(--space-6); box-shadow: var(--poa-shadow-lg); }
-.c-dream-trip__form-title { font-size: 1.375rem; font-weight: 700; color: var(--color-text); margin-bottom: var(--space-4); }
-@media (min-width: 75em) { .c-dream-trip__inner { grid-template-columns: 1fr 1fr; } }
+.c-dream-trip__card { max-width: 45rem; margin-inline: auto; background: rgba(255,255,255,.06); border-radius: var(--radius-xl); padding: var(--space-5); }
+.c-dream-trip__textarea { min-height: 7.5rem; }
+.c-form__row.c-form__row--triple { grid-template-columns: 1fr; }
+@media (min-width: 48em) { .c-form__row.c-form__row--triple { grid-template-columns: repeat(3,1fr); } }
+.c-dream-trip .c-form__label { color: rgba(255,255,255,.85); }
+.c-dream-trip .c-form__input,
+.c-dream-trip .c-form__select,
+.c-dream-trip .c-form__textarea { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color: var(--color-surface); }
+.c-dream-trip .c-form__input::placeholder,
+.c-dream-trip .c-form__textarea::placeholder { color: rgba(255,255,255,.45); }
+.c-dream-trip .c-form__select option { color: var(--color-text); }
+.c-dream-trip__submit { align-self: flex-start; padding-inline: var(--space-6); }
 
 /* ── c-estimator (§12) ────────────────────────── */
 .c-estimator__card { display: grid; grid-template-columns: 1fr; gap: 2rem; background: var(--color-surface); border-radius: var(--radius-xl); box-shadow: var(--poa-shadow-lg); padding: 2.5rem; max-width: 53.75rem; margin-inline: auto; }
-.c-estimator__controls { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--space-4); }
+.c-estimator__controls { display: grid; grid-template-columns: 1fr; gap: var(--space-4); } /* was repeat(2,1fr) — single column on mobile so the +/- stepper has room */
 .c-estimator__controls > * { min-width: 0; } /* let grid tracks shrink below the <select>'s intrinsic width */
+@media (min-width: 30em) { .c-estimator__controls { grid-template-columns: repeat(2,1fr); } }
 .c-estimator__label { display: flex; align-items: center; gap: .375rem; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text); margin-bottom: .5rem; }
 .c-estimator__label .bi { color: var(--color-primary); }
 .c-estimator__select { width: 100%; height: 3.5rem; border: 1.5px solid var(--poa-color-border); border-radius: var(--radius-md); padding-inline: 1rem; font-size: .9375rem; background: #FAFAFA; appearance: none; cursor: pointer; }
@@ -123,7 +191,8 @@
 @media (min-width: 75em) { .c-estimator__card { grid-template-columns: 1fr 21.25rem; } .c-estimator__controls { grid-template-columns: repeat(2,1fr); } }
 
 /* ── c-international (§8 variant) ────────────── */
-.c-international__grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
+.c-international__grid { display: grid; grid-template-columns: 1fr; gap: 1rem; } /* was repeat(2,1fr) — single column on mobile */
+@media (min-width: 36em) { .c-international__grid { grid-template-columns: repeat(2,1fr); } }
 .c-international__card { position: relative; border-radius: var(--radius-lg); overflow: hidden; min-height: 12rem; display: flex; align-items: flex-end; text-decoration: none; color: var(--color-surface); }
 .c-international__card:hover .c-international__img { transform: scale(1.06); }
 .c-international__img-wrap { position: absolute; inset: 0; }
@@ -140,16 +209,26 @@
 @media (min-width: 48em) { .c-international__grid { grid-template-columns: repeat(3,1fr); } }
 @media (min-width: 75em) { .c-international__grid { grid-template-columns: repeat(4,1fr); } }
 
-/* ── c-testimonials (§13) ────────────────────── */
-.c-testimonials { overflow: hidden; }
-.c-testimonials__slider { position: relative; overflow: hidden; }
-.c-testimonials__track { display: flex; position: relative; }
-.c-testimonials__controls { display: flex; align-items: center; justify-content: center; gap: var(--space-4); margin-top: var(--space-6); }
-.c-testimonials__arrow { display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: var(--radius-pill); border: 1.5px solid rgba(255,255,255,.3); background: rgba(255,255,255,.1); color: var(--color-surface); font-size: 1.125rem; cursor: pointer; transition: background var(--duration-normal), border-color var(--duration-normal); }
-.c-testimonials__arrow:hover { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.6); }
-.c-testimonials__dot { display: block; width: .625rem; height: .625rem; border-radius: var(--radius-pill); background: rgba(255,255,255,.3); border: none; cursor: pointer; transition: width var(--duration-normal), background var(--duration-normal); padding: 0; }
-.c-testimonials__dot--active { width: 1.75rem; background: var(--color-surface); }
-.c-testimonials__pagination { display: flex; align-items: center; gap: .5rem; }
+/* ── c-testimonials — rebuilt to match reference ──────────────
+   Light background, left-aligned heading + verification legend,
+   platform filter pills with prev/next, 3-cards-per-page grid. */
+.c-section-header--start { text-align: left; margin-inline: 0; max-width: none; }
+.c-testimonials__header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
+.c-testimonials__header .c-section-header { margin-bottom: 0; }
+.c-testimonials__legend { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-4); padding: 0; margin: var(--space-2) 0 0; }
+.c-testimonials__legend li { display: flex; align-items: center; gap: .375rem; font-size: .875rem; color: #707070; }
+.c-testimonials__legend .bi { color: var(--color-primary); }
+.c-testimonials__filterbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
+.c-testimonials__filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+.c-testimonials__filter { height: 2.5rem; padding-inline: 1.25rem; border-radius: var(--radius-pill); border: 1.5px solid var(--poa-color-border); background: transparent; color: var(--color-text); font-size: .875rem; font-weight: 600; cursor: pointer; transition: background var(--duration-fast), color var(--duration-fast), border-color var(--duration-fast); }
+.c-testimonials__filter--active { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-surface); }
+.c-testimonials__filter:not(.c-testimonials__filter--active):hover { border-color: var(--color-primary); color: var(--color-primary); }
+.c-testimonials__controls { display: flex; align-items: center; gap: .5rem; }
+.c-testimonials__arrow { display: inline-flex; align-items: center; justify-content: center; width: 2.75rem; height: 2.75rem; border-radius: var(--radius-pill); border: 1.5px solid var(--poa-color-border); background: var(--color-surface); color: var(--color-text); font-size: 1.125rem; cursor: pointer; transition: background var(--duration-fast), border-color var(--duration-fast); }
+.c-testimonials__arrow:hover:not(:disabled) { background: #FAFAFA; border-color: #cfcfcf; }
+.c-testimonials__arrow:disabled { opacity: .4; cursor: default; }
+.c-testimonials__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
+@media (min-width: 62em) { .c-testimonials__grid { grid-template-columns: repeat(3,1fr); } }
 
 /* ── c-review (§14) ──────────────────────────── */
 .c-review { position: relative; background: linear-gradient(135deg, var(--color-primary) 0%, #1E3A24 100%); color: var(--color-surface); text-align: center; }
@@ -170,18 +249,21 @@
 
 /* ── c-office (§16) ──────────────────────────── */
 .c-office__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-6); }
+.c-office__grid > * { min-width: 0; }
 .c-office__sub-title { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; font-weight: 700; margin-bottom: var(--space-4); }
 .c-office__sub-title .bi { color: var(--color-primary); font-size: 1.25rem; }
 .c-office__hours-list { display: flex; flex-direction: column; gap: var(--space-2); }
 .c-office__hours-row { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: var(--space-2); border-bottom: 1px solid var(--poa-color-border); }
-.c-office__day { font-weight: 600; }
-.c-office__time { color: #707070; }
+.c-office__day { font-weight: 600; min-width: 0; }
+.c-office__time { color: #707070; min-width: 0; text-align: right; }
 .c-office__timezone { margin-top: var(--space-3); font-size: .875rem; color: #707070; display: flex; align-items: center; gap: .375rem; }
 .c-office__contact-card { background: var(--color-surface); border-radius: var(--radius-xl); padding: var(--space-5); box-shadow: var(--poa-shadow-md); border: 1px solid var(--poa-color-border); }
 .c-office__contact-list { list-style: none; padding: 0; margin: 0 0 var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
 .c-office__contact-item { display: flex; align-items: flex-start; gap: .75rem; font-size: .9375rem; }
 .c-office__contact-item .bi { color: var(--color-primary); font-size: 1.125rem; margin-top: 2px; flex-shrink: 0; }
-.c-office__contact-item a { color: var(--color-text); text-decoration: none; } 
+.c-office__contact-item a,
+.c-office__contact-item address { min-width: 0; overflow-wrap: break-word; }
+.c-office__contact-item a { color: var(--color-text); text-decoration: none; }
 .c-office__contact-item a:hover { color: var(--color-primary); text-decoration: underline; }
 .c-office__contact-item--address address { font-style: normal; line-height: 1.5; }
 @media (min-width: 75em) { .c-office__grid { grid-template-columns: 26.25rem 23.75rem; gap: 4rem; } }

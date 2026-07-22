@@ -6,29 +6,40 @@
  */
 
 /* ── Destination Card (§8) ─────────────────────
-   Height: 480px | Image: 320px | Padding: 24px
-   Badge Radius: 999px | Hover Lift: -8px        */
-.c-destination-card { position: relative; border-radius: var(--radius-xl); overflow: hidden; background: var(--color-surface); box-shadow: var(--poa-shadow-sm); transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); display: flex; flex-direction: column; }
-.c-destination-card:hover { box-shadow: var(--poa-shadow-lg); transform: translateY(-.5rem); }
-.c-destination-card__link { position: absolute; inset: 0; z-index: 0; }
-.c-destination-card__image-wrap { position: relative; height: 20rem; overflow: hidden; flex-shrink: 0; }
+   Full-bleed image card with a bottom text overlay, plus an
+   external Explore/Maps button row below the card.
+   Height: 480px | Padding: 24px | Hover Lift: -8px */
+.c-destination-card { display: flex; flex-direction: column; gap: .75rem; }
+.c-destination-card__image-wrap { position: relative; display: block; height: 22.5rem; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--poa-shadow-sm); transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); } /* was 30rem — 25% shorter */
+.c-destination-card__image-wrap:hover { box-shadow: var(--poa-shadow-lg); transform: translateY(-.5rem); }
 .c-destination-card__image { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--easing-standard); }
-.c-destination-card:hover .c-destination-card__image { transform: scale(1.05); }
-.c-destination-card__image-wrap .c-badge { top: 1rem; left: 1rem; }
-.c-destination-card__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .75rem; flex: 1; }
-.c-destination-card__title { font-size: 1.25rem; font-weight: 700; }
-.c-destination-card__title a { color: inherit; text-decoration: none; position: relative; z-index: 1; }
-.c-destination-card__highlight { font-size: .9375rem; color: #707070; line-height: 1.5; }
-.c-destination-card__cta { display: inline-flex; align-items: center; gap: .375rem; font-size: .875rem; font-weight: 600; color: var(--color-primary); text-decoration: none; margin-top: auto; position: relative; z-index: 1; transition: gap var(--duration-fast); }
-.c-destination-card__cta:hover { gap: .625rem; }
-@media (prefers-reduced-motion: reduce) { .c-destination-card, .c-destination-card__image, .c-destination-card__cta { transition: none; } }
+.c-destination-card__image-wrap:hover .c-destination-card__image { transform: scale(1.05); }
+.c-destination-card__scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.15) 55%, transparent 100%); }
+.c-destination-card__overlay { position: absolute; inset-inline: 0; bottom: 0; padding: 1.5rem; color: #ffffff; }
+.c-destination-card__title { font-size: 1.5rem; font-weight: 700; margin-bottom: .5rem; }
+.c-destination-card__highlight { font-size: .9375rem; color: rgba(255,255,255,.85); line-height: 1.5; margin-bottom: .75rem; }
+.c-destination-card__cta { display: inline-flex; align-items: center; gap: .375rem; font-size: .875rem; font-weight: 600; color: var(--color-primary); text-decoration: none; transition: gap var(--duration-fast); }
+.c-destination-card__image-wrap:hover .c-destination-card__cta { gap: .625rem; }
+.c-destination-card__actions { display: flex; gap: .75rem; }
+.c-destination-card__explore-btn {
+    flex: 1;
+    min-width: 0;      /* let the button shrink below its text's natural width */
+    white-space: normal; /* wrap long "Explore <name>" labels instead of overflowing */
+    height: auto;
+    min-height: 3rem;
+    text-align: center;
+}
+.c-destination-card__maps-btn { flex-shrink: 0; }
+.c-button--outline-neutral { background: transparent; color: #ffffff; border: 1.5px solid rgba(255,255,255,.35); }
+.c-button--outline-neutral:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); }
+@media (prefers-reduced-motion: reduce) { .c-destination-card__image-wrap, .c-destination-card__image, .c-destination-card__cta { transition: none; } }
 
 /* ── Tour Card (§9) ─────────────────────────────
    Card: 392px | Image: 340px
    Price Badge: Top Right | Duration: Top Left     */
 .c-tour-card { border-radius: var(--radius-xl); overflow: hidden; background: var(--color-surface); box-shadow: var(--poa-shadow-sm); display: flex; flex-direction: column; transition: box-shadow var(--duration-normal) var(--easing-standard), transform var(--duration-normal) var(--easing-standard); }
 .c-tour-card:hover { box-shadow: var(--poa-shadow-lg); transform: translateY(-.5rem); }
-.c-tour-card__image-wrap { position: relative; height: 21.25rem; overflow: hidden; flex-shrink: 0; }
+.c-tour-card__image-wrap { position: relative; height: 15.9375rem; overflow: hidden; flex-shrink: 0; } /* was 21.25rem — 25% shorter */
 .c-tour-card__image { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--easing-standard); }
 .c-tour-card:hover .c-tour-card__image { transform: scale(1.05); }
 .c-tour-card__duration { top: 1rem; left: 1rem; }
@@ -47,16 +58,17 @@
 /* ── Testimonial Card (§13) ─────────────────────
    Width: 420px | Height: 360px | Padding: 36px
    Avatar: 70px | Quote Margin: 24px             */
-.c-testimonial-card { flex: 0 0 100%; background: rgba(255,255,255,.08); border-radius: var(--radius-xl); padding: 2.25rem; display: none; flex-direction: column; gap: 1rem; border: 1px solid rgba(255,255,255,.12); transition: opacity var(--duration-normal) var(--easing-standard); }
-.c-testimonial-card--active { display: flex; }
-.c-testimonial-card__rating { display: flex; gap: .25rem; color: var(--color-accent); font-size: 1rem; }
-.c-testimonial-card__quote { margin: 0; font-size: 1.0625rem; line-height: 1.7; color: rgba(255,255,255,.9); font-style: italic; }
-.c-testimonial-card__footer { display: flex; align-items: center; gap: 1rem; margin-top: auto; }
-.c-testimonial-card__avatar { width: 4.375rem; height: 4.375rem; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,.2); flex-shrink: 0; }
-.c-testimonial-card__avatar--placeholder { display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.1); font-size: 1.75rem; color: rgba(255,255,255,.5); }
-.c-testimonial-card__meta { display: flex; flex-direction: column; gap: .25rem; }
-.c-testimonial-card__name { font-style: normal; font-weight: 700; color: var(--color-surface); font-size: 1rem; }
-.c-testimonial-card__location, .c-testimonial-card__tour { font-size: .8125rem; color: rgba(255,255,255,.65); display: flex; align-items: center; gap: .25rem; }
+.c-testimonial-card { background: var(--color-surface); border-radius: var(--radius-xl); padding: 2rem; display: flex; flex-direction: column; gap: 1rem; border: 1px solid var(--poa-color-border); box-shadow: var(--poa-shadow-sm); }
+.c-testimonial-card__quote-icon { font-size: 2rem; color: rgba(0,153,0,.35); line-height: 1; }
+.c-testimonial-card__rating { display: flex; gap: .25rem; color: var(--color-primary); font-size: .9375rem; }
+.c-testimonial-card__quote { margin: 0; font-size: 1rem; line-height: 1.65; color: var(--color-text); }
+.c-testimonial-card__footer { display: flex; align-items: center; gap: .875rem; padding-top: 1rem; border-top: 1px solid var(--poa-color-border); }
+.c-testimonial-card__avatar { width: 2.75rem; height: 2.75rem; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,153,0,.12); color: var(--color-primary); font-weight: 700; font-size: .875rem; }
+.c-testimonial-card__meta { display: flex; flex-direction: column; gap: .125rem; }
+.c-testimonial-card__name { font-style: normal; font-weight: 700; color: var(--color-text); font-size: .9375rem; }
+.c-testimonial-card__trip { font-size: .8125rem; color: #707070; }
+.c-testimonial-card__platform { display: inline-flex; align-items: center; gap: .375rem; align-self: flex-start; font-size: .8125rem; font-weight: 600; color: var(--platform-color, var(--color-primary)); background: color-mix(in srgb, var(--platform-color, var(--color-primary)) 12%, transparent); border-radius: var(--radius-pill); padding: .375rem .875rem; }
+.c-testimonial-card__platform-dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--platform-color, var(--color-primary)); }
 
 /* ── Blog Card (§15) ────────────────────────────
    Card Height: 480px | Image: 280px             */

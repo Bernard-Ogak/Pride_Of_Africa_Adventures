@@ -10,41 +10,49 @@
  */
 
 $post_id   = get_the_ID();
-$tours     = (int) get_post_meta( $post_id, '_destination_tour_count', true );
 $highlight = get_post_meta( $post_id, '_destination_highlight', true );
 $img_id    = get_post_thumbnail_id();
 $img_url   = $img_id ? wp_get_attachment_image_url( $img_id, 'large' ) : '';
 $img_srcset= $img_id ? wp_get_attachment_image_srcset( $img_id, 'large' ) : '';
+$title     = get_the_title();
+$maps_url  = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $title );
 ?>
 
-<article class="c-destination-card" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
-    <a class="c-destination-card__link" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1"></a>
+<article class="c-destination-card" aria-label="<?php echo esc_attr( $title ); ?>">
 
-    <div class="c-destination-card__image-wrap">
+    <a class="c-destination-card__image-wrap" href="<?php the_permalink(); ?>">
         <?php if ( $img_url ) : ?>
         <img class="c-destination-card__image"
              src="<?php echo esc_url( $img_url ); ?>"
              <?php if ( $img_srcset ) : ?>srcset="<?php echo esc_attr( $img_srcset ); ?>" sizes="(max-width:767px) 100vw,(max-width:1199px) 50vw,33vw"<?php endif; ?>
-             alt="<?php echo esc_attr( get_the_title() ); ?>"
+             alt="<?php echo esc_attr( $title ); ?>"
              loading="lazy" decoding="async">
         <?php endif; ?>
-        <?php if ( $tours > 0 ) : ?>
-        <span class="c-badge c-badge--pill c-badge--overlay">
-            <?php echo esc_html( sprintf( _n( '%d Tour', '%d Tours', $tours, 'pride-of-africa' ), $tours ) ); ?>
-        </span>
-        <?php endif; ?>
-    </div>
+        <div class="c-destination-card__scrim" aria-hidden="true"></div>
 
-    <div class="c-destination-card__body">
-        <h3 class="c-destination-card__title">
-            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-        </h3>
-        <?php if ( $highlight ) : ?>
-        <p class="c-destination-card__highlight"><?php echo esc_html( $highlight ); ?></p>
-        <?php endif; ?>
-        <a href="<?php the_permalink(); ?>" class="c-destination-card__cta" aria-label="<?php echo esc_attr( sprintf( __( 'Explore %s', 'pride-of-africa' ), get_the_title() ) ); ?>">
-            <?php esc_html_e( 'Explore', 'pride-of-africa' ); ?>
+        <div class="c-destination-card__overlay">
+            <h3 class="c-destination-card__title"><?php echo esc_html( $title ); ?></h3>
+            <?php if ( $highlight ) : ?>
+            <p class="c-destination-card__highlight"><?php echo esc_html( $highlight ); ?></p>
+            <?php endif; ?>
+            <span class="c-destination-card__cta">
+                <?php esc_html_e( 'Explore', 'pride-of-africa' ); ?>
+                <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </span>
+        </div>
+    </a>
+
+    <div class="c-destination-card__actions">
+        <a href="<?php the_permalink(); ?>" class="c-button c-button--primary c-destination-card__explore-btn"
+           aria-label="<?php echo esc_attr( sprintf( __( 'Explore %s', 'pride-of-africa' ), $title ) ); ?>">
             <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            <?php echo esc_html( sprintf( __( 'Explore %s', 'pride-of-africa' ), $title ) ); ?>
+        </a>
+        <a href="<?php echo esc_url( $maps_url ); ?>" class="c-button c-button--outline-neutral c-destination-card__maps-btn"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="<?php echo esc_attr( sprintf( __( 'View %s on Maps', 'pride-of-africa' ), $title ) ); ?>">
+            <i class="bi bi-geo-alt" aria-hidden="true"></i>
+            <?php esc_html_e( 'Maps', 'pride-of-africa' ); ?>
         </a>
     </div>
 </article>
