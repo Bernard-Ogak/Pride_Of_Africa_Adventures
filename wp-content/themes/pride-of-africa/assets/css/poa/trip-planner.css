@@ -36,11 +36,11 @@
 .c-trip-planner {
     --planner-card-radius:  var(--radius-xl);       /* 20px */
     --planner-card-shadow:  var(--poa-shadow-lg);        /* 0 15px 45px rgba(0,0,0,.18) */
-    --planner-padding:      var(--space-5);          /* 32px */
+    --planner-padding:      var(--space-4);          /* 24px — 25% shorter than the original 32px */
     --planner-gap:          1.25rem;                 /* 20px */
-    --planner-input-h:      3.5rem;                  /* 56px */
+    --planner-input-h:      2.625rem;                /* 42px — 25% shorter than the original 56px */
     --planner-icon-size:    1.375rem;                /* 22px */
-    --planner-label-mb:     0.5rem;                  /* 8px */
+    --planner-label-mb:     0.25rem;                 /* 4px — was 8px */
     --planner-input-radius: var(--radius-md);        /* 10px — dropdown radius */
     --planner-btn-w:        11.25rem;                /* 180px */
     --planner-overlap:      -4.375rem;               /* -70px — pulls card up over hero */
@@ -374,7 +374,7 @@
     .c-trip-planner__form {
         flex-wrap:  nowrap;
         align-items: flex-end;           /* bottom-align all columns */
-        height:     8.75rem;             /* 140px — UI Spec v3 §5 */
+        height:     6.5625rem;           /* 105px — 25% shorter than the original 140px */
         padding:    var(--planner-padding);
     }
 

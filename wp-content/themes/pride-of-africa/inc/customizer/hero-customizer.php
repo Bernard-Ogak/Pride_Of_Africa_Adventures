@@ -201,6 +201,68 @@ function pride_of_africa_get_default_hero_description($slide) {
     return $descriptions[$slide] ?? '';
 }
 
+/**
+ * Assemble hero slides from Customizer settings for template-parts/home/hero.php.
+ *
+ * Lives here (rather than the orphaned template-parts/home-legacy/hero.php copy)
+ * so it is actually loaded via functions.php's require_once of this file.
+ *
+ * @return array
+ */
+function pride_of_africa_get_hero_slides() {
+    $slides = [];
+
+    for ($slide = 1; $slide <= 4; $slide++) {
+        $slide_key  = "slide_$slide";
+        $image_id   = get_theme_mod("pride_hero_{$slide_key}_image", '');
+        $image_url  = $image_id ? wp_get_attachment_image_url($image_id, 'hero-slide') : '';
+
+        // Use fallback image if no image is set in customizer
+        if (empty($image_url)) {
+            $fallback_images = [
+                1 => PRIDE_OF_AFRICA_IMAGES . '/default/hero-1.jpg',
+                2 => PRIDE_OF_AFRICA_IMAGES . '/default/hero-2.jpg',
+                3 => PRIDE_OF_AFRICA_IMAGES . '/default/hero-3.jpg',
+                4 => PRIDE_OF_AFRICA_IMAGES . '/default/hero-4.jpg',
+            ];
+            $image_url = isset($fallback_images[$slide]) ? $fallback_images[$slide] : '';
+        }
+
+        $slides[] = [
+            'eyebrow'            => get_theme_mod(
+                "pride_hero_{$slide_key}_eyebrow",
+                pride_of_africa_get_default_hero_eyebrow($slide)
+            ),
+            'title'              => get_theme_mod(
+                "pride_hero_{$slide_key}_title",
+                pride_of_africa_get_default_hero_title($slide)
+            ),
+            'description'        => get_theme_mod(
+                "pride_hero_{$slide_key}_description",
+                pride_of_africa_get_default_hero_description($slide)
+            ),
+            'image_url'          => esc_url($image_url),
+            'btn_primary_text'   => get_theme_mod(
+                "pride_hero_{$slide_key}_btn_primary_text",
+                esc_html__('Plan My Safari', 'pride-of-africa')
+            ),
+            'btn_primary_url'    => esc_url(
+                get_theme_mod("pride_hero_{$slide_key}_btn_primary_url", home_url('/contact'))
+            ),
+            'btn_secondary_text' => get_theme_mod(
+                "pride_hero_{$slide_key}_btn_secondary_text",
+                esc_html__('Get Free Safari Proposal', 'pride-of-africa')
+            ),
+            'btn_secondary_url'  => esc_url(
+                get_theme_mod("pride_hero_{$slide_key}_btn_secondary_url", home_url('/contact'))
+            ),
+            'slide_number'       => $slide,
+        ];
+    }
+
+    return $slides;
+}
+
 // Hook into customize_register
 add_action('customize_register', 'pride_of_africa_hero_customize_register');
 

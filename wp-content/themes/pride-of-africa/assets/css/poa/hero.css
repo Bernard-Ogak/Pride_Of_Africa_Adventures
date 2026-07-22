@@ -29,7 +29,7 @@
 
    --color-primary:        #009900   (Brand Green)
    --color-primary-dark:   #1E3A24   (Dark Forest)
-   --color-accent:         #D4A017   (Safari Gold)
+   --color-accent:         #009900   (was Safari Gold #D4A017)
    --color-surface:        #FFFFFF
    --color-text:           #222222
    --poa-color-border:         #E5E5E5
@@ -70,7 +70,7 @@
    ============================================================= */
 .c-hero {
     /* Layout */
-    --hero-height:          100vh;
+    --hero-height:          calc(100vh - 7.5rem); /* reserves room so the Trip Planner's overlap doesn't push below the fold */
     --hero-min-height:      51.25rem;   /* 820px ÷ 16 */
     --hero-content-max:     47.5rem;    /* 760px — UI Spec v3 §4 */
     --hero-headline-max:    42.5rem;    /* 680px — UI Spec v3 §4 */
@@ -99,7 +99,6 @@
     --hero-z-overlay:       2;
     --hero-z-content:       3;
     --hero-z-controls:      4;
-    --hero-z-scroll:        4;
 }
 
 
@@ -215,7 +214,7 @@
     display:         flex;
     align-items:     center;
     /* Push content slightly above centre to leave room for planner */
-    padding-block:   var(--space-9) var(--space-10); /* 120px top | 160px bottom */
+    padding-block:   var(--space-7) var(--space-8); /* 64px top | 96px bottom — tightened so content fits without scrolling */
 }
 
 /* Container utility — 1320px max, centred, safe margins */
@@ -277,6 +276,16 @@
     align-items: center;
 }
 
+/* On very narrow phones the 48px button padding makes the full-length
+   "Get Free Safari Proposal" label wider than the viewport — stack the
+   buttons full-width with tighter padding so nothing overflows. */
+@media (max-width: 25.9375em) { /* 415px */
+    .c-hero__cta-group .c-button--hero {
+        flex: 1 1 100%;
+        padding-inline: var(--space-4); /* 24px */
+    }
+}
+
 
 /* =============================================================
    11. HERO BUTTONS
@@ -333,6 +342,7 @@
 .c-button--secondary.c-button--hero {
     background-color: transparent;
     color:            var(--color-surface);
+    border-width:     1px; /* thinner than the 2px shared default — "Get Free Safari Proposal" */
     border-color:     var(--color-surface);
 }
 
@@ -372,16 +382,15 @@
 
 /* =============================================================
    12. SLIDER CONTROLS WRAPPER
+       Spans the full hero so the arrows (right edge, vertically
+       centered) and the pagination dots (bottom, centered) can be
+       positioned independently of one another.
    ============================================================= */
 .c-hero__controls {
-    position:        absolute;
-    bottom:          var(--space-6);  /* 48px from bottom */
-    left:            50%;
-    transform:       translateX(-50%);
-    z-index:         var(--hero-z-controls);
-    display:         flex;
-    align-items:     center;
-    gap:             var(--space-4);  /* 24px */
+    position:       absolute;
+    inset:          0;
+    z-index:        var(--hero-z-controls);
+    pointer-events: none; /* only the buttons inside need to be clickable */
 }
 
 
@@ -389,8 +398,13 @@
    13. ARROW BUTTONS
        Size: 48px — Icon Button spec Design Spec §8 / Component Catalog §2
        Circular — Design Spec §8
+       Stacked vertically on the right edge, centered on the hero's
+       height. Kept well clear of the Trip Planner bar, which only
+       overlaps the very bottom of the hero.
    ============================================================= */
 .c-hero__arrow {
+    position:         absolute;
+    right:            var(--space-5); /* 32px safe margin from the edge */
     display:          inline-flex;
     align-items:      center;
     justify-content:  center;
@@ -402,12 +416,32 @@
     color:            var(--color-surface);
     font-size:        1.125rem;
     cursor:           pointer;
+    pointer-events:   auto;
     backdrop-filter:  blur(6px);
     -webkit-backdrop-filter: blur(6px);
     transition:
         background-color var(--duration-normal) var(--easing-standard),
         border-color     var(--duration-normal) var(--easing-standard),
         transform        var(--duration-normal) var(--easing-standard);
+}
+
+/* The pair is centered as a group on the hero's vertical midpoint:
+   prev sits just above 50%, next just below, split by --space-2. */
+.c-hero__arrow--prev {
+    top: calc(50% - var(--hero-arrow-size) - (var(--space-2) / 2));
+}
+
+.c-hero__arrow--next {
+    top: calc(50% + (var(--space-2) / 2));
+}
+
+/* Below tablet, hero copy can span the full safe width and would collide
+   with a right-edge arrow — hide the arrows there and rely on the
+   pagination dots, autoplay and keyboard navigation instead. */
+@media (max-width: 767px) {
+    .c-hero__arrow {
+        display: none;
+    }
 }
 
 .c-hero__arrow:hover,
@@ -439,9 +473,14 @@
    14. PAGINATION DOTS
    ============================================================= */
 .c-hero__pagination {
-    display:     flex;
-    align-items: center;
-    gap:         var(--space-2); /* 8px */
+    position:       absolute;
+    bottom:         var(--space-6); /* 48px from bottom */
+    left:           50%;
+    transform:      translateX(-50%);
+    display:        flex;
+    align-items:    center;
+    gap:            var(--space-2); /* 8px */
+    pointer-events: auto;
 }
 
 .c-hero__dot {
@@ -480,48 +519,6 @@
 
 
 /* =============================================================
-   15. SCROLL INDICATOR
-       Min touch target: 44×44px — Accessibility spec / WCAG 2.1
-       Animation: gentle bounce to invite scrolling
-   ============================================================= */
-.c-hero__scroll-indicator {
-    position:        absolute;
-    bottom:          var(--space-5);   /* 32px */
-    right:           var(--space-5);   /* 32px */
-    z-index:         var(--hero-z-scroll);
-    display:         flex;
-    flex-direction:  column;
-    align-items:     center;
-    gap:             var(--space-1);   /* 4px */
-    color:           rgba(255, 255, 255, .7);
-    font-family:     var(--poa-font-body);
-    font-size:       0.6875rem;        /* 11px */
-    font-weight:     500;
-    letter-spacing:  0.1em;
-    text-transform:  uppercase;
-    pointer-events:  none;
-    animation:       hero-bounce 1.8s var(--easing-standard) infinite;
-}
-
-.c-hero__scroll-icon {
-    display:     flex;
-    align-items: center;
-    font-size:   1.25rem;
-}
-
-@keyframes hero-bounce {
-    0%, 100% { transform: translateY(0);    opacity: .7; }
-    50%       { transform: translateY(6px); opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .c-hero__scroll-indicator {
-        animation: none;
-    }
-}
-
-
-/* =============================================================
    16. RESPONSIVE — MOBILE FIRST
        Breakpoints: 576 | 768 | 992 | 1200 | 1400
        Frontend Dev Guide §7
@@ -549,10 +546,6 @@
 
     .c-hero__subheading {
         font-size: 1.125rem;
-    }
-
-    .c-hero__scroll-indicator {
-        right: var(--space-6); /* 48px */
     }
 }
 
@@ -592,7 +585,7 @@
         max-width:  var(--hero-paragraph-max);
     }
 
-    .c-hero__controls {
+    .c-hero__pagination {
         bottom: var(--space-7); /* 64px */
     }
 }

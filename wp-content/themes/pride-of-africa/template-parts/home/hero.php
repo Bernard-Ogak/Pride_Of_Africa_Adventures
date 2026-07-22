@@ -223,15 +223,6 @@ $has_multiple = $slide_count > 1;
 
     <?php endif; ?>
 
-
-    <!-- ── Scroll Indicator ──────────────────── -->
-    <div class="c-hero__scroll-indicator" aria-hidden="true">
-        <span class="c-hero__scroll-icon">
-            <i class="bi bi-chevron-down"></i>
-        </span>
-        <span class="c-hero__scroll-label"><?php esc_html_e( 'Scroll', 'pride-of-africa' ); ?></span>
-    </div>
-
 </section><!-- /.c-hero -->
 
 

@@ -51,16 +51,8 @@
                 <!-- Right: Buttons & Social -->
                 <div class="col-auto">
                     <div class="topbar-right d-flex align-items-center gap-2">
-                        <!-- WhatsApp Button -->
-                        <a href="https://wa.me/<?php echo esc_attr(pride_get_whatsapp()); ?>?text=<?php esc_attr_e('Hi, I would like to know more about your safari packages.', 'pride-of-africa'); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-1.557.893-2.862 2.354-3.54 4.04-1.365 3.537-.444 7.541 2.332 9.815 1.558 1.231 3.814 1.979 6.152 1.979h.006c3.537 0 6.866-1.879 8.6-4.947 2.341-3.969 1.23-9.159-2.384-11.746-1.914-1.505-4.68-2.236-7.17-2.236zm8.215-3.85C15.253.5 10.585.5 8.062 3.04 5.538 5.578 5.538 10.233 8.062 12.771c2.524 2.539 7.192 2.539 9.716 0 2.524-2.538 2.524-7.193 0-9.731z"/>
-                            </svg>
-                            <?php esc_html_e('WhatsApp', 'pride-of-africa'); ?>
-                        </a>
-
                         <!-- Call Now Button -->
-                        <a href="tel:<?php echo esc_attr(str_replace([' ', '-', '(', ')'], '', pride_get_phone_1())); ?>" class="btn btn-outline-secondary btn-sm">
+                        <a href="tel:<?php echo esc_attr(str_replace([' ', '-', '(', ')'], '', pride_get_phone_1())); ?>" class="btn btn-call-now btn-sm">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                             </svg>
@@ -69,37 +61,58 @@
 
                         <!-- Social Icons with Brand Colours -->
                         <div class="topbar-social d-flex align-items-center gap-2 ms-2 ps-2 border-start border-secondary">
-                            <?php if (pride_get_social_link('facebook')) : ?>
+                            <!-- WhatsApp — placeholder link/icon; replace href and icon with your preferred values -->
+                            <a href="#" class="social-icon" aria-label="WhatsApp">
+                                <i class="bi bi-whatsapp" aria-hidden="true"></i>
+                            </a>
+
+                            <?php if (pride_get_social_link('facebook')) : $icon = pride_get_social_icon('facebook'); ?>
                                 <a href="<?php echo pride_get_social_link('facebook'); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
+                                    <?php if ($icon) : ?>
+                                        <img src="<?php echo esc_url($icon); ?>" width="16" height="16" alt="" class="social-icon-img">
+                                    <?php else : ?>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                                     </svg>
+                                    <?php endif; ?>
                                 </a>
                             <?php endif; ?>
 
-                            <?php if (pride_get_social_link('instagram')) : ?>
+                            <?php if (pride_get_social_link('instagram')) : $icon = pride_get_social_icon('instagram'); ?>
                                 <a href="<?php echo pride_get_social_link('instagram'); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+                                    <?php if ($icon) : ?>
+                                        <img src="<?php echo esc_url($icon); ?>" width="16" height="16" alt="" class="social-icon-img">
+                                    <?php else : ?>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
                                         <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-7" fill="none" stroke="currentColor" stroke-width="1.5"/>
                                         <circle cx="18" cy="6" r="1" fill="currentColor"/>
                                     </svg>
+                                    <?php endif; ?>
                                 </a>
                             <?php endif; ?>
 
-                            <?php if (pride_get_social_link('youtube')) : ?>
+                            <?php if (pride_get_social_link('youtube')) : $icon = pride_get_social_icon('youtube'); ?>
                                 <a href="<?php echo pride_get_social_link('youtube'); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="YouTube">
+                                    <?php if ($icon) : ?>
+                                        <img src="<?php echo esc_url($icon); ?>" width="16" height="16" alt="" class="social-icon-img">
+                                    <?php else : ?>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                                     </svg>
+                                    <?php endif; ?>
                                 </a>
                             <?php endif; ?>
 
-                            <?php if (pride_get_social_link('tiktok')) : ?>
+                            <?php if (pride_get_social_link('tiktok')) : $icon = pride_get_social_icon('tiktok'); ?>
                                 <a href="<?php echo pride_get_social_link('tiktok'); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="TikTok">
+                                    <?php if ($icon) : ?>
+                                        <img src="<?php echo esc_url($icon); ?>" width="16" height="16" alt="" class="social-icon-img">
+                                    <?php else : ?>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.68v13.67a2.47 2.47 0 1 1-2.88-2.47v3.74c4.57 0 8.33-3.72 8.33-8.3V8.16c1.95 1.48 4.38 2.35 6.56 2.39v-3.72a4.85 4.85 0 0 1-3.56-1.54z"/>
                                     </svg>
+                                    <?php endif; ?>
                                 </a>
                             <?php endif; ?>
 
@@ -154,6 +167,30 @@
                         'walker'          => new PRIDE_Of_Africa_Menu_Walker(),
                     ]);
                     ?>
+
+                    <!-- Language selector — placeholder UI, not wired to a
+                         translation plugin yet. Swap the "#" hrefs and item
+                         list once a language/i18n setup exists. -->
+                    <ul class="navbar-nav align-items-lg-center">
+                        <li class="nav-item dropdown">
+                            <a
+                                href="#"
+                                class="nav-link dropdown-toggle"
+                                id="lang-switcher-toggle"
+                                role="button"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                                aria-label="<?php esc_attr_e('Select language', 'pride-of-africa'); ?>"
+                            >
+                                <i class="bi bi-globe2" aria-hidden="true"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-label="<?php esc_attr_e('Language selector', 'pride-of-africa'); ?>">
+                                <li><a class="dropdown-item" href="#">English</a></li>
+                                <li><a class="dropdown-item" href="#">Français</a></li>
+                                <li><a class="dropdown-item" href="#">Deutsch</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

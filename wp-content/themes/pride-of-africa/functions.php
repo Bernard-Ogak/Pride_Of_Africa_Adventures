@@ -830,6 +830,26 @@ function pride_of_africa_customize_register($wp_customize) {
             'section' => 'pride_social_links',
             'type'    => 'url',
         ]);
+
+        // Optional PNG icon upload — when set, the header uses this image
+        // instead of the theme's built-in inline SVG icon for this network.
+        $wp_customize->add_setting('pride_' . $social . '_icon', [
+            'default'           => '',
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control(
+            new WP_Customize_Media_Control($wp_customize, 'pride_' . $social . '_icon', [
+                'label'       => sprintf(
+                    /* translators: %s: social network name */
+                    esc_html__('%s Icon (PNG, optional)', 'pride-of-africa'),
+                    ucfirst($social)
+                ),
+                'description' => esc_html__('Overrides the default icon with a custom PNG image.', 'pride-of-africa'),
+                'section'     => 'pride_social_links',
+                'mime_type'   => 'image',
+            ])
+        );
     }
 }
 add_action('customize_register', 'pride_of_africa_customize_register', 10);
@@ -918,6 +938,25 @@ function pride_get_address() {
  */
 function pride_get_social_link($platform) {
     return esc_url(pride_get_theme_mod('pride_' . sanitize_key($platform), ''));
+}
+
+/**
+ * Get the custom PNG icon URL for a social media platform, if one was
+ * uploaded via the Customizer. Returns an empty string when none is set,
+ * so callers can fall back to the theme's built-in inline SVG icon.
+ *
+ * @since 1.0.0
+ *
+ * @param string $platform The social media platform (facebook, instagram, youtube, tiktok)
+ * @return string Escaped image URL, or '' if no custom icon is set
+ */
+function pride_get_social_icon($platform) {
+    $icon_id = get_theme_mod('pride_' . sanitize_key($platform) . '_icon', '');
+    if (!$icon_id) {
+        return '';
+    }
+    $url = wp_get_attachment_image_url($icon_id, 'thumbnail');
+    return $url ? esc_url($url) : '';
 }
 
 // =============================================================================

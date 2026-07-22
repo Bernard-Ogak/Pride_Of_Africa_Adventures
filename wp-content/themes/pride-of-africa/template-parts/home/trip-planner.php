@@ -37,15 +37,6 @@ $destinations = get_posts( [
     'fields'         => 'ids',
 ] );
 
-// Retrieve country taxonomy terms.
-$countries = get_terms( [
-    'taxonomy'   => 'pride_country',
-    'hide_empty' => true,
-    'orderby'    => 'name',
-    'order'      => 'ASC',
-] );
-$countries = is_wp_error( $countries ) ? [] : $countries;
-
 // Results / search page URL — filter-able so themes / plugins can override.
 $search_url = apply_filters(
     'poa_planner_action_url',
@@ -131,9 +122,21 @@ $today = date_i18n( 'Y-m-d' );
                         <option value="">
                             <?php esc_html_e( 'Any country', 'pride-of-africa' ); ?>
                         </option>
-                        <?php foreach ( $countries as $country ) : ?>
-                        <option value="<?php echo esc_attr( $country->slug ); ?>">
-                            <?php echo esc_html( $country->name ); ?>
+                        <?php
+                        // Common visitor source countries — static list per content request.
+                        $planner_countries = [
+                            'United States', 'Canada', 'United Kingdom', 'Germany', 'France',
+                            'Italy', 'Spain', 'Netherlands', 'Belgium', 'Switzerland',
+                            'Australia', 'New Zealand', 'India', 'China', 'Japan',
+                            'South Korea', 'Singapore', 'UAE', 'Saudi Arabia', 'South Africa',
+                            'Kenya', 'Uganda', 'Tanzania', 'Nigeria', 'Brazil',
+                            'Mexico', 'Other',
+                        ];
+                        foreach ( $planner_countries as $country_name ) :
+                            $country_slug = sanitize_title( $country_name );
+                        ?>
+                        <option value="<?php echo esc_attr( $country_slug ); ?>">
+                            <?php echo esc_html( $country_name ); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>

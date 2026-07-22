@@ -59,16 +59,18 @@
         }
     }
 
+    var SCROLL_THRESHOLD = 50;
+
     function handleHeaderScroll() {
         if (!headerMain) return;
-        // The header stays fixed and unchanged while the page scrolls.
-        headerMain.classList.remove('scrolled');
+        headerMain.classList.toggle('scrolled', window.scrollY > SCROLL_THRESHOLD);
     }
 
     function initHeader() {
         syncHeaderMeasurements();
         handleHeaderScroll();
         window.addEventListener('resize', syncHeaderMeasurements, false);
+        window.addEventListener('scroll', handleHeaderScroll, { passive: true });
     }
 
     /* =========================================================================
