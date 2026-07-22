@@ -20,7 +20,7 @@
 :root {
     /* Brand colors — kept unprefixed, these did not exist before */
     --color-primary:        #009900; /* matches existing --color-gold */
-    --color-primary-dark:   #1E3A24;
+    --color-primary-dark:   #06402b;
     --color-accent:         #009900; /* was Safari Gold #D4A017 */
     --color-surface:        #FFFFFF;
     --color-text:           #222222;

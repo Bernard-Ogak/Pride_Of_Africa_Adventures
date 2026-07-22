@@ -11,7 +11,7 @@
 .l-section { padding-block: var(--space-9); }                    /* 120px */
 .l-section--compact { padding-block: var(--space-8); }          /* 96px  */
 .l-section--alt { background-color: #DBDBDB; }
-.l-section--dark { background-color: #243228; color: var(--color-surface); }
+.l-section--dark { background-color: #06402b; color: var(--color-surface); }
 
 .c-section-header { text-align: center; margin-bottom: var(--space-7); max-width: 54rem; margin-inline: auto; }
 .c-section-header--light .c-section-header__title,
@@ -150,7 +150,7 @@
    Rebuilt: single centered card (not two columns) — eyebrow +
    heading + subheading, then one form card with the adventure
    textarea and a Travel Dates / Travelers / Destination row. */
-.c-dream-trip { position: relative; background-color: #1E3A24; color: var(--color-surface); }
+.c-dream-trip { position: relative; background-color: #06402b; color: var(--color-surface); }
 .c-dream-trip__card { max-width: 45rem; margin-inline: auto; background: rgba(255,255,255,.06); border-radius: var(--radius-xl); padding: var(--space-5); }
 .c-dream-trip__textarea { min-height: 7.5rem; }
 .c-form__row.c-form__row--triple { grid-template-columns: 1fr; }
@@ -177,7 +177,7 @@
 .c-estimator__step { display: flex; align-items: center; justify-content: center; width: 3rem; height: 100%; background: #FAFAFA; border: none; cursor: pointer; font-size: 1.25rem; color: var(--color-primary); flex-shrink: 0; transition: background var(--duration-fast); }
 .c-estimator__step:hover { background: rgba(0,153,0,.1); }
 .c-estimator__number { flex: 1; height: 100%; border: none; text-align: center; font-size: 1rem; font-weight: 600; background: transparent; }
-.c-estimator__summary { background: linear-gradient(135deg, var(--color-primary) 0%, #1E3A24 100%); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; align-items: center; justify-content: center; }
+.c-estimator__summary { background: linear-gradient(135deg, var(--color-primary) 0%, #06402b 100%); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; align-items: center; justify-content: center; }
 .c-estimator__summary-inner { text-align: center; color: var(--color-surface); }
 .c-estimator__summary-label { font-size: .875rem; text-transform: uppercase; letter-spacing: .08em; opacity: .8; margin-bottom: .5rem; }
 .c-estimator__price { display: flex; align-items: baseline; justify-content: center; gap: .5rem; }
@@ -231,7 +231,7 @@
 @media (min-width: 62em) { .c-testimonials__grid { grid-template-columns: repeat(3,1fr); } }
 
 /* ── c-review (§14) ──────────────────────────── */
-.c-review { position: relative; background: linear-gradient(135deg, var(--color-primary) 0%, #1E3A24 100%); color: var(--color-surface); text-align: center; }
+.c-review { position: relative; background: linear-gradient(135deg, var(--color-primary) 0%, #06402b 100%); color: var(--color-surface); text-align: center; }
 .c-review__inner { display: flex; flex-direction: column; align-items: center; gap: var(--space-5); }
 .c-review__heading { font-size: clamp(1.5rem,3vw,2.25rem); font-weight: 700; max-width: 45rem; }
 .c-review__desc { font-size: 1.0625rem; opacity: .85; max-width: 40rem; }
