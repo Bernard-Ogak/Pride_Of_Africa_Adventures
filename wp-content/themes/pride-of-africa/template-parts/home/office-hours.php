@@ -1,14 +1,12 @@
 <?php
 /**
- * Template Part: Office Hours & Contact
+ * Template Part: Availability & Contact
  * File:   template-parts/home/office-hours.php
- * Spec:   03-Master-UI-Specification-v3.md §16
- *         Columns: 2 | Gap: 64px
- *         Schedule Width: 420px | Contact Card: 380px
- * Source: ADAPTED — reads the theme's existing contact-info Customizer
- *         settings (pride_phone_1, pride_email, pride_whatsapp, pride_address)
- *         via their existing helper functions, instead of the new/unset
- *         "poa_*" mods the original template expected.
+ *
+ * Was a day-by-day office hours schedule; the business operates 24/7, so
+ * that schedule (which stated fixed weekday/weekend hours) was replaced
+ * with a simple always-available callout. The contact details card is
+ * unchanged.
  *
  * @package PrideOfAfrica
  */
@@ -17,12 +15,6 @@ $phone     = function_exists( 'pride_get_phone_1' )  ? pride_get_phone_1()  : ge
 $email     = function_exists( 'pride_get_email' )    ? pride_get_email()    : get_theme_mod( 'pride_email', '' );
 $whatsapp  = function_exists( 'pride_get_whatsapp' )  ? pride_get_whatsapp() : get_theme_mod( 'pride_whatsapp', '' );
 $address   = function_exists( 'pride_get_address' )   ? pride_get_address()  : get_theme_mod( 'pride_address', '' );
-
-$hours = [
-    __( 'Monday – Friday',  'pride-of-africa' ) => __( '8:00 AM – 6:00 PM EAT', 'pride-of-africa' ),
-    __( 'Saturday',         'pride-of-africa' ) => __( '9:00 AM – 4:00 PM EAT', 'pride-of-africa' ),
-    __( 'Sunday',           'pride-of-africa' ) => __( 'By appointment only',    'pride-of-africa' ),
-];
 ?>
 
 <section class="c-office l-section l-section--alt" id="office-hours" aria-labelledby="office-heading">
@@ -30,28 +22,19 @@ $hours = [
 
         <div class="c-section-header">
             <span class="c-badge c-badge--accent"><?php esc_html_e( 'Get In Touch', 'pride-of-africa' ); ?></span>
-            <h2 class="c-section-header__title" id="office-heading"><?php esc_html_e( 'Our Office Hours', 'pride-of-africa' ); ?></h2>
+            <h2 class="c-section-header__title" id="office-heading"><?php esc_html_e( "We're Available 24/7", 'pride-of-africa' ); ?></h2>
         </div>
 
         <div class="c-office__grid">
 
-            <!-- Schedule -->
+            <!-- Availability -->
             <div class="c-office__schedule">
                 <h3 class="c-office__sub-title">
-                    <i class="bi bi-clock" aria-hidden="true"></i>
-                    <?php esc_html_e( 'When We\'re Available', 'pride-of-africa' ); ?>
+                    <i class="bi bi-clock-history" aria-hidden="true"></i>
+                    <?php esc_html_e( 'Always Open', 'pride-of-africa' ); ?>
                 </h3>
-                <dl class="c-office__hours-list">
-                    <?php foreach ( $hours as $day => $time ) : ?>
-                    <div class="c-office__hours-row">
-                        <dt class="c-office__day"><?php echo esc_html( $day ); ?></dt>
-                        <dd class="c-office__time"><?php echo esc_html( $time ); ?></dd>
-                    </div>
-                    <?php endforeach; ?>
-                </dl>
                 <p class="c-office__timezone">
-                    <i class="bi bi-globe2" aria-hidden="true"></i>
-                    <?php esc_html_e( 'All times in East Africa Time (UTC+3).', 'pride-of-africa' ); ?>
+                    <?php esc_html_e( 'We operate around the clock, every day of the year, so you can reach us whenever your safari plans come together — day or night.', 'pride-of-africa' ); ?>
                 </p>
             </div>
 

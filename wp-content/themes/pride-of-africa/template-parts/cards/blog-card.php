@@ -10,10 +10,11 @@
 $post_id   = get_the_ID();
 $img_id    = get_post_thumbnail_id();
 $img_url   = $img_id ? wp_get_attachment_image_url( $img_id, 'large' ) : '';
-$category  = get_the_category();
-$cat_name  = ! empty( $category ) ? $category[0]->name : '';
-$cat_link  = ! empty( $category ) ? get_category_link( $category[0]->term_id ) : '';
-$read_time = max( 1, (int) ceil( str_word_count( get_the_content() ) / 200 ) );
+$topics    = get_the_terms( $post_id, 'pride_blog_topic' );
+$topic     = ( $topics && ! is_wp_error( $topics ) ) ? $topics[0] : null;
+$destinations = get_the_terms( $post_id, 'pride_blog_destination' );
+$destination  = ( $destinations && ! is_wp_error( $destinations ) ) ? $destinations[0] : null;
+$read_time = pride_of_africa_reading_time( $post_id );
 ?>
 
 <article class="c-blog-card" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
@@ -30,15 +31,24 @@ $read_time = max( 1, (int) ceil( str_word_count( get_the_content() ) / 200 ) );
     </a>
 
     <div class="c-blog-card__body">
-        <div class="c-blog-card__meta">
-            <?php if ( $cat_name ) : ?>
-            <a class="c-badge c-badge--accent c-blog-card__cat" href="<?php echo esc_url( $cat_link ); ?>">
-                <?php echo esc_html( $cat_name ); ?>
+        <div class="c-blog-card__badges">
+            <?php if ( $topic ) : ?>
+            <a class="c-badge c-badge--accent c-blog-card__cat" href="<?php echo esc_url( get_term_link( $topic ) ); ?>">
+                <?php echo esc_html( $topic->name ); ?>
             </a>
             <?php endif; ?>
+            <?php if ( $destination ) : ?>
+            <a class="c-badge c-badge--country" href="<?php echo esc_url( get_term_link( $destination ) ); ?>">
+                <i class="bi bi-geo-alt" aria-hidden="true"></i> <?php echo esc_html( $destination->name ); ?>
+            </a>
+            <?php endif; ?>
+        </div>
+
+        <div class="c-blog-card__meta">
             <time class="c-blog-card__date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
                 <?php echo esc_html( get_the_date() ); ?>
             </time>
+            <span class="c-blog-card__author"><?php the_author(); ?></span>
             <span class="c-blog-card__read-time">
                 <?php echo esc_html( sprintf( __( '%d min read', 'pride-of-africa' ), $read_time ) ); ?>
             </span>

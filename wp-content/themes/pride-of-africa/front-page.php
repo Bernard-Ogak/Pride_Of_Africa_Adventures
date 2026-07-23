@@ -36,6 +36,9 @@ get_header();
 <!-- Top Destinations -->
 <?php get_template_part('template-parts/home/destinations'); ?>
 
+<!-- Popular Tours -->
+<?php get_template_part('template-parts/home/popular-tours'); ?>
+
 <!-- Featured Itineraries -->
 <?php get_template_part('template-parts/home/featured-itineraries'); ?>
 

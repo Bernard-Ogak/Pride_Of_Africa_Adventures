@@ -33,11 +33,23 @@ function pride_of_africa_render_tour_itinerary_meta_box($post) {
     $highlights = get_post_meta($post->ID, '_tour_itinerary_highlights', true);
     $quote      = get_post_meta($post->ID, '_tour_itinerary_quote', true);
     $cta_label  = get_post_meta($post->ID, '_tour_itinerary_cta_label', true) ?: __('View Itinerary', 'pride-of-africa');
+    $cta_url    = get_post_meta($post->ID, '_tour_itinerary_cta_url', true);
+    $featured   = (bool) get_post_meta($post->ID, '_tour_itinerary_featured', true);
     ?>
     <p style="color:#666;">
-        <?php esc_html_e('These fields only show on the homepage "Featured Itineraries" section when this tour is marked as featured (_tour_itinerary_featured).', 'pride-of-africa'); ?>
+        <?php esc_html_e('These fields only show on the homepage "Featured Itineraries" section when "Featured on Homepage" below is checked.', 'pride-of-africa'); ?>
     </p>
     <table class="form-table">
+        <tr>
+            <th><label for="pride_tour_itinerary_featured"><?php esc_html_e('Featured on Homepage', 'pride-of-africa'); ?></label></th>
+            <td>
+                <label>
+                    <input type="checkbox" name="pride_tour_itinerary_featured" id="pride_tour_itinerary_featured" value="1" <?php checked($featured); ?>>
+                    <?php esc_html_e('Show this tour in the homepage "Featured Itineraries" section', 'pride-of-africa'); ?>
+                </label>
+                <p class="description"><?php esc_html_e('Use the Order field (right-hand Page Attributes panel) to control display order.', 'pride-of-africa'); ?></p>
+            </td>
+        </tr>
         <tr>
             <th><label for="pride_tour_itinerary_badge"><?php esc_html_e('Badge', 'pride-of-africa'); ?></label></th>
             <td>
@@ -78,6 +90,14 @@ function pride_of_africa_render_tour_itinerary_meta_box($post) {
                        value="<?php echo esc_attr($cta_label); ?>">
             </td>
         </tr>
+        <tr>
+            <th><label for="pride_tour_itinerary_cta_url"><?php esc_html_e('CTA Destination', 'pride-of-africa'); ?></label></th>
+            <td>
+                <input type="url" class="large-text" name="pride_tour_itinerary_cta_url" id="pride_tour_itinerary_cta_url"
+                       value="<?php echo esc_attr($cta_url); ?>" placeholder="<?php echo esc_attr(get_permalink($post)); ?>">
+                <p class="description"><?php esc_html_e('Leave blank to link to this tour\'s own page.', 'pride-of-africa'); ?></p>
+            </td>
+        </tr>
     </table>
     <?php
 }
@@ -109,4 +129,8 @@ add_action('save_post_pride_tour', function ($post_id) {
     if (isset($_POST['pride_tour_itinerary_cta_label'])) {
         update_post_meta($post_id, '_tour_itinerary_cta_label', sanitize_text_field($_POST['pride_tour_itinerary_cta_label']));
     }
+    if (isset($_POST['pride_tour_itinerary_cta_url'])) {
+        update_post_meta($post_id, '_tour_itinerary_cta_url', esc_url_raw($_POST['pride_tour_itinerary_cta_url']));
+    }
+    update_post_meta($post_id, '_tour_itinerary_featured', isset($_POST['pride_tour_itinerary_featured']) ? 1 : 0);
 });

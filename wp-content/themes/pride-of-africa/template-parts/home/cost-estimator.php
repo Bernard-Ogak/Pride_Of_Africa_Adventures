@@ -1,147 +1,163 @@
 <?php
 /**
  * Template Part: Safari Cost Estimator
- *
  * File:   template-parts/home/cost-estimator.php
- * Spec:   03-Master-UI-Specification-v3.md §12
- *         Card Width: 860px | Padding: 40px
- *         Input Height: 56px | Summary Card: 340px | Gap: 32px
- *         01-Master-Design-Specification.md §17 Cost Estimator
+ *
+ * Rebuilt to price real safari packages instead of a synthetic
+ * destination/accommodation/vehicle formula. Packages are the same
+ * pride_tour posts (tagged with a Tour Category) that power the
+ * homepage "Popular Tours" section, so admins only maintain tour data
+ * in one place. Total = official rate × traveler count.
  *
  * @package PrideOfAfrica
  */
+
+$packages = new WP_Query( [
+    'post_type'      => 'pride_tour',
+    'posts_per_page' => -1,
+    'post_status'    => 'publish',
+    'orderby'        => 'menu_order date',
+    'order'          => 'ASC',
+    'tax_query'      => [
+        [
+            'taxonomy' => 'pride_tour_category',
+            'operator' => 'EXISTS',
+        ],
+    ],
+    'meta_query'     => [
+        [
+            'key'     => '_tour_price',
+            'compare' => 'EXISTS',
+        ],
+    ],
+] );
+
+if ( ! $packages->have_posts() ) {
+    return;
+}
+
+$max_travelers = (int) get_theme_mod( 'pride_estimator_max_travelers', 20 );
+$max_travelers = $max_travelers > 0 ? $max_travelers : 20;
+
+$contact_url = home_url( '/contact' );
 ?>
 
 <section class="c-estimator l-section l-section--alt" id="cost-estimator" aria-labelledby="estimator-heading">
     <div class="u-container">
 
         <div class="c-section-header">
-            <span class="c-badge c-badge--accent"><?php esc_html_e( 'Budget Your Trip', 'pride-of-africa' ); ?></span>
+            <span class="c-badge c-badge--accent"><?php esc_html_e( 'Safari Cost Estimator', 'pride-of-africa' ); ?></span>
             <h2 class="c-section-header__title" id="estimator-heading">
-                <?php esc_html_e( 'Safari Cost Estimator', 'pride-of-africa' ); ?>
+                <?php esc_html_e( 'How Much Will My Safari Cost?', 'pride-of-africa' ); ?>
             </h2>
             <p class="c-section-header__desc">
-                <?php esc_html_e( 'Get an instant budget estimate for your safari. Adjust your preferences to see how costs change.', 'pride-of-africa' ); ?>
+                <?php esc_html_e( 'Select a safari package and number of travelers. Prices are per person based on our official rates.', 'pride-of-africa' ); ?>
             </p>
         </div>
 
-        <div class="c-estimator__card" data-estimator>
+        <div class="c-estimator__card c-estimator__card--3col" data-estimator>
 
-            <!-- ── Controls ─── -->
+            <!-- ── Column 1: Package + Travelers ─── -->
             <div class="c-estimator__controls">
 
-                <div class="c-estimator__group">
-                    <label class="c-estimator__label" for="est-destination">
-                        <i class="bi bi-geo-alt" aria-hidden="true"></i>
-                        <?php esc_html_e( 'Destination', 'pride-of-africa' ); ?>
+                <div class="c-estimator__group c-estimator__group--full">
+                    <label class="c-estimator__label" for="est-package">
+                        <i class="bi bi-map" aria-hidden="true"></i>
+                        <?php esc_html_e( 'Safari Package', 'pride-of-africa' ); ?>
                     </label>
-                    <select class="c-estimator__select" id="est-destination" name="est_destination" data-est-field="destination">
-                        <option value="kenya"     data-base="2800"><?php esc_html_e( 'Kenya',        'pride-of-africa' ); ?></option>
-                        <option value="tanzania"  data-base="3200"><?php esc_html_e( 'Tanzania',     'pride-of-africa' ); ?></option>
-                        <option value="southafrica" data-base="2500"><?php esc_html_e( 'South Africa','pride-of-africa' ); ?></option>
-                        <option value="botswana"  data-base="4500"><?php esc_html_e( 'Botswana',     'pride-of-africa' ); ?></option>
-                        <option value="rwanda"    data-base="5000"><?php esc_html_e( 'Rwanda',       'pride-of-africa' ); ?></option>
-                        <option value="namibia"   data-base="3000"><?php esc_html_e( 'Namibia',      'pride-of-africa' ); ?></option>
-                        <option value="zimbabwe"  data-base="2600"><?php esc_html_e( 'Zimbabwe',     'pride-of-africa' ); ?></option>
+                    <select class="c-estimator__select" id="est-package" name="est_package" data-est-field="package">
+                        <?php while ( $packages->have_posts() ) : $packages->the_post();
+                            $post_id   = get_the_ID();
+                            $price_str = get_post_meta( $post_id, '_tour_price', true );
+                            $price_num = (float) preg_replace( '/[^0-9.]/', '', $price_str );
+                            $location  = get_post_meta( $post_id, '_tour_location', true );
+                            $cta_url   = get_post_meta( $post_id, '_tour_cta_url', true ) ?: $contact_url;
+                            $is_default = ( get_the_title() === '4-Day Maasai Mara Migration Safari' );
+                        ?>
+                        <option
+                            value="<?php echo esc_attr( $post_id ); ?>"
+                            data-price="<?php echo esc_attr( $price_num ); ?>"
+                            data-price-label="<?php echo esc_attr( $price_str ); ?>"
+                            data-location="<?php echo esc_attr( $location ); ?>"
+                            data-cta-url="<?php echo esc_attr( $cta_url ); ?>"
+                            <?php selected( $is_default ); ?>
+                        ><?php the_title(); ?></option>
+                        <?php endwhile; wp_reset_postdata(); ?>
                     </select>
                 </div>
 
-                <div class="c-estimator__group">
-                    <label class="c-estimator__label" for="est-duration">
-                        <i class="bi bi-calendar3" aria-hidden="true"></i>
-                        <?php esc_html_e( 'Duration', 'pride-of-africa' ); ?>
-                    </label>
-                    <select class="c-estimator__select" id="est-duration" name="est_duration" data-est-field="duration">
-                        <option value="5"  data-multiplier="1.0"><?php esc_html_e( '5 Days',  'pride-of-africa' ); ?></option>
-                        <option value="7"  data-multiplier="1.3" selected><?php esc_html_e( '7 Days',  'pride-of-africa' ); ?></option>
-                        <option value="10" data-multiplier="1.7"><?php esc_html_e( '10 Days', 'pride-of-africa' ); ?></option>
-                        <option value="14" data-multiplier="2.2"><?php esc_html_e( '14 Days', 'pride-of-africa' ); ?></option>
-                        <option value="21" data-multiplier="3.0"><?php esc_html_e( '21 Days', 'pride-of-africa' ); ?></option>
-                    </select>
-                </div>
-
-                <div class="c-estimator__group">
-                    <label class="c-estimator__label" for="est-adults">
+                <div class="c-estimator__group c-estimator__group--full">
+                    <label class="c-estimator__label" for="est-travelers">
                         <i class="bi bi-people" aria-hidden="true"></i>
-                        <?php esc_html_e( 'Adults', 'pride-of-africa' ); ?>
+                        <?php esc_html_e( 'Travelers', 'pride-of-africa' ); ?>
                     </label>
                     <div class="c-estimator__stepper">
-                        <button class="c-estimator__step" type="button" data-est-step="-1" data-est-target="est-adults" aria-label="<?php esc_attr_e( 'Decrease adults', 'pride-of-africa' ); ?>">
+                        <button class="c-estimator__step" type="button" data-est-step="-1" data-est-target="est-travelers" aria-label="<?php esc_attr_e( 'Decrease travelers', 'pride-of-africa' ); ?>" aria-controls="est-travelers">
                             <i class="bi bi-dash" aria-hidden="true"></i>
                         </button>
-                        <input class="c-estimator__number" type="number" id="est-adults" name="est_adults"
-                               value="2" min="1" max="20" data-est-field="adults" readonly aria-live="polite">
-                        <button class="c-estimator__step" type="button" data-est-step="1" data-est-target="est-adults" aria-label="<?php esc_attr_e( 'Increase adults', 'pride-of-africa' ); ?>">
+                        <input class="c-estimator__number" type="number" id="est-travelers" name="est_travelers"
+                               value="1" min="1" max="<?php echo esc_attr( $max_travelers ); ?>" data-est-field="travelers" readonly aria-live="polite" aria-label="<?php esc_attr_e( 'Number of travelers', 'pride-of-africa' ); ?>">
+                        <button class="c-estimator__step" type="button" data-est-step="1" data-est-target="est-travelers" aria-label="<?php esc_attr_e( 'Increase travelers', 'pride-of-africa' ); ?>" aria-controls="est-travelers">
                             <i class="bi bi-plus" aria-hidden="true"></i>
                         </button>
+                        <span class="c-estimator__stepper-suffix"><?php esc_html_e( 'person', 'pride-of-africa' ); ?></span>
                     </div>
-                </div>
-
-                <div class="c-estimator__group">
-                    <label class="c-estimator__label" for="est-children">
-                        <i class="bi bi-people" aria-hidden="true"></i>
-                        <?php esc_html_e( 'Children', 'pride-of-africa' ); ?>
-                    </label>
-                    <div class="c-estimator__stepper">
-                        <button class="c-estimator__step" type="button" data-est-step="-1" data-est-target="est-children" aria-label="<?php esc_attr_e( 'Decrease children', 'pride-of-africa' ); ?>">
-                            <i class="bi bi-dash" aria-hidden="true"></i>
-                        </button>
-                        <input class="c-estimator__number" type="number" id="est-children" name="est_children"
-                               value="0" min="0" max="10" data-est-field="children" readonly aria-live="polite">
-                        <button class="c-estimator__step" type="button" data-est-step="1" data-est-target="est-children" aria-label="<?php esc_attr_e( 'Increase children', 'pride-of-africa' ); ?>">
-                            <i class="bi bi-plus" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="c-estimator__group">
-                    <label class="c-estimator__label" for="est-accommodation">
-                        <i class="bi bi-house" aria-hidden="true"></i>
-                        <?php esc_html_e( 'Accommodation', 'pride-of-africa' ); ?>
-                    </label>
-                    <select class="c-estimator__select" id="est-accommodation" name="est_accommodation" data-est-field="accommodation">
-                        <option value="budget"  data-accom="0.8"><?php esc_html_e( 'Budget Camp',   'pride-of-africa' ); ?></option>
-                        <option value="mid"     data-accom="1.0" selected><?php esc_html_e( 'Mid-range Lodge', 'pride-of-africa' ); ?></option>
-                        <option value="luxury"  data-accom="1.6"><?php esc_html_e( 'Luxury Lodge',  'pride-of-africa' ); ?></option>
-                        <option value="ultra"   data-accom="2.5"><?php esc_html_e( 'Ultra-Luxury',  'pride-of-africa' ); ?></option>
-                    </select>
-                </div>
-
-                <div class="c-estimator__group">
-                    <label class="c-estimator__label" for="est-vehicle">
-                        <i class="bi bi-truck" aria-hidden="true"></i>
-                        <?php esc_html_e( 'Vehicle', 'pride-of-africa' ); ?>
-                    </label>
-                    <select class="c-estimator__select" id="est-vehicle" name="est_vehicle" data-est-field="vehicle">
-                        <option value="shared"  data-vehicle="0.7"><?php esc_html_e( 'Shared 4×4',   'pride-of-africa' ); ?></option>
-                        <option value="private" data-vehicle="1.0" selected><?php esc_html_e( 'Private 4×4',  'pride-of-africa' ); ?></option>
-                        <option value="luxury"  data-vehicle="1.4"><?php esc_html_e( 'Luxury 4×4',  'pride-of-africa' ); ?></option>
-                    </select>
                 </div>
 
             </div><!-- /.c-estimator__controls -->
 
-            <!-- ── Summary ─── -->
+            <!-- ── Column 2: Live Safari Cost Estimator ─── -->
             <div class="c-estimator__summary" aria-live="polite" aria-atomic="true">
                 <div class="c-estimator__summary-inner">
-                    <p class="c-estimator__summary-label"><?php esc_html_e( 'Estimated Total', 'pride-of-africa' ); ?></p>
+                    <p class="c-estimator__summary-label" data-est-package-name><?php esc_html_e( 'Loading…', 'pride-of-africa' ); ?></p>
                     <p class="c-estimator__price" data-est-total>
-                        <span class="c-estimator__currency">USD</span>
-                        <span class="c-estimator__amount" data-est-amount>8,320</span>
+                        <span class="c-estimator__currency">$</span>
+                        <span class="c-estimator__amount" data-est-amount>0</span>
                     </p>
-                    <p class="c-estimator__per-person" data-est-per-person><?php esc_html_e( '~$4,160 per person', 'pride-of-africa' ); ?></p>
-                    <p class="c-estimator__disclaimer">
-                        <?php esc_html_e( 'Indicative estimate. Final pricing depends on availability and inclusions.', 'pride-of-africa' ); ?>
-                    </p>
-                    <a href="<?php echo esc_url( get_permalink( get_page_by_path( 'contact' ) ) ?: home_url( '/contact/' ) ); ?>"
-                       class="c-button c-button--primary c-estimator__cta">
-                        <?php esc_html_e( 'Get Exact Quote', 'pride-of-africa' ); ?>
-                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                    </a>
+                    <p class="c-estimator__per-person"><?php esc_html_e( 'per person (official rate)', 'pride-of-africa' ); ?></p>
+                    <p class="c-estimator__calc" data-est-calc></p>
+                    <p class="c-estimator__total-label" data-est-total-label></p>
                 </div>
             </div>
 
+            <!-- ── Column 3: Booking Summary ─── -->
+            <div class="c-estimator__booking">
+                <h3 class="c-estimator__booking-title"><?php esc_html_e( 'Booking Summary', 'pride-of-africa' ); ?></h3>
+                <dl class="c-estimator__booking-list">
+                    <div class="c-estimator__booking-row">
+                        <dt><?php esc_html_e( 'Package', 'pride-of-africa' ); ?></dt>
+                        <dd data-est-booking-package></dd>
+                    </div>
+                    <div class="c-estimator__booking-row">
+                        <dt><?php esc_html_e( 'Destination', 'pride-of-africa' ); ?></dt>
+                        <dd data-est-booking-location></dd>
+                    </div>
+                    <div class="c-estimator__booking-row">
+                        <dt><?php esc_html_e( 'Official Rate', 'pride-of-africa' ); ?></dt>
+                        <dd data-est-booking-rate></dd>
+                    </div>
+                </dl>
+                <a href="<?php echo esc_url( $contact_url ); ?>" class="c-button c-button--primary c-estimator__cta" data-est-cta>
+                    <?php esc_html_e( 'Get My Exact Quote', 'pride-of-africa' ); ?>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+            </div>
+
         </div><!-- /.c-estimator__card -->
+
+        <p class="c-estimator__notice">
+            <i class="bi bi-info-circle" aria-hidden="true"></i>
+            <strong><?php esc_html_e( 'Official Rates:', 'pride-of-africa' ); ?></strong>
+            <?php esc_html_e( 'Prices shown are per-person USD rates. Flights, visas, and travel insurance are not included.', 'pride-of-africa' ); ?>
+        </p>
+
+        <div class="c-estimator__bespoke">
+            <p><?php esc_html_e( 'Need something different? Contact our safari experts for a fully personalized quote.', 'pride-of-africa' ); ?></p>
+            <a href="<?php echo esc_url( $contact_url ); ?>" class="c-button c-button--outline">
+                <?php esc_html_e( 'Request a Custom Safari', 'pride-of-africa' ); ?>
+                <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
+        </div>
 
     </div>
 </section>
@@ -152,55 +168,51 @@
     const card = document.querySelector( '[data-estimator]' );
     if ( ! card ) return;
 
-    const CHILD_RATE = 0.6;
+    const packageSelect = card.querySelector( '#est-package' );
+    const travelersInput = card.querySelector( '#est-travelers' );
 
-    function getVal( sel ) {
-        const el = card.querySelector( sel );
-        return el ? el : null;
+    function formatUSD( n ) {
+        return '$' + Math.round( n ).toLocaleString( 'en-US' );
     }
 
     function calcTotal() {
-        const destEl   = getVal( '[data-est-field="destination"]' );
-        const durEl    = getVal( '[data-est-field="duration"]' );
-        const accomEl  = getVal( '[data-est-field="accommodation"]' );
-        const vehicleEl= getVal( '[data-est-field="vehicle"]' );
-        const adultsEl = getVal( '[data-est-field="adults"]' );
-        const childEl  = getVal( '[data-est-field="children"]' );
+        const opt = packageSelect.options[ packageSelect.selectedIndex ];
+        if ( ! opt ) return;
 
-        const base      = parseFloat( destEl.options[destEl.selectedIndex].dataset.base ) || 3000;
-        const mult      = parseFloat( durEl.options[durEl.selectedIndex].dataset.multiplier ) || 1;
-        const accom     = parseFloat( accomEl.options[accomEl.selectedIndex].dataset.accom ) || 1;
-        const vehicle   = parseFloat( vehicleEl.options[vehicleEl.selectedIndex].dataset.vehicle ) || 1;
-        const adults    = parseInt( adultsEl.value, 10 ) || 1;
-        const children  = parseInt( childEl.value,  10 ) || 0;
-        const pax       = adults + ( children * CHILD_RATE );
+        const price     = parseFloat( opt.dataset.price ) || 0;
+        const priceLabel= opt.dataset.priceLabel || formatUSD( price ) + ' / person';
+        const location  = opt.dataset.location || '';
+        const ctaUrl    = opt.dataset.ctaUrl || '';
+        const name      = opt.textContent;
+        const travelers = Math.max( 1, parseInt( travelersInput.value, 10 ) || 1 );
+        const total     = price * travelers;
 
-        const total = Math.round( base * mult * accom * vehicle * pax );
-        const perPerson = adults > 0 ? Math.round( total / adults ) : total;
+        card.querySelector( '[data-est-package-name]' ).textContent = name;
+        card.querySelector( '[data-est-amount]' ).textContent = Math.round( price ).toLocaleString( 'en-US' );
+        card.querySelector( '[data-est-calc]' ).textContent = formatUSD( price ) + ' × ' + travelers + ( travelers === 1 ? ' traveler' : ' travelers' );
+        card.querySelector( '[data-est-total-label]' ).textContent = 'Total for ' + travelers + ( travelers === 1 ? ' Person: ' : ' People: ' ) + formatUSD( total );
 
-        const amountEl    = card.querySelector( '[data-est-amount]' );
-        const perPersonEl = card.querySelector( '[data-est-per-person]' );
+        card.querySelector( '[data-est-booking-package]' ).textContent = name;
+        card.querySelector( '[data-est-booking-location]' ).textContent = location;
+        card.querySelector( '[data-est-booking-rate]' ).textContent = priceLabel;
 
-        if ( amountEl ) amountEl.textContent = total.toLocaleString();
-        if ( perPersonEl ) perPersonEl.textContent = '~$' + perPerson.toLocaleString() + ' per person';
+        const ctaBtn = card.querySelector( '[data-est-cta]' );
+        if ( ctaBtn && ctaUrl ) ctaBtn.setAttribute( 'href', ctaUrl );
     }
 
-    // Stepper buttons
     card.querySelectorAll( '[data-est-step]' ).forEach( btn => {
         btn.addEventListener( 'click', () => {
-            const step   = parseInt( btn.dataset.estStep,   10 );
+            const step   = parseInt( btn.dataset.estStep, 10 );
             const target = card.querySelector( '#' + btn.dataset.estTarget );
             if ( ! target ) return;
-            const newVal = Math.min( parseInt( target.max, 10 ), Math.max( parseInt( target.min, 10 ), parseInt( target.value, 10 ) + step ) );
-            target.value = newVal;
+            const min = parseInt( target.min, 10 );
+            const max = parseInt( target.max, 10 );
+            target.value = Math.min( max, Math.max( min, ( parseInt( target.value, 10 ) || min ) + step ) );
             calcTotal();
         } );
     } );
 
-    // Select changes
-    card.querySelectorAll( 'select[data-est-field]' ).forEach( sel => {
-        sel.addEventListener( 'change', calcTotal );
-    } );
+    packageSelect.addEventListener( 'change', calcTotal );
 
     calcTotal();
 } )();

@@ -53,9 +53,15 @@ require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/why-choose-us-customizer.php
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/trusted-partners-customizer.php'; // Trusted Partners customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/testimonials-customizer.php'; // Testimonials customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/destinations-customizer.php'; // Top Destinations customizer settings
+require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/review-qr-customizer.php'; // Review QR code customizer settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/customizer/poa-new-sections-customizer.php'; // New homepage sections (poa-homepage-templates) settings
 require_once PRIDE_OF_AFRICA_DIR . '/inc/testimonial-meta-box.php'; // Testimonial admin fields (rating, location, tour, platform)
 require_once PRIDE_OF_AFRICA_DIR . '/inc/tour-meta-box.php'; // Featured Itinerary admin fields (badge, route, highlights, quote, CTA label)
+require_once PRIDE_OF_AFRICA_DIR . '/inc/tour-package-meta-box.php'; // Popular Tours card admin fields (price, duration, location, highlights, CTA)
+require_once PRIDE_OF_AFRICA_DIR . '/inc/feature-meta-box.php'; // Why Choose Us admin fields (icon)
+require_once PRIDE_OF_AFRICA_DIR . '/inc/review-site-meta-box.php'; // Review Hub platform admin fields (URL, tag)
+require_once PRIDE_OF_AFRICA_DIR . '/inc/blog-meta-box.php'; // Blog featured toggle + view counter
+require_once PRIDE_OF_AFRICA_DIR . '/inc/blog-helpers.php'; // Reading time, related posts, prev/next helpers
 require_once PRIDE_OF_AFRICA_DIR . '/inc/destination-meta-box.php'; // Individual destination page content fields
 
 // =============================================================================
@@ -373,11 +379,17 @@ add_action('wp_enqueue_scripts', 'pride_of_africa_enqueue_global_styles', 10);
  * @return void
  */
 function pride_of_africa_enqueue_poa_home_styles() {
-    // Also loaded on the individual destination page — it reuses the same
-    // shared tokens (--poa-*) and component classes (.u-container,
-    // .l-section, .c-button, etc.) as the homepage sections.
+    // Also loaded on the individual destination page and the whole blog
+    // system (archive + single posts) — they all reuse the same shared
+    // tokens (--poa-*) and component classes (.u-container, .l-section,
+    // .c-button, .c-badge, .c-blog-card, etc.) as the homepage sections.
     $is_destination_page = is_singular('pride_destination') || is_post_type_archive('pride_destination');
-    if (!is_front_page() && !$is_destination_page) {
+    // is_page('blog') rather than is_page_template() — this theme routes
+    // pages like /blog/ to their template by slug (see
+    // pride_of_africa_apply_route_templates()) without ever setting the
+    // native _wp_page_template meta, so is_page_template() would miss it.
+    $is_blog_page = is_singular('post') || is_page('blog');
+    if (!is_front_page() && !$is_destination_page && !$is_blog_page) {
         return;
     }
 
@@ -725,6 +737,7 @@ function pride_of_africa_apply_route_templates($template) {
         'blog'           => get_template_directory() . '/page-blog.php',
         'gallery'        => get_template_directory() . '/page-gallery.php',
         'review'         => get_template_directory() . '/page-review.php',
+        'reviews'        => get_template_directory() . '/page-review.php',
         'planner'        => get_template_directory() . '/page-planner.php',
         'packing-guide'  => get_template_directory() . '/page-packing-guide.php',
     ];

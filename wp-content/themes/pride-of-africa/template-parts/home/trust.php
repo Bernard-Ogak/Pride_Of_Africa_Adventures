@@ -1,38 +1,27 @@
 <?php
 /**
  * Template Part: Why Choose Us / Trust Section
- *
  * File:   template-parts/home/trust.php
- * Spec:   03-Master-UI-Specification-v3.md §6
- *         Section Width: 1240px | Heading Width: 540px
- *         Feature Grid: 4 Columns | Card Gap: 32px
- *         Icon: 56px | Card Padding: 32px
+ *
+ * Renders pride_feature posts dynamically — order via each post's
+ * native "Order" field, visibility via Publish/Draft status. Falls
+ * back to nothing (section hides) if no features are published, same
+ * as every other content-driven homepage section in this theme.
  *
  * @package PrideOfAfrica
  */
 
-$features = [
-    [
-        'icon'  => 'bi-shield-check',
-        'title' => __( 'Expert Local Guides', 'pride-of-africa' ),
-        'desc'  => __( 'Our guides are born and raised in Africa with decades of wildlife knowledge and unmatched passion for the continent.', 'pride-of-africa' ),
-    ],
-    [
-        'icon'  => 'bi-award',
-        'title' => __( 'Luxury Guaranteed', 'pride-of-africa' ),
-        'desc'  => __( 'From tented camps to five-star lodges, every property is hand-picked and personally inspected by our team.', 'pride-of-africa' ),
-    ],
-    [
-        'icon'  => 'bi-headset',
-        'title' => __( '24 / 7 Support', 'pride-of-africa' ),
-        'desc'  => __( 'Our dedicated support team is available around the clock before, during, and after your safari adventure.', 'pride-of-africa' ),
-    ],
-    [
-        'icon'  => 'bi-globe2',
-        'title' => __( '15+ Destinations', 'pride-of-africa' ),
-        'desc'  => __( 'From the Masai Mara to the Okavango Delta — we cover every iconic wildlife destination across the continent.', 'pride-of-africa' ),
-    ],
-];
+$features = new WP_Query( [
+    'post_type'      => 'pride_feature',
+    'posts_per_page' => -1,
+    'post_status'    => 'publish',
+    'orderby'        => 'menu_order',
+    'order'          => 'ASC',
+] );
+
+if ( ! $features->have_posts() ) {
+    return;
+}
 ?>
 
 <section class="c-trust l-section" id="why-choose-us" aria-labelledby="trust-heading">
@@ -41,24 +30,58 @@ $features = [
         <div class="c-trust__header">
             <span class="c-badge c-badge--accent"><?php esc_html_e( 'Why Choose Us', 'pride-of-africa' ); ?></span>
             <h2 class="c-trust__heading" id="trust-heading">
-                <?php esc_html_e( 'Africa\'s Most Trusted Safari Operator', 'pride-of-africa' ); ?>
+                <?php esc_html_e( 'Why Choose Us', 'pride-of-africa' ); ?>
             </h2>
             <p class="c-trust__subheading">
-                <?php esc_html_e( 'With over 20 years of experience and thousands of satisfied travellers, Pride of Africa delivers unforgettable journeys.', 'pride-of-africa' ); ?>
+                <?php esc_html_e( 'Your African adventure deserves local expertise', 'pride-of-africa' ); ?>
             </p>
         </div>
 
-        <div class="c-trust__grid" role="list">
-            <?php foreach ( $features as $feature ) : ?>
-            <div class="c-trust__card" role="listitem">
-                <div class="c-trust__icon-wrap" aria-hidden="true">
-                    <i class="bi <?php echo esc_attr( $feature['icon'] ); ?>"></i>
-                </div>
-                <h3 class="c-trust__card-title"><?php echo esc_html( $feature['title'] ); ?></h3>
-                <p class="c-trust__card-desc"><?php echo esc_html( $feature['desc'] ); ?></p>
-            </div>
-            <?php endforeach; ?>
-        </div>
+        <ul class="c-trust__grid" data-fade-up-group>
+            <?php while ( $features->have_posts() ) : $features->the_post();
+                $icon = get_post_meta( get_the_ID(), '_feature_icon', true ) ?: 'bi-star';
+                ?>
+            <li>
+                <article class="c-trust__card" data-fade-up>
+                    <div class="c-trust__icon-wrap">
+                        <i class="bi <?php echo esc_attr( $icon ); ?>" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="c-trust__card-title"><?php the_title(); ?></h3>
+                    <p class="c-trust__card-desc"><?php echo esc_html( get_the_excerpt() ?: wp_trim_words( get_the_content(), 30, '…' ) ); ?></p>
+                </article>
+            </li>
+            <?php endwhile; wp_reset_postdata(); ?>
+        </ul>
 
     </div>
 </section>
+
+<script>
+( function () {
+    'use strict';
+    var group = document.querySelector( '#why-choose-us [data-fade-up-group]' );
+    if ( ! group ) return;
+
+    var items = Array.prototype.slice.call( group.querySelectorAll( '[data-fade-up]' ) );
+    var reduceMotion = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+
+    if ( reduceMotion || typeof IntersectionObserver === 'undefined' ) {
+        items.forEach( function ( el ) { el.classList.add( 'is-visible' ); } );
+        return;
+    }
+
+    var observer = new IntersectionObserver( function ( entries ) {
+        entries.forEach( function ( entry ) {
+            if ( entry.isIntersecting ) {
+                entry.target.classList.add( 'is-visible' );
+                observer.unobserve( entry.target );
+            }
+        } );
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' } );
+
+    items.forEach( function ( el, i ) {
+        el.style.transitionDelay = ( i % 3 ) * 80 + 'ms';
+        observer.observe( el );
+    } );
+} )();
+</script>

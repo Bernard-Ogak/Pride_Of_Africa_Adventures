@@ -185,6 +185,10 @@
                                     <p class="mb-0"><?php echo pride_get_address(); ?></p>
                                 </div>
                             </div>
+
+                            <div class="footer-review-qr mt-3">
+                                <?php get_template_part( 'template-parts/cards/review-qr-code' ); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,7 +203,7 @@
                     <span class="micro-footer-separator">|</span>
                     <span>Visit Counter: <span id="visit-counter"><?php echo absint(get_option('pride_of_africa_visit_count', 0)); ?></span></span>
                     <span class="micro-footer-separator">|</span>
-                    <span>Engineered by: <a href="https://www.linkedin.com/in/bernard-ogak/" target="_blank" rel="noopener noreferrer">Bernard Ogak</a></span>
+                    <span>Engineered by: <a href="https://wa.me/254702118611" target="_blank" rel="noopener noreferrer">Talk To the Developer</a></span>
                     <span class="micro-footer-separator">|</span>
                     <a href="<?php echo esc_url(home_url('/privacy')); ?>">Privacy Policy</a>
                 </div>
