@@ -1721,7 +1721,7 @@ section[id] {
 
 .footer-main {
     background-color: #2E2E2E;
-    color: #ffffff;
+    color: rgba(255,255,255,0.5);
     padding: 5rem 0;
 }
 
@@ -1733,7 +1733,7 @@ section[id] {
 .footer-logo-text {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #ffffff;
+    color: rgba(255,255,255,0.5);
 }
 
 .text-gold {
@@ -1744,7 +1744,7 @@ section[id] {
     margin-bottom: 0.5rem;
 }
 .footer-menu a {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.5);
     transition: color var(--transition-base);
     text-decoration: none;
 }
@@ -1753,7 +1753,7 @@ section[id] {
 }
 
 .footer-contact-item a {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.5);
     transition: color var(--transition-base);
     text-decoration: none;
 }
@@ -1778,28 +1778,15 @@ section[id] {
     justify-content: center;
     width: 32px;
     height: 32px;
-    color: #ffffff;
-    opacity: 0.85;
+    color: rgba(255,255,255,0.5);
+    opacity: 1;
     transition: all var(--transition-base);
     border-radius: 50%;
     position: relative;
 }
-.footer-social-icon[aria-label*="Facebook"] { color: var(--color-facebook); }
-.footer-social-icon[aria-label*="Instagram"] { 
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-.footer-social-icon[aria-label*="YouTube"] { color: var(--color-youtube); }
-.footer-social-icon[aria-label*="TikTok"] { color: var(--color-tiktok); }
-.footer-social-icon[aria-label*="LinkedIn"] { color: var(--color-linkedin); }
-.footer-social-icon[aria-label*="X"] { color: var(--color-x); }
-.footer-social-icon[aria-label*="WhatsApp"] { color: var(--color-whatsapp); }
 .footer-social-icon:hover {
-    opacity: 1;
+    color: var(--color-gold);
     transform: scale(1.2);
-    filter: brightness(1.2);
 }
 
 /* Custom PNG icon uploaded via Customizer — same as the header's .social-icon-img */
@@ -1817,7 +1804,7 @@ section[id] {
     display: block;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #ffffff;
+    color: rgba(255,255,255,0.5);
     margin-bottom: 0.5rem;
 }
 .footer-newsletter__row {

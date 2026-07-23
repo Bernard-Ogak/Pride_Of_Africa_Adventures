@@ -29,6 +29,7 @@ $google      = get_theme_mod( 'poa_google_review_url', '' );
             </div>
 
             <div class="c-review__actions">
+                <?php get_template_part( 'template-parts/cards/review-qr-code' ); ?>
                 <?php if ( $tripadvisor ) : ?>
                 <a href="<?php echo esc_url( $tripadvisor ); ?>" class="c-button c-button--surface c-review__btn"
                    target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'Review us on TripAdvisor', 'pride-of-africa' ); ?>">

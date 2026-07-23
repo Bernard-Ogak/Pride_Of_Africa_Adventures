@@ -62,6 +62,7 @@ require_once PRIDE_OF_AFRICA_DIR . '/inc/feature-meta-box.php'; // Why Choose Us
 require_once PRIDE_OF_AFRICA_DIR . '/inc/review-site-meta-box.php'; // Review Hub platform admin fields (URL, tag)
 require_once PRIDE_OF_AFRICA_DIR . '/inc/blog-meta-box.php'; // Blog featured toggle + view counter
 require_once PRIDE_OF_AFRICA_DIR . '/inc/blog-helpers.php'; // Reading time, related posts, prev/next helpers
+require_once PRIDE_OF_AFRICA_DIR . '/inc/team-member-meta-box.php'; // About Us team member admin fields
 require_once PRIDE_OF_AFRICA_DIR . '/inc/destination-meta-box.php'; // Individual destination page content fields
 
 // =============================================================================
@@ -389,7 +390,9 @@ function pride_of_africa_enqueue_poa_home_styles() {
     // pride_of_africa_apply_route_templates()) without ever setting the
     // native _wp_page_template meta, so is_page_template() would miss it.
     $is_blog_page = is_singular('post') || is_page('blog');
-    if (!is_front_page() && !$is_destination_page && !$is_blog_page) {
+    $is_about_page = is_page('about') || is_page('about-us');
+    $is_contact_page = is_page('contact');
+    if (!is_front_page() && !$is_destination_page && !$is_blog_page && !$is_about_page && !$is_contact_page) {
         return;
     }
 
@@ -731,6 +734,7 @@ function pride_of_africa_apply_route_templates($template) {
     $slug = $page->post_name;
     $template_map = [
         'about'          => get_template_directory() . '/page-about.php',
+        'about-us'       => get_template_directory() . '/page-about.php',
         'contact'        => get_template_directory() . '/page-contact.php',
         'destinations'   => get_template_directory() . '/page-destinations.php',
         'tours'          => get_template_directory() . '/page-tours.php',

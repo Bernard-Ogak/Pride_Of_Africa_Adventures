@@ -42,6 +42,13 @@ $maps_url  = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( 
         </div>
     </a>
 
+    <?php
+    $excerpt = get_the_excerpt() ?: wp_trim_words( get_the_content(), 20, '…' );
+    if ( $excerpt ) :
+    ?>
+    <p class="c-destination-card__excerpt"><?php echo esc_html( wp_trim_words( $excerpt, 18, '…' ) ); ?></p>
+    <?php endif; ?>
+
     <div class="c-destination-card__actions">
         <a href="<?php the_permalink(); ?>" class="c-button c-button--primary c-destination-card__explore-btn"
            aria-label="<?php echo esc_attr( sprintf( __( 'Explore %s', 'pride-of-africa' ), $title ) ); ?>">

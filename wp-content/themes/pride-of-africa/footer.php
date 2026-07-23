@@ -16,13 +16,18 @@
                     <!-- Column 1: Brand -->
                     <div class="col-md-6 col-lg-3">
                         <div class="footer-widget">
-                            <!-- Company Name -->
-                            <h5 class="text-gold mb-2">
-                                <?php esc_html_e('PRIDE OF AFRICA', 'pride-of-africa'); ?>
-                            </h5>
-                            <p class="small text-white-50 mb-3">
-                                <?php esc_html_e('Adventures & Safaris', 'pride-of-africa'); ?>
-                            </p>
+                            <!-- Company Logo -->
+                            <?php
+                            $footer_logo_id = get_theme_mod('custom_logo');
+                            if ($footer_logo_id) {
+                                echo wp_get_attachment_image($footer_logo_id, 'medium', false, [
+                                    'class' => 'footer-logo-img mb-3',
+                                    'alt'   => get_bloginfo('name'),
+                                ]);
+                            } else {
+                                echo '<h5 class="text-gold mb-3">' . esc_html(get_bloginfo('name')) . '</h5>';
+                            }
+                            ?>
 
                             <!-- Description -->
                             <p class="small mb-4 text-white-50">
@@ -124,7 +129,7 @@
                                 'container'      => false,
                                 'menu_class'     => 'list-unstyled footer-menu',
                                 'fallback_cb'    => function () {
-                                    echo '<ul class="list-unstyled">';
+                                    echo '<ul class="list-unstyled footer-menu">';
                                     echo '<li><a href="' . esc_url(home_url('/')) . '">' . esc_html__('Home', 'pride-of-africa') . '</a></li>';
                                     echo '<li><a href="' . esc_url(home_url('/about')) . '">' . esc_html__('About Us', 'pride-of-africa') . '</a></li>';
                                     echo '<li><a href="' . esc_url(home_url('/tours')) . '">' . esc_html__('Tours', 'pride-of-africa') . '</a></li>';
@@ -184,10 +189,6 @@
                                 <div class="small">
                                     <p class="mb-0"><?php echo pride_get_address(); ?></p>
                                 </div>
-                            </div>
-
-                            <div class="footer-review-qr mt-3">
-                                <?php get_template_part( 'template-parts/cards/review-qr-code' ); ?>
                             </div>
                         </div>
                     </div>

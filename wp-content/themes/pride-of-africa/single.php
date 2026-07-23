@@ -30,20 +30,6 @@ get_header();
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('c-article'); ?>>
 
-    <div class="u-container c-article__breadcrumb-wrap">
-        <nav class="c-article__breadcrumb" aria-label="<?php esc_attr_e('Breadcrumb', 'pride-of-africa'); ?>">
-            <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Home', 'pride-of-africa'); ?></a>
-            <i class="bi bi-chevron-right" aria-hidden="true"></i>
-            <a href="<?php echo esc_url(get_permalink(get_option('page_for_posts')) ?: home_url('/blog')); ?>"><?php esc_html_e('Blog', 'pride-of-africa'); ?></a>
-            <?php if ($topic) : ?>
-            <i class="bi bi-chevron-right" aria-hidden="true"></i>
-            <a href="<?php echo esc_url(get_term_link($topic)); ?>"><?php echo esc_html($topic->name); ?></a>
-            <?php endif; ?>
-            <i class="bi bi-chevron-right" aria-hidden="true"></i>
-            <span aria-current="page"><?php the_title(); ?></span>
-        </nav>
-    </div>
-
     <?php if (has_post_thumbnail()) : ?>
     <div class="c-article__hero">
         <?php the_post_thumbnail('full', ['class' => 'c-article__hero-image', 'alt' => get_the_title()]); ?>

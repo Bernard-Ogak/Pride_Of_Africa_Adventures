@@ -5,6 +5,16 @@
  * @package PrideOfAfrica
  */
 
+/* Tighter vertical rhythm between Why Visit / Top Attractions / Best
+   Time to Visit / Cost Guide / Safari Route Map / FAQs — the generic
+   .l-section padding (120px top+bottom) left too much dead space
+   between these content-dense blocks. Scoped to .c-dest-section only
+   so other pages using .l-section elsewhere are unaffected. */
+.c-dest-section.l-section,
+.c-dest-section.l-section--alt {
+    padding-block: var(--space-6);
+}
+
 /* ── Hero ─────────────────────────────────────── */
 .c-dest-hero {
     position: relative;

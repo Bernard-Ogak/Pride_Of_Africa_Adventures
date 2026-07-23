@@ -36,8 +36,12 @@ if ( ! $posts->have_posts() ) {
             endwhile; wp_reset_postdata(); ?>
         </div>
 
+        <?php
+        $blog_page_id  = get_option( 'page_for_posts' );
+        $blog_page_url = $blog_page_id ? get_permalink( $blog_page_id ) : home_url( '/blog/' );
+        ?>
         <div class="c-blog__footer">
-            <a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/blog/' ) ); ?>"
+            <a href="<?php echo esc_url( $blog_page_url ); ?>"
                class="c-button c-button--outline">
                 <?php esc_html_e( 'Read All Articles', 'pride-of-africa' ); ?>
                 <i class="bi bi-arrow-right" aria-hidden="true"></i>
