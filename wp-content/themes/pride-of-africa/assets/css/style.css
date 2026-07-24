@@ -733,7 +733,17 @@ section[id] {
 .nav-link:hover::after { width: 80%; }
 
 /* Dropdowns - Improved hover behaviour */
-.dropdown-toggle::after  { display: none; }
+.dropdown-toggle::after {
+    content: '';
+    display: inline-block;
+    margin-left: 6px;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid var(--color-gold);
+}
 .dropdown-toggle::before { display: none; }
 .dropdown-toggle         { position: relative; }
 
@@ -807,7 +817,7 @@ section[id] {
 .dropdown-menu .dropdown-item {
     display: block;
     padding: 0.625rem 1.25rem;
-    color: #1B1B18;
+    color: var(--color-gold);
     font-size: 0.95rem;
     font-weight: 500;
     transition: all var(--transition-base);
@@ -815,13 +825,13 @@ section[id] {
 }
 .dropdown-menu .dropdown-item:hover {
     background-color: rgba(0,153,0,0.16);
-    color: var(--color-gold);
+    color: #FFFFFF;
     border-left-color: var(--color-gold);
     padding-left: calc(1.25rem + 2px);
 }
 .dropdown-menu .dropdown-item.active {
     background-color: rgba(0,153,0,0.16);
-    color: var(--color-gold);
+    color: #FFFFFF;
     border-left-color: var(--color-gold);
 }
 
