@@ -765,7 +765,22 @@
 
 /* ── About Us page ─────────────────────────────── */
 
-.c-about-hero { position: relative; min-height: 32rem; display: flex; align-items: center; background-size: cover; background-position: center; }
+/* Cancel .site-main's header-clearance padding-top so this full-bleed
+   hero sits flush against the menu instead of leaving a blank gap of
+   .site-main's own background above it (same fix as .c-contact-hero). */
+.c-about-hero {
+    position: relative;
+    min-height: 32rem;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    margin-top: calc(-1 * var(--header-offset));
+    padding-top: var(--header-offset);
+}
+@media (max-width: 991px) {
+    .c-about-hero { margin-top: calc(-1 * var(--header-height)); padding-top: var(--header-height); }
+}
 .c-about-hero__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.65) 100%); }
 .c-about-hero__inner { position: relative; z-index: 1; max-width: 44rem; padding-block: var(--space-8); }
 .c-about-hero__title { font-family: var(--poa-font-heading); font-size: clamp(2rem,5vw,3.25rem); font-weight: 700; color: #ffffff; margin: var(--space-3) 0; }
@@ -836,14 +851,24 @@
 .c-contact-hero {
     background: #2E2E2E;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* .site-main's padding-top clears the fixed header — cancel it here
+       so this dark section sits flush against the menu, then push this
+       section's own content back down by the same amount. (page-contact.php's
+       <main> no longer duplicates the site-main class, so this is a
+       single cancellation, not double.) */
     margin-top: calc(-1 * var(--header-offset));
-    padding-top: calc(var(--header-offset) + var(--space-8));
-    padding-bottom: var(--space-8);
+    padding-top: calc(var(--header-offset) + var(--space-5));
+    padding-bottom: var(--space-5);
 }
+.c-contact-hero .u-container { display: flex; flex-direction: column; align-items: center; }
 @media (max-width: 991px) {
     .c-contact-hero {
         margin-top: calc(-1 * var(--header-height));
-        padding-top: calc(var(--header-height) + var(--space-8));
+        padding-top: calc(var(--header-height) + var(--space-5));
     }
 }
 .c-contact-hero__title { font-family: var(--poa-font-heading); font-size: clamp(1.75rem,4vw,2.75rem); font-weight: 700; color: #ffffff; margin: var(--space-2) 0 var(--space-3); }
@@ -852,7 +877,19 @@
 .c-contact__layout { display: grid; grid-template-columns: 1fr; gap: var(--space-6); align-items: start; }
 @media (min-width: 62em) { .c-contact__layout { grid-template-columns: 1.4fr 1fr; } }
 
-.c-contact-card { padding: var(--space-5); background: var(--color-surface); border: 1px solid var(--poa-color-border); border-radius: var(--radius-lg); box-shadow: var(--poa-shadow-sm); }
+/* Top offset approximates the height of the form's own label + gap
+   above the Email input, so the card's top edge lines up with the
+   Email input rather than its label. Height is otherwise left to its
+   own content — stretching it to match the (taller) form column
+   pushed empty space in above Office Hours, past where it should end. */
+.c-contact-card {
+    margin-top: 1.75rem;
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--poa-color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--poa-shadow-sm);
+}
 .c-contact-card__title { font-size: 1.125rem; font-weight: 700; margin: 0 0 var(--space-4); }
 .c-contact-card__list { list-style: none; margin: 0 0 var(--space-4); padding: 0; display: flex; flex-direction: column; gap: .75rem; }
 .c-contact-card__list li { display: flex; align-items: flex-start; gap: .625rem; font-size: .9375rem; }
@@ -884,6 +921,11 @@
 .c-contact-section.l-section--compact { padding-block: var(--space-5); }
 
 /* "Plan My Trip" — sized to its own content instead of full-width,
-   aligned to the bottom right of the form. */
-.c-contact-form__submit-row { display: flex; justify-content: flex-end; }
+   aligned to the bottom left of the form. */
+.c-contact-form__submit-row { display: flex; justify-content: flex-start; }
 .c-contact-form__submit-row .c-button { width: auto; height: auto; padding-block: .75rem; padding-inline: var(--space-5); }
+
+/* More breathing room between the contact form's own fields — .c-form's
+   default gap is intentionally tight for the homepage Dream Trip card,
+   so this is scoped to the contact page's form only. */
+.c-contact__form-col .c-form { gap: var(--space-4); }

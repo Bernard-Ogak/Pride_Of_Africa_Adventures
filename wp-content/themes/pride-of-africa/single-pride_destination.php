@@ -157,6 +157,31 @@ while (have_posts()) : the_post();
     </section>
     <?php endif; ?>
 
+    <!-- ── Gallery ──────────────────────────────── -->
+    <?php
+    $dest_gallery_items = function_exists('pride_gallery_get_items_for_destination')
+        ? pride_gallery_get_items_for_destination(get_the_ID(), 8)
+        : [];
+    if (!empty($dest_gallery_items)) :
+    ?>
+    <section class="c-dest-section l-section">
+        <div class="u-container">
+            <h2 class="c-dest-section__title"><?php esc_html_e('Photo & Video Gallery', 'pride-of-africa'); ?></h2>
+            <div class="c-related-gallery__grid">
+                <?php foreach ($dest_gallery_items as $gallery_post) : setup_postdata($gallery_post); ?>
+                    <?php get_template_part('template-parts/gallery/gallery-card'); ?>
+                <?php endforeach; wp_reset_postdata(); ?>
+            </div>
+            <div class="c-dest-section__more">
+                <a href="<?php echo esc_url(home_url('/gallery')); ?>?country=<?php echo esc_attr(sanitize_title(get_the_title())); ?>" class="c-button c-button--outline">
+                    <?php esc_html_e('View Full Gallery', 'pride-of-africa'); ?> <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <?php get_template_part('template-parts/gallery/lightbox'); ?>
+    <?php endif; ?>
+
     <!-- ── Closing CTA ──────────────────────────── -->
     <section class="c-dest-cta l-section">
         <div class="u-container c-dest-cta__inner">

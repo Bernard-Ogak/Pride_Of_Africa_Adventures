@@ -24,7 +24,7 @@ $team_members = new WP_Query([
 ]);
 ?>
 
-<main id="primary" class="site-main">
+<main id="primary">
 
 <!-- 1. HERO -->
 <section class="c-about-hero" style="background-image:url('<?php echo esc_url($hero_image); ?>');">

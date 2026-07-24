@@ -49,7 +49,7 @@ $tags = get_terms(['taxonomy' => 'post_tag', 'hide_empty' => true, 'number' => 2
 $tags = is_wp_error($tags) ? [] : $tags;
 ?>
 
-<main id="primary" class="site-main">
+<main id="primary">
 
     <!-- Hero -->
     <section class="c-blog-hero l-section--compact">

@@ -43,6 +43,23 @@ get_header();
                     </div>
                 </div>
             </div>
+
+            <?php
+            $tour_gallery_items = function_exists('pride_gallery_get_items_for_tour')
+                ? pride_gallery_get_items_for_tour(get_the_ID(), 8)
+                : [];
+            if (!empty($tour_gallery_items)) :
+            ?>
+            <div class="mt-5">
+                <h2 class="h4 fw-bold mb-4"><?php esc_html_e('Photo & Video Gallery', 'pride-of-africa'); ?></h2>
+                <div class="c-related-gallery__grid">
+                    <?php foreach ($tour_gallery_items as $gallery_post) : setup_postdata($gallery_post); ?>
+                        <?php get_template_part('template-parts/gallery/gallery-card'); ?>
+                    <?php endforeach; wp_reset_postdata(); ?>
+                </div>
+            </div>
+            <?php get_template_part('template-parts/gallery/lightbox'); ?>
+            <?php endif; ?>
         <?php endwhile; endif; ?>
     </section>
 </main>

@@ -392,7 +392,8 @@ function pride_of_africa_enqueue_poa_home_styles() {
     $is_blog_page = is_singular('post') || is_page('blog');
     $is_about_page = is_page('about') || is_page('about-us');
     $is_contact_page = is_page('contact');
-    if (!is_front_page() && !$is_destination_page && !$is_blog_page && !$is_about_page && !$is_contact_page) {
+    $is_gallery_page = is_page('gallery') || is_singular('pride_gallery_item') || is_singular('pride_tour');
+    if (!is_front_page() && !$is_destination_page && !$is_blog_page && !$is_about_page && !$is_contact_page && !$is_gallery_page) {
         return;
     }
 
@@ -414,6 +415,9 @@ function pride_of_africa_enqueue_poa_home_styles() {
     $components = ['hero', 'trip-planner', 'sections', 'cards', 'forms'];
     if ($is_destination_page) {
         $components[] = 'destination-page';
+    }
+    if ($is_gallery_page) {
+        $components[] = 'gallery';
     }
     foreach ($components as $component) {
         $path = $poa_dir . "/{$component}.css";

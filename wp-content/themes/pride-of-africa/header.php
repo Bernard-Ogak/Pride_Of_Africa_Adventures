@@ -184,10 +184,12 @@
                             >
                                 <i class="bi bi-globe2" aria-hidden="true"></i>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-label="<?php esc_attr_e('Language selector', 'pride-of-africa'); ?>">
-                                <li><a class="dropdown-item" href="#">English</a></li>
-                                <li><a class="dropdown-item" href="#">Français</a></li>
-                                <li><a class="dropdown-item" href="#">Deutsch</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end" id="lang-switcher-menu" aria-label="<?php esc_attr_e('Language selector', 'pride-of-africa'); ?>">
+                                <li><a class="dropdown-item" href="#" data-translate-lang="en">🇬🇧 English</a></li>
+                                <li><a class="dropdown-item" href="#" data-translate-lang="fr">🇫🇷 Français</a></li>
+                                <li><a class="dropdown-item" href="#" data-translate-lang="es">🇪🇸 Español</a></li>
+                                <li><a class="dropdown-item" href="#" data-translate-lang="de">🇩🇪 Deutsch</a></li>
+                                <li><a class="dropdown-item" href="#" data-translate-lang="zh-CN">🇨🇳 简体中文</a></li>
                             </ul>
                         </li>
                     </ul>

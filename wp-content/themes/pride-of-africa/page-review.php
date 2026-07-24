@@ -22,7 +22,7 @@ $platforms = new WP_Query( [
 ] );
 ?>
 
-<main id="primary" class="site-main">
+<main id="primary">
     <section class="c-review-hub l-section">
         <div class="u-container">
             <div class="c-review-hub__grid">

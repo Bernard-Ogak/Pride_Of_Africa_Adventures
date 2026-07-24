@@ -256,6 +256,64 @@
     } )();
     </script>
 
+    <!-- ===== SITE TRANSLATION =====
+         Hidden Google Website Translator widget, driven by the custom
+         language dropdown above instead of Google's own UI. Translates
+         the fully-rendered page — including dynamic content from the
+         database (tour/destination copy, blog posts, testimonials,
+         gallery captions) — not just static theme strings, which a
+         .po/.mo file approach could never cover without every editor
+         re-entering content in five languages by hand. -->
+    <div id="google_translate_element" style="display:none;" aria-hidden="true"></div>
+    <script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            { pageLanguage: 'en', includedLanguages: 'en,fr,es,de,zh-CN', autoDisplay: false },
+            'google_translate_element'
+        );
+    }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+
+    <script>
+    ( function () {
+        'use strict';
+
+        function setGoogleTranslateLanguage( langCode ) {
+            var deadline = Date.now() + 8000;
+
+            function trySelect() {
+                var select = document.querySelector( '#google_translate_element select.goog-te-combo' );
+                if ( select ) {
+                    select.value = langCode;
+                    select.dispatchEvent( new Event( 'change' ) );
+                    return;
+                }
+                if ( Date.now() < deadline ) {
+                    setTimeout( trySelect, 200 );
+                }
+            }
+            trySelect();
+        }
+
+        // Restore any previously selected language on page load (the
+        // widget re-creates its <select> fresh on every navigation).
+        var saved = localStorage.getItem( 'poaLang' );
+        if ( saved && saved !== 'en' ) {
+            setGoogleTranslateLanguage( saved );
+        }
+
+        document.querySelectorAll( '[data-translate-lang]' ).forEach( function ( link ) {
+            link.addEventListener( 'click', function ( e ) {
+                e.preventDefault();
+                var lang = link.dataset.translateLang;
+                localStorage.setItem( 'poaLang', lang );
+                setGoogleTranslateLanguage( lang );
+            } );
+        } );
+    } )();
+    </script>
+
     <?php wp_footer(); ?>
 
 </body>

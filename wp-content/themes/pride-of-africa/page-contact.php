@@ -32,7 +32,7 @@ $steps = [
 ];
 ?>
 
-<main id="primary" class="site-main">
+<main id="primary">
 
 <!-- Hero -->
 <section class="c-contact-hero">
